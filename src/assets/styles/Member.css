@@ -1,0 +1,82 @@
+/* src/assets/styles/Member.css member용 css */
+
+.form-container {
+  display: flex !important;
+  flex-direction: column !important;
+  align-items: center !important;
+  justify-content: center !important;
+  min-height: 80vh !important;
+  padding: 16px !important;
+}
+
+.form-title {
+  font-weight: bold !important;
+  margin-bottom: 16px !important;
+  font-size: 1.5rem !important;
+}
+
+.form-input {
+  max-width: 400px !important;
+  width: 100% !important;
+  margin-bottom: 16px !important;
+}
+
+.link-box {
+  display: flex !important;
+  align-items: center !important;
+  justify-content: flex-end !important;
+  max-width: 400px !important;
+  width: 100% !important;
+  margin-bottom: 16px !important;
+}
+
+.link-text {
+  font-size: 0.9rem !important;
+}
+
+.button {
+  max-width: 400px !important;
+  width: 100% !important;
+  margin-bottom: 12px !important;
+}
+
+.button-login {
+  background-color: #6e7ac5 !important;
+  color: white !important;
+}
+
+.button-login:hover {
+  background-color: #5a68b3 !important;
+}
+
+.button-register {
+  color: #6e7ac5 !important;
+  border-color: #6e7ac5 !important;
+}
+
+.button-register:hover {
+  background-color: #f0f0ff !important;
+}
+
+.button-id-search {
+  background-color: #6e7ac5 !important;
+  color: white !important;
+}
+
+.button-id-search:hover {
+  background-color: #5a68b3 !important;
+}
+
+.link-container {
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  max-width: 400px !important;
+  width: 100% !important;
+  margin-top: 16px !important;
+}
+
+.divider {
+  margin: 0 4px !important;
+  color: #888 !important;
+}
