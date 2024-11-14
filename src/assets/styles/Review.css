@@ -1,0 +1,280 @@
+/* src/assets/styles/Review.css */
+
+/* 모임후기 카드 스타일 */
+.review-card {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    /*  그냥 조건절로 회색선 그었기에 보더 제거했음. */
+    /* border: 1px solid #e0e0e0; */ 
+    /* border-bottom: 2px solid #101010; */
+    border-radius: 10px;
+    margin-bottom: 20px;
+    padding: 20px;
+    background-color: #fff;
+    /* box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); */
+    max-width: 800px;
+    min-width: 800px;
+  }
+  
+  /* 왼쪽 텍스트 영역 */
+  .review-card-content {
+    flex: 1;
+    padding-right: 20px;
+  }
+  
+  /* 글 제목 스타일 */
+  .review-card-title {
+    font-weight: bold;
+    font-size: 1.2rem;
+    margin-bottom: 10px;
+    color: #333;
+  }
+  
+  /* 짧은 소개글 스타일 */
+  .review-card-description {
+    font-size: 1rem;
+    margin-bottom: 10px;
+    color: #555;
+  }
+  
+  /* 작은 글씨로 댓글개수, 작성자, 작성시간 */
+  .review-card-meta {
+    font-size: 0.85rem;
+    color: #888;
+    margin-bottom: 10px;
+  }
+  
+  /* 썸네일 스타일 */
+  .review-card-thumbnail {
+    width: 100px;
+    height: 100px;
+    border-radius: 8px;
+    object-fit: cover;
+  }
+  
+
+
+  .review-form-container {
+    position: relative;
+    display: flex !important;
+    flex-direction: column !important;
+    align-items: center !important;
+    justify-content: center !important;
+    min-height: 80vh !important;
+    padding: 16px !important;
+  }
+
+
+
+/* 디테일 영역 : Detail.js */
+.review-detail {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  max-width: 800px;
+  margin: 0 auto; /* Center horizontally */
+  padding: 20px;
+  background-color: #f9f9ff;
+  border-radius: 10px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+/* Title Styling */
+.review-title {
+  font-weight: bold;
+  font-size: 2.2rem;
+  color: #7F86EC;
+  margin-bottom: 20px;
+  text-align: center;
+}
+
+/* Author Info Styling */
+.review-detail-author-info {
+  display: flex;
+  align-items: center;
+  margin-bottom: 15px;
+}
+
+.review-detail-author-avatar {
+  width: 40px;
+  height: 40px;
+  margin-right: 10px;
+  border: 2px solid #7F86EC;
+}
+
+.review-detail-author-name {
+  font-weight: 500;
+  font-size: 1.1rem;
+  color: #555;
+}
+
+.review-detail-author-time {
+  color: #7F86EC;
+  margin-left: 8px;
+  font-size: 0.9rem;
+}
+
+/* Divider Styling */
+.review-detail-divider {
+  margin: 20px 0;
+  background-color: #7F86EC;
+  height: 2px;
+}
+
+/* Content Styling */
+.review-content {
+  font-size: 1.1rem;
+  color: #333;
+  line-height: 1.6;
+  margin-bottom: 20px;
+}
+
+/* Uploaded Images Container */
+.review-detail-uploaded-images {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 15px;
+  justify-content: center;
+  margin-bottom: 20px;
+}
+
+.review-detail-uploaded-image {
+  width: 120px;
+  height: 120px;
+  object-fit: cover;
+  border-radius: 8px;
+  border: 2px solid #7F86EC;
+}
+
+/* Related Meeting Card */
+.review-detail-related-meeting-card {
+  width: 100%;
+  margin-bottom: 20px;
+  border: 2px solid #7F86EC;
+  border-radius: 8px;
+  background-color: #fff;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.review-detail-related-meeting-image {
+  width: 120px;
+  height: 120px;
+  object-fit: cover;
+  border-radius: 8px;
+}
+
+.review-detail-related-meeting-title {
+  font-weight: bold;
+  font-size: 1.2rem;
+  color: #7F86EC;
+}
+
+.review-detail-related-meeting-description {
+  font-size: 1rem;
+  color: #555;
+}
+
+/* Comments Section */
+.review-detail-comments-title {
+  font-weight: bold;
+  color: #7F86EC;
+  margin-bottom: 15px;
+  font-size: 1.3rem;
+}
+
+.review-detail-comment-placeholder {
+  color: gray;
+  font-style: italic;
+}
+
+
+/* '작성하기' 버튼 스타일 */
+.write-button {
+  background-color: #3f51b5 !important;
+  color: #fff !important;
+  font-weight: bold !important;
+  padding: 10px 20px !important;
+  border-radius: 5px !important;
+  transition: background-color 0.3s ease !important;
+  align-self: flex-end !important; /* 오른쪽 끝으로 배치 */
+  margin-top: 20px !important; /* 버튼 위쪽에 공간 추가 */
+}
+
+.write-button {
+  background-color: #3f51b5 !important;
+  color: #fff !important;
+  font-weight: bold !important;
+  padding: 10px 20px !important;
+  border-radius: 5px !important;
+  transition: background-color 0.3s ease !important;
+  align-self: flex-end !important; /* 오른쪽 끝으로 배치 */
+  margin-top: 20px !important; /* 버튼 위쪽에 공간 추가 */
+}
+
+
+
+.write-button:hover {
+  background-color: #303f9f;
+}
+
+
+.write-button-right {
+  position: absolute !important;
+  top: 50px;
+  right: 200px;
+  background-color: #acb6f0 !important;
+  color: #4a4949 !important;
+  font-weight: bold !important;
+  padding: 10px 20px !important;
+  border-radius: 30px !important;
+  transition: background-color 0.3s ease !important;
+}
+
+.write-button-right:hover {
+  background-color: #303f9f;
+}
+
+
+/* 후기 작성 */
+/* 레지스트 페이지 스타일 */
+.regist-container {
+  padding: 20px;
+  border-bottom: 10px !important;
+}
+
+.regist-title {
+  text-align: center;
+  margin-bottom: 30px;
+  font-weight: bold;
+  padding-bottom:50px !important;
+}
+
+.meeting-grid {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 20px;
+  justify-content: center; /* 가운데 정렬 */
+  align-items: center; /* 세로 가운데 정렬 */
+}
+
+.meeting-card {
+  padding: 20px;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+  text-align: center;
+  transition: background-color 0.3s ease;
+  max-width: 300px;
+}
+
+.meeting-card:hover {
+  background-color: #f5f5f5;
+}
+
+.pagination-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 20px;
+  margin-top: 20px;
+}

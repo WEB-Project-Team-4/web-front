@@ -16,7 +16,7 @@ function Footer() {
         alignItems: 'center',
         py: 4,
         backgroundColor: 'white',
-        borderTop: '1px solid #e0e0e0',
+        borderTop: '1px solid #A0A0A0',
         paddingTop: '10px',
       }}
     >

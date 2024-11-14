@@ -19,7 +19,7 @@ function Header() {
       setActiveLink('모임찾기');
     } else if (currentPath.startsWith('/review')) { // review로 시작하는 페이지의 경우 모임후기의 색이 변동
       setActiveLink('모임후기');
-    } else if (currentPath.startsWith('/register')) {
+    } else if (currentPath.startsWith('/group/regist')) {
       setActiveLink('모임등록');
     }
   }, []); // 컴포넌트가 처음 렌더링될 때 한번만 실행
@@ -38,10 +38,27 @@ function Header() {
   const handleLoginClick = () => {
     window.location.href = 'http://localhost:3000/member/login';
   };
+  
+
+  // 마이페이지 클릭 시 호출되는 함수
+  const handleMyClick = () => {
+    window.location.href = 'http://localhost:3000/my/Group';
+  };
 
   // 로고 클릭 시 메인 페이지로 이동
   const handleLogoClick = () => {
     window.location.href = 'http://localhost:3000/';
+  };
+
+  // 각 항목 클릭 시 해당 페이지로 이동
+  const handleNavigation = (page) => {
+    if (page === '모임찾기') {
+      window.location.href = 'http://localhost:3000/';
+    } else if (page === '모임후기') {
+      window.location.href = 'http://localhost:3000/review/main';
+    } else if (page === '모임등록') {
+      window.location.href = 'http://localhost:3000/group/regist';
+    }
   };
 
   return (
@@ -77,6 +94,7 @@ function Header() {
                   padding: '5px 10px', // 약간의 여백 추가
                 } 
               }}
+              onClick={() => handleNavigation(text)} // 클릭 시 해당 페이지로 이동
             >
               {text}
             </Typography>
@@ -104,7 +122,7 @@ function Header() {
         >
           {/* 로그인 항목 클릭 시 로그인 페이지로 이동 */}
           <MenuItem onClick={handleLoginClick}>로그인</MenuItem>
-          <MenuItem onClick={handleMenuClose}>마이페이지</MenuItem>  {/* 마이페이지 항목 */}
+          <MenuItem onClick={handleMyClick}>마이페이지</MenuItem>  {/* 마이페이지 항목 */}
         </Menu>
       </Toolbar>
     </AppBar>

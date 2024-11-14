@@ -1,6 +1,8 @@
 import React from 'react';
 import { Box, TextField, Button, Typography, Link, Divider } from '@mui/material';
 import '../../assets/styles/Member.css';
+import '../../assets/styles/General.css'; // 스타일 적용
+
 
 function Login() {
   const handleRegisterRedirect = () => {
@@ -37,12 +39,12 @@ function Login() {
 
         <Divider orientation="vertical" flexItem sx={{ mx: 1, height: 20 }} />
 
-        <Link href="#" underline="hover" className="link-text">
-          비밀번호 변경
+        <Link href="/member/pwd-search" underline="hover" className="link-text">
+          비밀번호 찾기
         </Link>
       </Box>
 
-      <Button variant="contained" color="primary" fullWidth className="button button-login">
+      <Button variant="contained" color="primary" fullWidth className="button-general">
         로그인
       </Button>
 
@@ -50,7 +52,7 @@ function Login() {
         variant="outlined"
         color="primary"
         fullWidth
-        className="button button-register"
+        className="button-general2"
         onClick={handleRegisterRedirect}
       >
         회원가입

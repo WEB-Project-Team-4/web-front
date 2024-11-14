@@ -1,5 +1,56 @@
 /* src/assets/styles/Member.css member용 css */
 
+/* 텍스트 입력란 좌측 제목 */
+
+/* general 버튼 */
+
+.button-general {
+  background-color: #7F86EC !important;
+  color: white !important;
+  width: 400px !important;
+}
+
+.button-general:hover {
+  background-color: #5a68b3 !important;
+}
+
+
+.button-general2 {
+  color: #7F86EC !important;
+  border-color: #6e7ac5 !important;
+  width: 400px !important;
+  margin-top: 12px !important;
+}
+
+.button-general2:hover {
+  background-color: #f0f0ff !important;
+}
+
+.button-general-click {
+  text-align: center;
+  align-items: center;
+  position: relative;
+  width: 95px !important;
+  margin-top: 8px !important;
+
+  /* flex-basis: 12% !important; */
+  height: 56px !important;
+  background-color: #e0e0e0 !important;
+  color: #555 !important;
+  font-weight: bold !important;
+  /* margin-left: 8px !important; */
+  font-size: 0.80rem !important;
+  border-radius: 22px !important;
+
+}
+
+.button-general-click:hover {
+  background-color: #B9B6B6 !important;
+}
+
+
+
+/* 기존 스타일 공유 - 수정하지 않음 */
 .form-container {
   display: flex !important;
   flex-direction: column !important;
@@ -40,32 +91,6 @@
   margin-bottom: 12px !important;
 }
 
-.button-login {
-  background-color: #6e7ac5 !important;
-  color: white !important;
-}
-
-.button-login:hover {
-  background-color: #5a68b3 !important;
-}
-
-.button-register {
-  color: #6e7ac5 !important;
-  border-color: #6e7ac5 !important;
-}
-
-.button-register:hover {
-  background-color: #f0f0ff !important;
-}
-
-.button-id-search {
-  background-color: #6e7ac5 !important;
-  color: white !important;
-}
-
-.button-id-search:hover {
-  background-color: #5a68b3 !important;
-}
 
 .link-container {
   display: flex !important;
@@ -79,4 +104,80 @@
 .divider {
   margin: 0 4px !important;
   color: #888 !important;
+}
+
+/* src/assets/styles/Member.css */
+
+
+.email-select{
+  margin: 10px !important;
+  height: 40px !important;
+  width: 200px !important;
+}
+
+/* 아이디 표시용 스타일 */
+.general-form-id-display {
+  flex: 1;
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  background-color: #f8f8f8;
+  font-size: 1rem;
+  color: #333;
+}
+
+
+/* 에러 메시지 스타일 */
+.error-message {
+  color: red;
+  font-size: 0.9rem;
+  margin-bottom: 12px;
+  text-align: left;
+}
+/* -------------------------------------
+   Dialog 기본 스타일 설정
+------------------------------------- */
+
+.MuiDialog-paper {
+  width: 450px !important; /* Dialog의 기본 너비 */
+  max-width: 90% !important; /* 최대 너비 제한 */
+  min-height: 200px !important; /* 최소 높이 */
+  max-height: 400px !important; /* 최대 높이 */
+  padding: 24px !important; /* 내부 여백 */
+  border-radius: 8px !important; /* 모서리 둥글기 */
+}
+/* -------------------------------------
+   Dialog 내부 버튼 스타일
+------------------------------------- */
+.dialog-title {
+  color: #6e7ac5 !important;
+  font-size: 1.5rem !important; /* 글자 크기 */
+  font-weight: bold !important; /* 글자 굵기 */
+  text-align: center; /* 가운데 정렬 */
+}
+
+.button-dialog {
+  margin-top: 16px!important;
+  width: 45%!important;
+  font-weight: bold!important;
+}
+
+/* Dialog 내 '로그인 하기' 버튼 색상 */
+.button-dialog.secondary {
+  background-color: #cccccc !important;
+  color: #333 !important;
+}
+
+.button-dialog.secondary:hover {
+  background-color: #b3b3b3 !important;
+}
+
+/* Dialog 내 '비밀번호 찾기' 버튼 색상 */
+.button-dialog.primary {
+  background-color: #6e7ac5 !important;
+  color: white !important;
+}
+
+.button-dialog.primary:hover {
+  background-color: #5a68b3 !important;
 }
