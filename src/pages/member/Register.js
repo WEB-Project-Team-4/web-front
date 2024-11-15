@@ -14,16 +14,19 @@ function Register() {
   const [verificationError, setVerificationError] = useState('');
 
   const [name, setName] = useState('');
+  const [nickname, setNickName] = useState('');
   const [phone, setPhone] = useState('');
   const [category, setCategory] = useState('');
   const [emailError, setEmailError] = useState('');
   const [openDialog, setOpenDialog] = useState(false);
   const [dialogMessage, setDialogMessage] = useState('');
 
+  const [profilePicture, setProfilePicture] = useState(null); // 프로필 사진 상태 추가
+
   const emailRegex = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,6}$/;
 
   const handleSubmit = () => {
-    if (!username || !password || !confirmPassword || !email || !name) {
+    if (!username || !password || !confirmPassword || !name || !nickname|| !email ) {
       setDialogMessage('모든 필드를 입력해주세요.');
       setOpenDialog(true);
       return;
@@ -35,8 +38,8 @@ function Register() {
       return;
     }
 
-    if (phone.length > 0 && phone.length <= 10) {
-      setDialogMessage('휴대폰 번호는 10자리가 되어야 합니다.');
+    if (phone.length > 0 && phone.length <= 6) {
+      setDialogMessage('전화번호가 너무 짧습니다.');
       setOpenDialog(true);
       return;
     }
@@ -56,6 +59,14 @@ function Register() {
     setOpenDialog(false);
   };
 
+   // 프로필 사진 업로드 핸들러
+   const handleProfilePictureChange = (event) => {
+    const file = event.target.files[0];
+    if (file) {
+      setProfilePicture(URL.createObjectURL(file)); // 파일을 미리보기로 설정
+    }
+  };
+  
   return (
     <Box className="form-container">
       <Typography variant="h5" component="h1" className="form-title">
@@ -137,6 +148,27 @@ function Register() {
         </Button>
       </Box>
 
+      {/* 닉네임 입력과 "중복확인" 버튼 */}
+      <Box className="general-form-row">
+      <Typography variant="body1" className="general-form-label">닉네임<span style={{ color: 'red' }}>*</span></Typography>
+      
+        <TextField
+          variant="outlined"
+          label={<span>닉네임을 입력해주세요 </span>}
+          fullWidth
+          className="general-form-input"
+          value={nickname}
+          onChange={(e) => setNickName(e.target.value)}
+        />
+        <Button
+          variant="outlined"
+          className="button-general-click"
+          onClick={() => alert('닉네임 중복확인 클릭!')}
+        >
+          중복확인
+        </Button>
+      </Box>
+
 {/* 이메일 입력과 "중복확인" 버튼 */}
       
 <Box className="general-form-row">
@@ -191,7 +223,7 @@ function Register() {
 
       {/* 휴대폰 번호 입력 */}
       <Box className="general-form-row">
-      <Typography variant="body1" className="general-form-label">휴대폰 번호<span style={{ color: 'red' }}>*</span></Typography>
+      <Typography variant="body1" className="general-form-label">휴대폰 번호</Typography>
       
       <TextField
         variant="outlined"
@@ -208,7 +240,7 @@ function Register() {
 
       {/* 관심 카테고리 선택 */}
       <Box className="general-form-row">
-      <Typography variant="body1" className="general-form-label">카테고리<span style={{ color: 'red' }}>*</span></Typography>
+      <Typography variant="body1" className="general-form-label">카테고리</Typography>
       
       <FormControl fullWidth className="general-form-input">
         <InputLabel id="category-label">관심 카테고리</InputLabel>
@@ -224,7 +256,31 @@ function Register() {
         </Select>
       </FormControl>
       </Box>
+      
 
+      {/* 프로필 사진 업로드 */}
+      <Box className="general-form-row">
+        <Typography variant="body1" className="general-form-label">프로필 사진</Typography>
+        <input
+          type="file"
+          accept="image/*"
+          onChange={handleProfilePictureChange}
+          style={{ display: 'none' }}
+          id="profile-pic-upload"
+        />
+        <label htmlFor="profile-pic-upload">
+          <Button variant="outlined" component="span">사진 업로드</Button>
+        </label>
+        {profilePicture && (
+          <Box mt={2}>
+            <img
+              src={profilePicture}
+              alt="Profile Preview"
+              style={{ width: '100px', height: '100px', objectFit: 'cover', borderRadius: '50%' }}
+            />
+          </Box>
+        )}
+      </Box>
 
       {/* 회원가입 버튼 */}
       <Button

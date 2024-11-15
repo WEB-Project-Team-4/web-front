@@ -18,6 +18,8 @@ import PwdModify from './pages/member/PwdModify';
 //group : 모임
 import Main from './pages/group/Main';
 import GroupDetail from './pages/group/Detail';
+import GroupRegist from './pages/group/Regist';
+import GroupModify from './pages/group/Modify';
 
 //my : 마이페이지
 import Group from './pages/my/Group';
@@ -36,10 +38,17 @@ import ReviewDetail from './pages/review/Detail';
 import ReviewRegist from './pages/review/Regist';
 import ReviewWrite from './pages/review/WriteReview';
 
+import ReviewModify from './pages/review/Modify';
+
+
+
+import AxiosErrorHandler from './pages/error/AxiosErrorHandler';
+
 
 function App() {
   return (
     <Router>
+      <AxiosErrorHandler>
       <div style={{ display: 'flex', flexDirection: 'column', minHeight: '100vh' }}>
         <Header />
         
@@ -47,7 +56,9 @@ function App() {
           <Routes>
             <Route path="/" element={<Main />} />
 
-            <Route path="/group/detail" element={<GroupDetail/>}/>  
+            <Route path="/group/detail/:reviewId" element={<GroupDetail/>}/> 
+            <Route path="/group/regist" element={<GroupRegist/>}/> 
+            <Route path="/group/modify" element={<GroupModify/>}/> 
 
             <Route path="/member/login" element={<Login />} />
             <Route path="/member/register" element={<Register />} />
@@ -70,11 +81,13 @@ function App() {
             <Route path="/review/detail/:reviewId" element={<ReviewDetail />} />
             <Route path="/review/regist" element={<ReviewRegist />} />
             <Route path="/review/write" element={<ReviewWrite />} />
+            <Route path="/review/modify" element={<ReviewModify />} />
 
           </Routes>
         </main>
         <Footer />
       </div>
+      </AxiosErrorHandler>
     </Router>
   );
 }

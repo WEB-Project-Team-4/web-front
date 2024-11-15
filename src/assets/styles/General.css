@@ -116,3 +116,12 @@
   display: flex !important;
   flex-direction: column !important;
 }
+
+
+/* 해당 글이 없을때 */
+.general-no-reviews-message {
+  text-align: center;
+  font-size: 18px;
+  color: #777;
+  margin-top: 150px;
+}

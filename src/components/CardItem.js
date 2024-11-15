@@ -34,7 +34,7 @@ function CardItem({ to, category, location, date, title, description, people, co
             color: '#000000',
             position: 'absolute',
             top: '8px',
-            left: '8px',
+            left: '17px',
             cursor: 'pointer',
             zIndex: 2,
           }}
