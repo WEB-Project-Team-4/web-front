@@ -1,0 +1,118 @@
+/* src/assets/styles/General.css 전역 스타일*/
+
+.general-color {
+  color: #7F86EC !important;
+}
+
+.general-hover-color {
+  color: #5a68b3 !important;
+}
+
+.button-general {
+  background-color: #7F86EC !important;
+  color: white !important;
+  width: 400px !important;
+}
+
+.button-general:hover {
+  background-color: #5a68b3 !important;
+}
+
+
+.button-general2 {
+  color: #7F86EC !important;
+  border-color: #6e7ac5 !important;
+  width: 400px !important;
+  margin-top: 12px !important;
+}
+
+.button-general2:hover {
+  background-color: #f0f0ff !important;
+}
+
+.button-general-click {
+  text-align: center;
+  align-items: center;
+  position: relative;
+  width: 95px !important;
+  margin-top: 8px !important;
+
+  /* flex-basis: 12% !important; */
+  height: 56px !important;
+  background-color: #e0e0e0 !important;
+  color: #555 !important;
+  font-weight: bold !important;
+  /* margin-left: 8px !important; */
+  font-size: 0.80rem !important;
+  border-radius: 22px !important;
+
+}
+
+.button-general-click:hover {
+  background-color: #B9B6B6 !important;
+}
+
+
+.general-form-title {
+  font-weight: bold !important;
+  margin-bottom: 80px !important;
+  font-size: 1.5rem !important;
+}
+
+
+
+/* 본인 인증용 스타일 추가 */
+.general-form-title {
+  font-weight: bold !important;
+  margin-bottom: 80px !important;
+  font-size: 1.5rem !important;
+}
+
+.general-form-row {
+  display: flex !important;
+  align-items: center !important;
+  width: 100% !important;
+  height: 70px !important;
+  max-width: 800px !important;
+  margin-bottom: 16px !important;
+  /* justify-content: space-between; 요소들 간의 공간을 동일하게 분배 */
+}
+
+
+
+.general-form-label {
+  flex-basis: 15% !important; /* label이 차지하는 비율 */
+  text-align: left !important;
+  font-weight: bold !important;
+}
+
+.general-form-input {
+  flex-basis: 70% !important; /* input 필드가 차지하는 비율 */
+  max-width: 100% !important;
+  margin-right: 8px !important;
+}
+
+.general-form-button{
+  margin-top: 80px!important;; 
+}
+
+
+.general-form-container {
+  display: flex !important;
+  flex-direction: column !important;
+  align-items: center !important;
+  justify-content: center !important;
+  min-height: 80vh !important;
+  padding: 16px !important;
+}
+
+/* 가로로 놓기 */
+.general-row {
+  display: flex !important;
+  flex-direction: row !important;
+}
+/* 세로로놓기 */
+.general-column {
+  display: flex !important;
+  flex-direction: column !important;
+}
