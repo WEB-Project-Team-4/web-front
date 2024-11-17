@@ -38,7 +38,7 @@ function InfoModify() {
     // 여기에 서버로 데이터를 보내는 로직을 추가할 수 있습니다.
     console.log('수정된 정보:', userInfo);
     alert('정보가 수정되었습니다.');
-    navigate('/my'); // 수정 후 마이페이지로 리다이렉트
+    navigate('/my/group'); // 수정 후 마이페이지로 리다이렉트
   };
 
   return (

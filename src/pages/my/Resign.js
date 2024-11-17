@@ -32,7 +32,7 @@ function Resign() {
     if (confirm) {
       // 여기서 탈퇴 처리 로직을 넣을 수 있습니다.
       setTimeout(() => {
-        alert('회원탈퇴가 완료되었습니다.');
+        alert('모인은 당신이 되돌아오길 손꼽아 기다리겠습니다...');
         navigate('/member/login'); // 탈퇴 후 로그인 페이지로 이동
       }, 1500);
     }

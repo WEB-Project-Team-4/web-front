@@ -4,7 +4,6 @@ import { Box, TextField, Button, Typography } from '@mui/material';
 import '../../assets/styles/My.css';
 
 function PwdModify() {
-  const [currentPassword, setCurrentPassword] = useState(''); // 현재 비밀번호
   const [newPassword, setNewPassword] = useState(''); // 새 비밀번호
   const [confirmPassword, setConfirmPassword] = useState(''); // 비밀번호 확인
   const [error, setError] = useState(''); // 에러 메시지
@@ -13,7 +12,7 @@ function PwdModify() {
   // 비밀번호 변경 처리
   const handlePasswordChange = () => {
     // 비밀번호 필드 값 검증
-    if (!currentPassword || !newPassword || !confirmPassword) {
+    if ( !newPassword || !confirmPassword) {
       setError('모든 필드를 입력해주세요.');
       return;
     }
@@ -40,20 +39,6 @@ function PwdModify() {
         비밀번호 변경
       </Typography>
 
-      {/* 현재 비밀번호 입력 */}
-      <Box className="general-form-row">
-        <Typography variant="body1" className="general-form-label">현재 비밀번호</Typography>
-        <TextField
-          variant="outlined"
-          type="password"
-          placeholder="현재 비밀번호를 입력해주세요"
-          fullWidth
-          margin="normal"
-          className="general-form-input"
-          value={currentPassword}
-          onChange={(e) => setCurrentPassword(e.target.value)}
-        />
-      </Box>
 
       {/* 새 비밀번호 입력 */}
       <Box className="general-form-row">

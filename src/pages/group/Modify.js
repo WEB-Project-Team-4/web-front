@@ -1,9 +1,8 @@
 import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom'; // Import useNavigate from react-router-dom
 import '../../assets/styles/Group.css';
 import '../../assets/styles/General.css';
 
-const GroupRegist = () => {
+const GroupModify = () => {
   const [formData, setFormData] = useState({
     recruitmentName: '',
     description: '',
@@ -15,8 +14,6 @@ const GroupRegist = () => {
     endDate: '',
     detailedInfo: '',
   });
-
-  const navigate = useNavigate();  // Declare useNavigate hook
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -35,12 +32,12 @@ const GroupRegist = () => {
 
   return (
     <div className="regist-main-container">
-      <div className="general-form-title">모임등록</div>
-      <span><span style={{ color: 'red' }}>*</span>표기는 필수입력입니다.</span>
-
+        <div className="general-form-title">모임수정</div>
+        <span><span style={{ color: 'red' }}>*</span>표기는 필수입력입니다.</span>
+      
       <form onSubmit={handleSubmit}>
         <div className="general-row">
-          <label className='regist-group-label'>모집명(20자 이내) <span style={{ color: 'red' }}>*</span></label>
+          <label className='regist-group-label'>모임명(20자 이내) *</label>
           <input
             type="text"
             name="recruitmentName"
@@ -52,19 +49,18 @@ const GroupRegist = () => {
         </div>
 
         <div className="regist-group-input-field">
-          <label className='regist-group-label'>소개글(25자 이내)<span style={{ color: 'red' }}>*</span></label>
+          <label className='regist-group-label'>소개글(25자 이내)</label>
           <textarea
             name="description"
             maxLength="25"
             value={formData.description}
             onChange={handleChange}
-            required
           />
         </div>
 
         <div className="regist-group-row">
           <div className="regist-group-input-field">
-            <label className='regist-group-label'>모임 카테고리<span style={{ color: 'red' }}>*</span></label>
+            <label className='regist-group-label'>모임 카테고리</label>
             <select
               name="category"
               value={formData.category}
@@ -79,7 +75,7 @@ const GroupRegist = () => {
             </select>
           </div>
           <div className="regist-group-input-field">
-            <label className='regist-group-label'>대표이미지</label>
+          <label className='regist-group-label'>대표이미지</label>
             <input type="file" onChange={handleFileChange} />
           </div>
         </div>
@@ -90,7 +86,7 @@ const GroupRegist = () => {
             <button type="button">지도 또는 주소 찾기</button>
           </div>
           <div className="regist-group-input-field">
-            <label className='regist-group-label'>최대참여인원<span style={{ color: 'red' }}>*</span></label>
+            <label className='regist-group-label'>최대참여인원</label>
             <input
               type="number"
               name="maxParticipants"
@@ -109,6 +105,7 @@ const GroupRegist = () => {
               name="startDate"
               value={formData.startDate}
               onChange={handleChange}
+              required
             />
           </div>
           <div className="regist-group-input-field">
@@ -118,13 +115,13 @@ const GroupRegist = () => {
               name="endDate"
               value={formData.endDate}
               onChange={handleChange}
-              //   required
+              required
             />
           </div>
         </div>
 
         <div className="regist-group-input-field">
-          <label className='regist-group-label'>상세내용<span style={{ color: 'red' }}>*</span></label>
+          <label className='regist-group-label'>상세내용</label>
           <textarea
             name="detailedInfo"
             value={formData.detailedInfo}
@@ -134,12 +131,7 @@ const GroupRegist = () => {
         </div>
 
         <div className="regist-group-buttons">
-          <button
-            type="button"
-            onClick={() => navigate(-1)}  // This will navigate to the previous page
-          >
-            작성취소
-          </button>
+          <button type="button" onClick={() => setFormData({})}>작성취소</button>
           <button type="submit">작성완료</button>
         </div>
       </form>
@@ -147,4 +139,4 @@ const GroupRegist = () => {
   );
 };
 
-export default GroupRegist;
+export default GroupModify;
