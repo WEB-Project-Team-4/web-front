@@ -1,5 +1,6 @@
 // src/API/group.js
 import axiosInstance from './axiosInstance';
+import axios from 'axios';
 
 /**
  * 서버로 그룹 데이터를 요청하는 함수
@@ -16,7 +17,7 @@ export const fetchGroups = async ({
 }) => {
   // 경로 동적으로 설정
   // const path = `/group/${category}/${currentPage}/${pageSize}`;
-  const path = `/group/${currentPage}/${pageSize}`;
+  const path = process.env.REACT_APP_API_BASE_URL + `group/${currentPage}/${pageSize}`;
   // 쿼리 매개변수 설정
   const params = {
     // searchParam: searchParam || undefined, // 검색어
@@ -24,7 +25,7 @@ export const fetchGroups = async ({
     isActive: isActive ? 'Y' : 'N', // 모집 중 여부
   };
   // 요청 보내기
-  const response = await axiosInstance.get(path, { params });
+  const response = await axios.get(path, { params }, {withCredentials: true});
   return response.data; // 데이터 반환
 };
 

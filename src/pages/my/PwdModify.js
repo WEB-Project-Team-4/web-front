@@ -89,7 +89,7 @@ function PwdModify() {
         variant="contained"
         color="primary"
         fullWidth
-        className="button-general"
+        className="button-general pwdModify-topMargin"
         onClick={handlePasswordChange}
       >
         수정하기
