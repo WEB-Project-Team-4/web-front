@@ -508,6 +508,9 @@
   border-radius: 8px;
   box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
 }
+.group-author-container{
+  padding: 10px 0;
+}
 
 /* 댓글 타이틀 */
 .group-comments-title {
@@ -620,7 +623,7 @@
 
 .regist-group-input-field label {
   display: block;
-  margin-bottom: 5px;
+  /* margin-bottom: 5px; */
 }
 
 .regist-group-input-field input,
@@ -723,17 +726,17 @@
 }
 
 .group-grid-item {
-  display: flex;
+  display: flex !important;
   flex-direction: row;
   align-items: flex-start; /* 왼쪽 정렬 */
   display: flex; /* 플렉스 박스 설정 */
-  align-items: center; /* 세로 중앙 정렬 */
+  align-items: center !important; /* 세로 중앙 정렬 */
 
   
 }
 
 .group-grid-item label {
-  margin-bottom: 15px;
+  /* margin-bottom: 15px;  // 이거 지운거 맞나  */
   font-weight: bold;
   min-width: 120px;
 }
@@ -795,3 +798,27 @@ textarea {
 }
 
 
+.regist-column {
+  display: flex;
+  flex-direction: column;
+}
+
+.map-modal-buttons {
+  margin-top: 10px;
+  display: flex;
+  justify-content: center; /* 가로 가운데 정렬 */
+  align-items: center; /* 세로 가운데 정렬 */
+  gap: 10px; /* 버튼 간 간격 */
+}
+
+.extra-address{
+  display: flex;
+  justify-content: center; /* 가로 가운데 정렬 */
+  align-items: center; /* 세로 가운데 정렬 */
+
+}
+
+
+.detailTextInput{
+  height: 200px !important;
+}

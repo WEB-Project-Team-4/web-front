@@ -1,9 +1,11 @@
+// src/pages/review/Details.js
 import React, { useEffect, useState } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { Box, Typography, Divider, Avatar, Card, CardContent, CardActionArea, TextField, Button, IconButton, Menu, MenuItem } from '@mui/material';
 import MoreVertIcon from '@mui/icons-material/MoreVert'; // Import icon
 
 import '../../assets/styles/Review.css';
+import '../../assets/styles/Group.css';
 import '../../assets/styles/General.css';
 
 function Detail() {
@@ -37,7 +39,7 @@ function Detail() {
         },
       });
       setComments([
-        { author: '박영희', content: '정말 좋은 모임이었어요!', createdAt: '2024-11-14 13:45' },
+        { author: '박영희', content: '정말 좋은 모임이었어요!', createdAt: '2024-11-14 13:45', authorProfilePic: '/path/to/sample-profile.jpg', },
         { author: '이수진', content: '다음에도 참여하고 싶네요.', createdAt: '2024-11-14 14:20' },
       ]);
     } else {
@@ -56,6 +58,16 @@ function Detail() {
     const newCommentObj = { author: '현재 사용자', content: newComment, createdAt: new Date().toLocaleString() };
     setComments([...comments, newCommentObj]);
     setNewComment("");
+  };
+
+  const formatDate = (dateString) => {
+    const date = new Date(dateString); // ISO 형식을 Date 객체로 변환
+    const year = date.getFullYear();
+    const month = String(date.getMonth() + 1).padStart(2, '0'); // 월은 0부터 시작하므로 +1
+    const day = String(date.getDate()).padStart(2, '0');
+    const hours = String(date.getHours()).padStart(2, '0');
+    const minutes = String(date.getMinutes()).padStart(2, '0');
+    return `${year}/${month}/${day} ${hours}:${minutes}`; // 원하는 형식으로 반환
   };
 
   const handleBackToMain = () => {
@@ -80,33 +92,28 @@ function Detail() {
 
   return (
     <Box className="review-detail">
-      <Box display="flex" alignItems="center" justifyContent="space-between" width="100%">
-        <Typography className="review-title">{review.title}</Typography>
-        
-        {/* Conditionally render the three-dot button if the logged-in user is the author */}
-        {review.author === loggedInUserId && (
-          <IconButton onClick={handleMenuClick}>
-            <MoreVertIcon />
-          </IconButton>
-        )}
-
-        <Menu
-          anchorEl={anchorEl}
-          open={Boolean(anchorEl)}
-          onClose={handleMenuClose}
-        >
-          <MenuItem onClick={handleEditClick}>수정하기</MenuItem>
-          <MenuItem onClick={handleMenuClose}>삭제하기</MenuItem>
-        </Menu>
-      </Box>
+      <Typography variant="h5" className="review-title">{review.title} {review.author === loggedInUserId && (
+        <IconButton onClick={handleMenuClick}>
+          <MoreVertIcon />
+        </IconButton>
+      )}</Typography>
+      <Menu
+        anchorEl={anchorEl}
+        open={Boolean(anchorEl)}
+        onClose={handleMenuClose}
+      >
+        <MenuItem onClick={handleEditClick}>수정하기</MenuItem>
+        <MenuItem onClick={handleMenuClose}>삭제하기</MenuItem>
+      </Menu>
 
       <Box className="review-detail-author-info">
         <Avatar src={review.authorProfilePic} className="review-detail-author-avatar" />
         <Typography className="review-detail-author-name">{review.author}</Typography>
+        <Divider orientation="vertical" className="review-author-divider" flexItem />
         <Typography className="review-detail-author-time">{review.createdAt}</Typography>
       </Box>
 
-      <Divider className="review-detail-divider" />
+      <Divider orientation="horizenal" className="review-detail-divider" flexItem />
 
       <Typography className="review-content">
         {review.content || review.description}
@@ -120,46 +127,90 @@ function Detail() {
         </Box>
       )}
 
-      <Divider className="review-detail-divider" />
+      <Divider className="review-detail-divider" flexItem />
 
-      {review.relatedMeeting && (
-        <Card className="review-detail-related-meeting-card">
-          <CardActionArea href="/related-meeting-url">
-            <Box display="flex" alignItems="center">
-              <img src={review.relatedMeeting.imageUrl} alt="Related Meeting" className="review-detail-related-meeting-image" />
-              <CardContent>
-                <Typography className="review-detail-related-meeting-title">{review.relatedMeeting.title}</Typography>
-                <Typography className="review-detail-related-meeting-description">{review.relatedMeeting.description}</Typography>
-              </CardContent>
+      {/* 모임 바로가기와 스포츠 카테고리 모임 더 보러가기 */}
+  <Box className="review-detail-navigation" sx={{ display: 'flex', justifyContent: 'space-around', alignItems: 'center', mt: 3, mb: 3 }}>
+    {/* 모임 바로가기 */}
+    <Box className="review-detail-go-meeting">
+      <Typography variant="h5" className="review-detail-navigation-title"
+      onClick={() => navigate('/group/detail/1')} // 이동할 경로 지정
+      style={{ cursor: 'pointer'}} // 클릭 가능한 UI 스타일
+      >모임 바로가기 {'>'} </Typography>
+      <Card className="review-detail-navigation-card">
+        <CardActionArea href="/group/detail/1">
+          <CardContent>
+            <Typography className="review-detail-navigation-category">스포츠</Typography>
+            <Typography className="review-detail-navigation-cardtitle">광수님과 함께하는 건대 런닝광수님과 함께하는 건대 런닝</Typography>
+            <Typography className="review-detail-navigation-subtitle">광수님과 함께라면 어디든 갈 수 있어</Typography>
+            <Box display="flex" alignItems="center" justifyContent="flex-end">
+              <Avatar sx={{ width: 20, height: 20, mr: 1 }}>👤</Avatar>
+              <Typography>참가자 2/3</Typography>
             </Box>
-          </CardActionArea>
-        </Card>
-      )}
+          </CardContent>
+        </CardActionArea>
+      </Card>
+    </Box>
 
-      <Typography className="review-detail-comments-title">댓글 {comments.length}개</Typography>
+    {/* 스포츠 카테고리 모임 더 보러가기 */}
+    <Box className="review-detail-more-category">
+      <Typography variant="h6" className="review-detail-navigation-title"
+      onClick={() => navigate('/category/sports')} // 이동할 경로 지정
+      style={{ cursor: 'pointer'}} // 클릭 가능한 UI 스타일
+      >스포츠 카테고리 모임 보러가기 {'>'}  </Typography>
+      <Card className="review-detail-navigation-card">
+        <CardActionArea href="/category/sports">
+          <CardContent>
+            <Typography className="review-detail-navigation-category">스포츠</Typography>
+            <Typography className="review-detail-navigation-cardtitle">건대와 함께하는 달리기</Typography>
+            <Typography className="review-detail-navigation-subtitle">건대의 달리기와 함께 새벽을~</Typography>
+            <Box display="flex" alignItems="center" justifyContent="flex-end">
+              <Avatar sx={{ width: 20, height: 20, mr: 1 }}>👤</Avatar>
+              <Typography>참가자 5/10</Typography>
+            </Box>
+          </CardContent>
+        </CardActionArea>
+      </Card>
+    </Box>
+  </Box>
 
-      <Box>
-        {comments.map((comment, index) => (
-          <Box key={index} className="comment-item" style={{ marginBottom: '10px' }}>
-            <Typography variant="body2" className="comment-author" style={{ fontWeight: 'bold' }}>{comment.author}</Typography>
-            <Typography variant="body2" className="comment-content">{comment.content}</Typography>
-            <Typography variant="caption" color="textSecondary">{comment.createdAt}</Typography>
-          </Box>
-        ))}
-      </Box>
 
-      <Divider className="review-detail-divider" />
+      {/* 댓글 섹션 */}
+      <Box className="group-comments-container group-detail-container-padding review-detail-comment-width">
+        <Typography className="group-comments-title">댓글 {comments.length}개</Typography>
 
-      <Box display="flex" alignItems="center" style={{ marginTop: '10px' }}>
-        <TextField
-          label="댓글 작성"
-          variant="outlined"
-          fullWidth
-          value={newComment}
-          onChange={(e) => setNewComment(e.target.value)}
-          style={{ marginRight: '10px' }}
-        />
-        <Button variant="contained" color="primary" onClick={handleCommentSubmit}>작성</Button>
+        <Box className="group-comments-list">
+          {comments.map((comment, index) => (
+            <Box key={index} className="group-comment-item">
+              <Box className="review-author-container" sx={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+                <Avatar src={review.authorProfilePic} className="review-detail-author-avatar" />
+                <Typography className="review-detail-author-name">{comment.author}</Typography>
+              </Box>
+              <Typography variant="body2" className="group-comment-content">{comment.content}</Typography>
+              <Typography variant="caption" className="group-comment-date">{formatDate(comment.createdAt)}</Typography>
+            </Box>
+          ))}
+        </Box>
+
+        <Divider className="group-comments-divider" />
+
+        <Box className="group-comments-form">
+          <TextField
+            label="댓글 작성"
+            variant="outlined"
+            fullWidth
+            value={newComment}
+            onChange={(e) => setNewComment(e.target.value)}
+            className="group-comment-input"
+          />
+          <Button
+            variant="contained"
+            className="group-comment-submit-button"
+            onClick={handleCommentSubmit}
+          >
+            작성
+          </Button>
+        </Box>
       </Box>
 
       <Box mt={2}>

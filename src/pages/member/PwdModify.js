@@ -1,5 +1,7 @@
 import React, { useState } from 'react';
-import { Box, TextField, Button, Typography } from '@mui/material';
+import { Box, TextField, Button, Typography, IconButton } from '@mui/material';
+import Visibility from '@mui/icons-material/Visibility';
+import VisibilityOff from '@mui/icons-material/VisibilityOff';
 import '../../assets/styles/Member.css';
 import '../../assets/styles/General.css';
 
@@ -8,8 +10,9 @@ function PasswordChange() {
   const [newPassword, setNewPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
   const [error, setError] = useState('');
+  const [showNewPassword, setShowNewPassword] = useState(false);  // 새 비밀번호 보이기 상태
+  const [showConfirmPassword, setShowConfirmPassword] = useState(false);  // 비밀번호 확인 보이기 상태
   
-  // 임의의 아이디 (DB에서 가져오는 값으로 변경 예정)
   const userId = "sampleUser123";
 
   const handlePasswordChange = () => {
@@ -25,8 +28,6 @@ function PasswordChange() {
 
     setError('');
     alert('비밀번호가 변경되었습니다!');
-
-    // alert 이후 로그인 페이지로 이동
     window.location.href = '/member/login'; // 로그인 페이지로 이동
   };
 
@@ -49,13 +50,27 @@ function PasswordChange() {
         <Typography variant="body1" className="general-form-label">새 비밀번호</Typography>
         <TextField
           variant="outlined"
-          type="password"
+          type={showNewPassword ? "text" : "password"}  // 비밀번호 보이기/숨기기
           placeholder="새 비밀번호를 입력해주세요"
           fullWidth
           margin="normal"
           className="general-form-input"
           value={newPassword}
           onChange={(e) => setNewPassword(e.target.value)}
+          InputProps={{
+            endAdornment: (
+              <IconButton
+                aria-label="toggle password visibility"
+                onClick={() => setShowNewPassword(!showNewPassword)}
+                edge="end"
+                sx={{
+                  marginRight: -40,
+                }}
+              >
+                {showNewPassword ? <VisibilityOff /> : <Visibility />}
+              </IconButton>
+            ),
+          }}
         />
       </Box>
 
@@ -64,13 +79,27 @@ function PasswordChange() {
         <Typography variant="body1" className="general-form-label">비밀번호 확인</Typography>
         <TextField
           variant="outlined"
-          type="password"
+          type={showConfirmPassword ? "text" : "password"}  // 비밀번호 보이기/숨기기
           placeholder="비밀번호를 다시 입력해주세요"
           fullWidth
           margin="normal"
           className="general-form-input"
           value={confirmPassword}
           onChange={(e) => setConfirmPassword(e.target.value)}
+          InputProps={{
+            endAdornment: (
+              <IconButton
+                aria-label="toggle password visibility"
+                onClick={() => setShowConfirmPassword(!showConfirmPassword)}
+                edge="end"
+                sx={{
+                  marginRight: -40,
+                }}
+              >
+                {showConfirmPassword ? <VisibilityOff /> : <Visibility />}
+              </IconButton>
+            ),
+          }}
         />
       </Box>
 

@@ -17,7 +17,7 @@ const AxiosErrorHandler = ({ children }) => {
           alert(error.response.data.message);
         }
         // 에러 발생 시 무조건 이전 페이지로 리다이렉트
-        navigate(-1); // `-1`은 이전 페이지로 돌아가기
+        // navigate(-1); // `-1`은 이전 페이지로 돌아가기
         return Promise.reject(error);
       }
     );

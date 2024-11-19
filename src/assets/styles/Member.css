@@ -26,25 +26,66 @@
   background-color: #f0f0ff !important;
 }
 
-.button-general-click {
+/* 수정전 버튼 색 */
+/* .button-general-click {
   text-align: center;
   align-items: center;
   position: relative;
   width: 95px !important;
   margin-top: 8px !important;
 
-  /* flex-basis: 12% !important; */
   height: 56px !important;
+  background-color: #e0e0e0 !important;
+  color: #555 !important;
+  font-weight: bold !important;
+  font-size: 0.80rem !important;
+  border-radius: 22px !important;
+
+} */
+
+
+.register-button-general-click {
+  text-align: center;
+  align-items: center;
+  position: relative;
+  width: 95px !important;
+  margin-top: 5px !important;
+
+  /* flex-basis: 12% !important; */
+  height: 50px !important;
   background-color: #e0e0e0 !important;
   color: #555 !important;
   font-weight: bold !important;
   /* margin-left: 8px !important; */
   font-size: 0.80rem !important;
   border-radius: 22px !important;
-
+  border-color: #FFFFFF !important;
 }
 
-.button-general-click:hover {
+.register-button-general-click:hover {
+  background-color: #B9B6B6 !important;
+}
+
+.regist-marginTop-button-general-click {
+  text-align: center;
+  align-items: center;
+  position: relative;
+  width: 95px !important;
+  margin-top: 15px !important;
+
+  /* flex-basis: 12% !important; */
+  height: 50px !important;
+  background-color: #e0e0e0 !important;
+  color: #555 !important;
+  font-weight: bold !important;
+  /* margin-left: 8px !important; */
+  font-size: 0.80rem !important;
+  border-radius: 22px !important;
+  border-color: #FFFFFF !important;
+  /* border-width: 1.5px !important; */
+}
+
+.regist-marginTop-button-general-click:hover {
   background-color: #B9B6B6 !important;
 }
 
@@ -83,6 +124,7 @@
 
 .link-text {
   font-size: 0.9rem !important;
+  color: gray !important;
 }
 
 .button {
@@ -139,9 +181,9 @@
 ------------------------------------- */
 
 .MuiDialog-paper {
-  width: 450px !important; /* Dialog의 기본 너비 */
+  width: 500px !important; /* Dialog의 기본 너비 */
   max-width: 90% !important; /* 최대 너비 제한 */
-  min-height: 200px !important; /* 최소 높이 */
+  min-height: 250px !important; /* 최소 높이 */
   max-height: 400px !important; /* 최대 높이 */
   padding: 24px !important; /* 내부 여백 */
   border-radius: 8px !important; /* 모서리 둥글기 */
@@ -180,4 +222,10 @@
 
 .button-dialog.primary:hover {
   background-color: #5a68b3 !important;
+}
+
+
+
+.registerTopMargin{
+  margin-top: 10px !important;
 }
