@@ -1,5 +1,6 @@
 // src/API/group.js
-// import axiosInstance from "./axiosInstance";
+
+import axiosInstance from "./axiosInstance";
 import axios from "axios";
 
 /**

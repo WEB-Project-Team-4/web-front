@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import {
+  IconButton,
   Box,
   TextField,
   Button,
@@ -15,6 +16,9 @@ import {
 } from "@mui/material";
 import "../../assets/styles/General.css";
 import "../../assets/styles/Member.css";
+
+import Visibility from "@mui/icons-material/Visibility";
+import VisibilityOff from "@mui/icons-material/VisibilityOff";
 // import axiosInstance from '../../API/axiosInstance'; // axiosInstance import
 import axios from "axios";
 
@@ -44,6 +48,11 @@ function Register() {
   const [isNicknameAvailable, setIsNicknameAvailable] = useState(false);
   const [isEmailVerified, setIsEmailVerified] = useState(false);
   const [isFormValid, setIsFormValid] = useState(false);
+
+  // conflict 예상1 : 아래 두줄은 그냥 사용하면됩니다.
+  const [showNewPassword, setShowNewPassword] = useState(false); // 새 비밀번호 보이기 상태
+  const [showConfirmPassword, setShowConfirmPassword] = useState(false); // 비밀번호 확인 보이기 상태
+
   //초기 인증전 설정
   const handleDialogClose = () => {
     setOpenDialog(false);
@@ -310,6 +319,13 @@ function Register() {
           아이디<span style={{ color: "red" }}>*</span>
         </Typography>
 
+        <Typography
+          variant="body1"
+          className="general-form-label registerTopMargin"
+        >
+          아이디<span style={{ color: "red" }}>*</span>
+        </Typography>
+
         <TextField
           variant="outlined"
           label={<span>아이디를 입력해주세요 </span>}
@@ -321,7 +337,7 @@ function Register() {
         />
         <Button
           variant="outlined"
-          className="button-general-click"
+          className="register-button-general-click"
           onClick={handleUsernameCheck} // 중복확인 버튼 클릭 시 호출되는 함수
         >
           중복확인
@@ -330,41 +346,79 @@ function Register() {
 
       <Box className="general-form-row">
         {/* 비밀번호 입력 */}
-        <Typography variant="body1" className="general-form-label">
+        <Typography
+          variant="body1"
+          className="general-form-label registerTopMargin"
+        >
           비밀번호<span style={{ color: "red" }}>*</span>
         </Typography>
 
+        {/* // conflict 예상2 : 비밀번호의 type을 텍스트-비밀번호 변동으로 바꾸고 InputProps로 버튼생성. */}
         <TextField
           variant="outlined"
+          type={showNewPassword ? "text" : "password"} // 비밀번호 보이기/숨기기
           label={<span>비밀번호를 입력해주세요 </span>}
-          type="password"
           fullWidth
           className="general-form-input"
           value={password}
           onChange={(e) => setPassword(e.target.value)}
+          InputProps={{
+            endAdornment: (
+              <IconButton
+                aria-label="toggle password visibility"
+                onClick={() => setShowNewPassword(!showNewPassword)}
+                edge="end"
+                sx={{
+                  marginRight: -40,
+                }}
+              >
+                {showNewPassword ? <VisibilityOff /> : <Visibility />}
+              </IconButton>
+            ),
+          }}
         />
       </Box>
 
       {/* 비밀번호 확인 입력 */}
       <Box className="general-form-row">
-        <Typography variant="body1" className="general-form-label">
+        <Typography
+          variant="body1"
+          className="general-form-label registerTopMargin"
+        >
           비밀번호 확인<span style={{ color: "red" }}>*</span>
         </Typography>
-
+        {/* // conflict 예상3 : 비밀번호의 type을 텍스트-비밀번호 변동으로 바꾸고 InputProps로 버튼생성. */}
         <TextField
           variant="outlined"
           label={<span>비밀번호 확인 </span>}
-          type="password"
+          type={showConfirmPassword ? "text" : "password"} // 비밀번호 보이기/숨기기
           fullWidth
           className="general-form-input"
           value={confirmPassword}
           onChange={(e) => setConfirmPassword(e.target.value)}
+          InputProps={{
+            endAdornment: (
+              <IconButton
+                aria-label="toggle password visibility"
+                onClick={() => setShowConfirmPassword(!showConfirmPassword)}
+                edge="end"
+                sx={{
+                  marginRight: -40,
+                }}
+              >
+                {showConfirmPassword ? <VisibilityOff /> : <Visibility />}
+              </IconButton>
+            ),
+          }}
         />
       </Box>
 
       {/* 이름 입력과 "중복확인" 버튼 */}
       <Box className="general-form-row">
-        <Typography variant="body1" className="general-form-label">
+        <Typography
+          variant="body1"
+          className="general-form-label registerTopMargin"
+        >
           이름<span style={{ color: "red" }}>*</span>
         </Typography>
 
@@ -380,7 +434,10 @@ function Register() {
 
       {/* 닉네임 입력과 "중복확인" 버튼 */}
       <Box className="general-form-row">
-        <Typography variant="body1" className="general-form-label">
+        <Typography
+          variant="body1"
+          className="general-form-label registerTopMargin"
+        >
           닉네임<span style={{ color: "red" }}>*</span>
         </Typography>
 
@@ -394,7 +451,7 @@ function Register() {
         />
         <Button
           variant="outlined"
-          className="button-general-click"
+          className="regist-marginTop-button-general-click"
           onClick={handleNicknameCheck} // 닉네임 중복확인 버튼 클릭 시 호출되는 함수
         >
           중복확인
@@ -404,7 +461,10 @@ function Register() {
       {/* 이메일 입력과 "중복확인" 버튼 */}
 
       <Box className="general-form-row">
-        <Typography variant="body1" className="general-form-label">
+        <Typography
+          variant="body1"
+          className="general-form-label registerTopMargin"
+        >
           이메일<span style={{ color: "red" }}>*</span>
         </Typography>
 
@@ -421,7 +481,7 @@ function Register() {
         />
         <Button
           variant="outlined"
-          className="button-general-click"
+          className="regist-marginTop-button-general-click"
           onClick={handleEmailVerification} // 인증번호 발송 버튼 클릭 시 호출되는 함수
         >
           인증번호 발송
@@ -431,7 +491,10 @@ function Register() {
       {/* 인증번호 입력과 "인증" 버튼 */}
 
       <Box className="general-form-row">
-        <Typography variant="body1" className="general-form-label">
+        <Typography
+          variant="body1"
+          className="general-form-label registerTopMargin"
+        >
           인증번호<span style={{ color: "red" }}>*</span>
         </Typography>
 
@@ -448,7 +511,7 @@ function Register() {
         />
         <Button
           variant="outlined"
-          className="button-general-click"
+          className="regist-marginTop-button-general-click"
           onClick={handleVerifyCode} // 인증번호 확인 요청
         >
           인증
@@ -457,7 +520,10 @@ function Register() {
 
       {/* 휴대폰 번호 입력 */}
       <Box className="general-form-row">
-        <Typography variant="body1" className="general-form-label">
+        <Typography
+          variant="body1"
+          className="general-form-label registerTopMargin"
+        >
           휴대폰 번호
         </Typography>
 
@@ -476,7 +542,10 @@ function Register() {
 
       {/* 관심 카테고리 선택 */}
       <Box className="general-form-row">
-        <Typography variant="body1" className="general-form-label">
+        <Typography
+          variant="body1"
+          className="general-form-label registerTopMargin"
+        >
           카테고리
         </Typography>
 
@@ -497,7 +566,7 @@ function Register() {
 
       {/* 프로필 사진 업로드 */}
       <Box className="general-form-row">
-        <Typography variant="body1" className="general-form-label">
+        <Typography variant="body1" className="general-form-label ">
           프로필 사진
         </Typography>
         <input
@@ -507,8 +576,30 @@ function Register() {
           style={{ display: "none" }}
           id="profile-pic-upload"
         />
-        <label htmlFor="profile-pic-upload">
-          <Button variant="outlined" component="span">
+        {/* 사진 업로드 버튼 css */}
+        <label
+          htmlFor="profile-pic-upload"
+          style={{
+            display: "block", // block으로 설정하여 여유 공간 확보
+            textAlign: "center", // 중앙 정렬
+            margin: "10px 0", // 상하 여백
+          }}
+        >
+          <Button
+            variant="outlined"
+            component="span"
+            sx={{
+              color: "#555", // 버튼 텍스트 색상
+              borderColor: "#000", // 버튼 테두리 색상
+              fontWeight: "bold", // 굵은 텍스트
+              padding: "10px 20px", // 여유 있는 버튼 크기
+              borderRadius: "10px",
+              ":hover": {
+                // 호버 효과
+                backgroundColor: "#f0f0f0",
+              },
+            }}
+          >
             사진 업로드
           </Button>
         </label>

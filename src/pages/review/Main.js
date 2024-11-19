@@ -179,10 +179,9 @@ function Main() {
           onChange={handleRecruitingSwitch}
         />
       </Box>
-
       {/* 후기 카드 */}
       <Box className="review-form-container" sx={{ position: 'relative' }}>
-        <Typography variant="h4" sx={{ fontWeight: 'bold', marginBottom: '20px' }}>
+        <Typography variant="h4" sx={{ fontWeight: 'bold', marginBottom: '100px' }}>
           모임 후기
         </Typography>
 
@@ -190,13 +189,19 @@ function Main() {
           <Button className="write-button-right">작성하기</Button>
         </Link>
 
-        {displayedReviews.map((review) => (
+        {displayedReviews.map((review, index) => (
           <Link key={review.id} to={`/review/detail/${review.id}`} style={{ textDecoration: 'none', color: 'inherit' }}>
-            <Box className="review-card">
+            <Box 
+              className="review-card" 
+              sx={{ 
+                paddingBottom: index < displayedReviews.length - 1 ? '1px' : '0', // 마지막 요소에는 구분선 없음
+                borderBottom: index < displayedReviews.length - 1 ? '1px solid #D3D3D3' : 'none' // 회색 실선 적용
+              }}
+            >
               <Box className="review-card-content">
-                <Typography className="review-card-title">{review.title}</Typography>
-                <Typography className="review-card-description">{review.description}</Typography>
-                <Typography className="review-card-meta">
+                <Typography className="review-card-title general-margin">{review.title}</Typography>
+                <Typography className="review-card-description general-margin">{review.description}</Typography>
+                <Typography className="review-card-meta general-margin">
                   댓글 {review.commentCount}개 | 작성자 {review.author} | {review.createdAt}
                 </Typography>
               </Box>
@@ -207,6 +212,7 @@ function Main() {
           </Link>
         ))}
       </Box>
+
 
       {/* 페이지네이션 */}
       <Box className="pagination-box">

@@ -1,8 +1,9 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import AppBar from '@mui/material/AppBar';
 import Toolbar from '@mui/material/Toolbar';
 import IconButton from '@mui/material/IconButton';
 import Avatar from '@mui/material/Avatar';  // Avatar 컴포넌트 추가
+import { UserContext } from '../context/UserContext';
 import Logo from '../img/Logo.png'; // 상대 경로로 이미지 불러오기
 import { Box, Menu, MenuItem, Typography } from '@mui/material';  // Menu와 MenuItem 추가
 import NotificationsIcon from '@mui/icons-material/Notifications';  // 알람 아이콘 추가
@@ -10,6 +11,7 @@ import NotificationsIcon from '@mui/icons-material/Notifications';  // 알람 �
 function Header() {
   const [anchorEl, setAnchorEl] = useState(null); // 메뉴 열기/닫기 상태 관리
   const [activeLink, setActiveLink] = useState(''); // 현재 활성화된 링크
+  const { user, logout } = useContext(UserContext); // UserContext에서 user state를 받아
 
   useEffect(() => {
     // 현재 URL에 따라 기본 색상을 설정
@@ -38,7 +40,7 @@ function Header() {
   const handleLoginClick = () => {
     window.location.href = 'http://localhost:3000/member/login';
   };
-  
+
 
   // 마이페이지 클릭 시 호출되는 함수
   const handleMyClick = () => {
@@ -66,11 +68,11 @@ function Header() {
       <Toolbar>
 
         {/* 로고 이미지 클릭 시 메인 페이지로 이동 */}
-        <img 
-          src={Logo} 
-          alt="Logo" 
-          style={{ height: 60, cursor: 'pointer' }} 
-          onClick={handleLogoClick} 
+        <img
+          src={Logo}
+          alt="Logo"
+          style={{ height: 60, cursor: 'pointer' }}
+          onClick={handleLogoClick}
         />
 
         {/* 오른쪽 정렬을 위한 Box */}
@@ -79,20 +81,20 @@ function Header() {
         {/* '모임찾기', '모임후기', '모임등록' 글자 추가 */}
         <Box sx={{ display: 'flex', alignItems: 'center', marginLeft: 2 }}>
           {['모임찾기', '모임후기', '모임등록'].map((text, index) => (
-            <Typography 
-              key={index} 
-              variant="h7" 
-              sx={{ 
+            <Typography
+              key={index}
+              variant="h7"
+              sx={{
                 marginRight: index < 2 ? 3 : 1, // 마지막 항목은 marginRight 제거
-                cursor: 'pointer', 
+                cursor: 'pointer',
                 color: activeLink === text ? '#7F86EC' : 'black', // active link URL의 경우에는 해당 글씨의 색상 변경
                 transition: 'all 0.3s ease', // 부드러운 전환 효과
-                '&:hover': { 
+                '&:hover': {
                   background: '#7F86EC',
                   color: 'white', // 글씨 색상 변경
                   borderRadius: '5px', // 모서리 둥글게
                   padding: '5px 10px', // 약간의 여백 추가
-                } 
+                }
               }}
               onClick={() => handleNavigation(text)} // 클릭 시 해당 페이지로 이동
             >
@@ -107,12 +109,14 @@ function Header() {
         </IconButton>
 
         {/* 사람 프로필 아이콘 */}
-        <Avatar 
-          alt="Profile" 
-          src="" 
-          sx={{ width: 30, height: 30 }} 
-          onClick={handleMenuOpen}  // Avatar 클릭 시 메뉴 열기
-        /> 
+        <Avatar
+          alt="Profile"
+          src={user?.profileUrl || '/path/to/default-avatar.png'}  // user가 null이면 기본 아바타 사용
+          sx={{ width: 30, height: 30 }}
+          onClick={handleMenuOpen}
+        />
+        
+
 
         {/* 드롭다운 메뉴 */}
         <Menu
@@ -121,7 +125,7 @@ function Header() {
           onClose={handleMenuClose}  // 메뉴 닫기
         >
           {/* 로그인 항목 클릭 시 로그인 페이지로 이동 */}
-          <MenuItem onClick={handleLoginClick}>로그인</MenuItem>
+          <MenuItem onClick={handleLoginClick}>로그인 {user}</MenuItem>
           <MenuItem onClick={handleMyClick}>마이페이지</MenuItem>  {/* 마이페이지 항목 */}
         </Menu>
       </Toolbar>

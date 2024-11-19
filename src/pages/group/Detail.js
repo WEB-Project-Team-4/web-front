@@ -356,9 +356,15 @@ function GroupDetailPage() {
         <Box className="group-comments-list">
           {comments.map((comment, index) => (
             <Box key={index} className="group-comment-item">
-              <Typography variant="body2" className="group-comment-author">
-                {comment.writerNickname}
-              </Typography>
+              <Box
+                className="group-author-container"
+                sx={{ display: "flex", alignItems: "center", gap: "8px" }}
+              >
+                <Avatar></Avatar>
+                <Typography variant="body2" className="group-comment-author">
+                  {comment.writerNickname}
+                </Typography>
+              </Box>
               <Typography variant="body2" className="group-comment-content">
                 {comment.commentContent}
               </Typography>
