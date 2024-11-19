@@ -2,7 +2,8 @@ import React, { useState } from 'react';
 import { Box, TextField, Button, Typography, Dialog, DialogActions, DialogContent, DialogTitle, MenuItem, Select, FormControl, InputLabel } from '@mui/material';
 import '../../assets/styles/General.css';
 import '../../assets/styles/Member.css';
-import axiosInstance from '../../API/axiosInstance'; // axiosInstance import
+// import axiosInstance from '../../API/axiosInstance'; // axiosInstance import
+import axios from 'axios';
 
 function Register() {
   const [username, setUsername] = useState('');
@@ -79,7 +80,7 @@ function Register() {
     }
 
     // axiosInstance를 사용한 아이디 중복확인 API 호출
-    axiosInstance.post('/register/id-check', { id: username })
+    axios.post('/register/id-check', { id: username })
     .then(response => {
         if (response.status === 200) {
           setIsUsernameAvailable(true);
@@ -104,7 +105,7 @@ function Register() {
     }
 
     // axiosInstance를 사용한 아이디 중복확인 API 호출
-    axiosInstance.post('/register/id-check', { id: username })
+    axios.post('/register/id-check', { id: username })
     .then(response => {
         if (response.status === 200) {
           setIsUsernameAvailable(true);
@@ -138,7 +139,7 @@ function Register() {
     }
 
     // axiosInstance를 사용한 닉네임 중복확인 API 호출
-    axiosInstance.post('/register/nickname-check', { nickname })
+    axios.post('/register/nickname-check', { nickname })
       .then(response => {
         if (response.status === 200) {
           setIsNicknameAvailable(true);
@@ -171,7 +172,9 @@ function Register() {
     }
 
     // 서버로 이메일 인증번호 발송 요청
-    axiosInstance.post('/register/send-code', { email })    
+    axios.post('http://10.10.0.14:8080/register/send-code', { email } , {
+      withCredentials: true, // 이 옵션을 설정하여 쿠키와 인증 정보를 함께 보냄
+    })    
     .then(response => {
       if (response.status === 200) {
         setDialogMessage('인증번호가 발송되었습니다.');
@@ -179,9 +182,11 @@ function Register() {
         setDialogMessage('인증번호 발송에 실패했습니다.');
       }
     })
-    .catch(error => {
-      console.error('인증번호 발송 실패:', error); // 에러 로그 추가
-      setDialogMessage('인증번호 발송에 실패했습니다.');
+    .catch(error => {alert("멈춰!")
+
+      //! 되살려야하는 부분
+      // console.error('인증번호 발송 실패:', error); // 에러 로그 추가
+      // setDialogMessage('인증번호 발송에 실패했습니다.');
     })
     .finally(() => {
       setOpenDialog(true);
@@ -199,7 +204,9 @@ function Register() {
     // 인증번호 확인 요청
     const datacertiNum = JSON.stringify({certiNum });
     console.log('Sending data:', datacertiNum); // 실제로 보내는 데이터 로그
-    axiosInstance.post('/register/certi-check', { certiNum })
+    axios.post('http://10.10.0.14:8080/register/certi-check', { certiNum } , {
+      withCredentials: true // 이 옵션을 설정하여 쿠키와 인증 정보를 함께 보냄
+    })
     .then(response => {
         if (response.status === 200) {
           // 인증 성공 시, 다이어로그를 띄우지 않음
