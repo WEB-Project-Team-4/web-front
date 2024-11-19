@@ -13,7 +13,9 @@ const axiosInstance = axios.create({
     timeout: API_TIMEOUT,
     headers: {
         'Content-Type': 'application/json',
-    }
+    },
+    withCredentials : true,
+
 });
 
 // 요청 인터셉터: 요청 전 공통 설정 추가
