@@ -1,22 +1,22 @@
-import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom'; // Import useNavigate from react-router-dom
-import '../../assets/styles/Group.css';
-import '../../assets/styles/General.css';
+import React, { useState } from "react";
+import { useNavigate } from "react-router-dom"; // Import useNavigate from react-router-dom
+import "../../assets/styles/Group.css";
+import "../../assets/styles/General.css";
 
 const GroupRegist = () => {
   const [formData, setFormData] = useState({
-    recruitmentName: '',
-    description: '',
-    category: '',
+    recruitmentName: "",
+    description: "",
+    category: "",
     representativeImage: null,
-    location: '',
-    maxParticipants: '',
-    startDate: '',
-    endDate: '',
-    detailedInfo: '',
+    location: "",
+    maxParticipants: "",
+    startDate: "",
+    endDate: "",
+    detailedInfo: "",
   });
 
-  const navigate = useNavigate();  // Declare useNavigate hook
+  const navigate = useNavigate(); // Declare useNavigate hook
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -36,11 +36,15 @@ const GroupRegist = () => {
   return (
     <div className="regist-main-container ">
       <div className="general-form-title">모임등록</div>
-      <span><span style={{ color: 'red' } }>*</span>표기는 필수입력입니다.</span>
+      <span>
+        <span style={{ color: "red" }}>*</span>표기는 필수입력입니다.
+      </span>
 
       <form onSubmit={handleSubmit}>
         <div className="group-regist-row  regist-group-spacing regist-group-up-spacing ">
-          <label className='regist-group-label'>모집명(20자 이내) <span style={{ color: 'red' }}>*</span></label>
+          <label className="regist-group-label">
+            모집명(20자 이내) <span style={{ color: "red" }}>*</span>
+          </label>
           <input
             type="text"
             name="recruitmentName"
@@ -53,7 +57,9 @@ const GroupRegist = () => {
         </div>
 
         <div className="regist-group-input-field  regist-group-spacing">
-          <label className='regist-group-label '>소개글(25자 이내)<span style={{ color: 'red' }}>*</span></label>
+          <label className="regist-group-label ">
+            소개글(25자 이내)<span style={{ color: "red" }}>*</span>
+          </label>
           <textarea
             name="description"
             maxLength="25"
@@ -66,7 +72,9 @@ const GroupRegist = () => {
         <div className="group-grid-container">
           {/* 모임 카테고리 */}
           <div className="group-grid-item">
-            <label>모임 카테고리<span style={{ color: 'red' }}>*</span></label>
+            <label>
+              모임 카테고리<span style={{ color: "red" }}>*</span>
+            </label>
             <select
               name="category"
               value={formData.category}
@@ -95,7 +103,9 @@ const GroupRegist = () => {
 
           {/* 최대참여인원 */}
           <div className="group-grid-item">
-            <label>최대참여인원<span style={{ color: 'red' }}>*</span></label>
+            <label>
+              최대참여인원<span style={{ color: "red" }}>*</span>
+            </label>
             <input
               type="number"
               name="maxParticipants"
@@ -128,9 +138,10 @@ const GroupRegist = () => {
           </div>
         </div>
 
-
         <div className="regist-group-input-field  regist-group-spacing">
-          <label className='regist-group-label'>상세내용<span style={{ color: 'red' }}>*</span></label>
+          <label className="regist-group-label">
+            상세내용<span style={{ color: "red" }}>*</span>
+          </label>
           <textarea
             name="detailedInfo"
             value={formData.detailedInfo}
@@ -142,7 +153,7 @@ const GroupRegist = () => {
         <div className="regist-group-buttons">
           <button
             type="button"
-            onClick={() => navigate(-1)}  // This will navigate to the previous page
+            onClick={() => navigate(-1)} // This will navigate to the previous page
           >
             작성취소
           </button>
