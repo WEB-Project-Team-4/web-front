@@ -1,27 +1,27 @@
-import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom'; // Import useNavigate from react-router-dom
-import '../../assets/styles/Group.css';
-import '../../assets/styles/General.css';
+import React, { useState } from "react";
+import { useNavigate } from "react-router-dom"; // Import useNavigate from react-router-dom
+import "../../assets/styles/Group.css";
+import "../../assets/styles/General.css";
 
 const GroupRegist = () => {
   const [formData, setFormData] = useState({
-    recruitmentName: '',
-    description: '',
-    category: '',
+    recruitmentName: "",
+    description: "",
+    category: "",
     representativeImage: null,
-    location: '',
-    city: '',       // 시/도
-    district: '',   // 군/구
-    detailAddr: '',       // 나머지 주소
+    location: "",
+    city: "", // 시/도
+    district: "", // 군/구
+    detailAddr: "", // 나머지 주소
 
-    maxParticipants: '',
-    startDate: '',
-    endDate: '',
-    detailedInfo: '',
+    maxParticipants: "",
+    startDate: "",
+    endDate: "",
+    detailedInfo: "",
   });
 
   const [isMapOpen, setIsMapOpen] = useState(false); // 지도 모달 상태
-  const navigate = useNavigate();  // Declare useNavigate hook
+  const navigate = useNavigate(); // Declare useNavigate hook
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -46,7 +46,7 @@ const GroupRegist = () => {
   const splitAddress = (address) => {
     const addressParts = address.split(" ");
     const city = addressParts[0].slice(0, 2); // 시/도는 첫 2글자
-    const district = addressParts[1] || ''; // 군/구는 두 번째 요소 (없으면 빈 문자열)
+    const district = addressParts[1] || ""; // 군/구는 두 번째 요소 (없으면 빈 문자열)
     const addr = addressParts.slice(2).join(" "); // 나머지 주소는 나머지 부분
     return { city, district, addr };
   };
@@ -58,9 +58,8 @@ const GroupRegist = () => {
     setIsMapOpen(false);
   };
 
-
-   // 현재 시간을 가져오는 함수
-   const getCurrentDateTime = () => {
+  // 현재 시간을 가져오는 함수
+  const getCurrentDateTime = () => {
     const now = new Date();
     return now.toISOString().slice(0, 16); // 'yyyy-mm-ddThh:mm' 형식
   };
@@ -78,23 +77,24 @@ const GroupRegist = () => {
   const handleEndDateChange = (e) => {
     const endDate = e.target.value;
     if (endDate <= formData.startDate) {
-      alert('모임 일시는 모집 마감 일시 이후로 설정해주세요.');
+      alert("모임 일시는 모집 마감 일시 이후로 설정해주세요.");
       return;
     }
     setFormData({ ...formData, endDate });
   };
 
-  
-
-
   return (
     <div className="regist-main-container ">
       <div className="general-form-title">모임등록</div>
-      <span><span style={{ color: 'red' } }>*</span>표기는 필수입력입니다.</span>
+      <span>
+        <span style={{ color: "red" }}>*</span>표기는 필수입력입니다.
+      </span>
 
       <form onSubmit={handleSubmit}>
         <div className="group-regist-row  regist-group-spacing regist-group-up-spacing ">
-          <label className='regist-group-label'>모집명(20자 이내) <span style={{ color: 'red' }}>*</span></label>
+          <label className="regist-group-label">
+            모집명(20자 이내) <span style={{ color: "red" }}>*</span>
+          </label>
           <input
             type="text"
             name="recruitmentName"
@@ -107,7 +107,9 @@ const GroupRegist = () => {
         </div>
 
         <div className="regist-group-input-field  regist-group-spacing">
-          <label className='regist-group-label '>소개글(25자 이내)<span style={{ color: 'red' }}>*</span></label>
+          <label className="regist-group-label ">
+            소개글(25자 이내)<span style={{ color: "red" }}>*</span>
+          </label>
           <textarea
             name="description"
             maxLength="25"
@@ -120,7 +122,9 @@ const GroupRegist = () => {
         <div className="group-grid-container">
           {/* 모임 카테고리 */}
           <div className="group-grid-item">
-            <label>모임 카테고리<span style={{ color: 'red' }}>*</span></label>
+            <label>
+              모임 카테고리<span style={{ color: "red" }}>*</span>
+            </label>
             <select
               name="category"
               value={formData.category}
@@ -144,16 +148,25 @@ const GroupRegist = () => {
           {/* 모임 장소 */}
           <div className="group-grid-item">
             <label>모임 장소</label>
-            <div className='regist-column'>
-            <button type="button" onClick={openMap}>지도 또는 주소 찾기</button>
-            {/* 선택된 주소를 버튼 아래에 표시 */}
-            {formData.location && <p className="selected-address">선택된 주소: {formData.city}, {formData.district}, {formData.addr}</p>}
+            <div className="regist-column">
+              <button type="button" onClick={openMap}>
+                지도 또는 주소 찾기
+              </button>
+              {/* 선택된 주소를 버튼 아래에 표시 */}
+              {formData.location && (
+                <p className="selected-address">
+                  선택된 주소: {formData.city}, {formData.district},{" "}
+                  {formData.addr}
+                </p>
+              )}
             </div>
           </div>
 
           {/* 최대참여인원 */}
           <div className="group-grid-item">
-            <label>최대참여인원<span style={{ color: 'red' }}>*</span></label>
+            <label>
+              최대참여인원<span style={{ color: "red" }}>*</span>
+            </label>
             <input
               type="number"
               name="maxParticipants"
@@ -188,22 +201,23 @@ const GroupRegist = () => {
           </div>
         </div>
 
-
         <div className="regist-group-input-field  regist-group-spacing ">
-          <label className='regist-group-label'>상세내용<span style={{ color: 'red' }}>*</span></label>
+          <label className="regist-group-label">
+            상세내용<span style={{ color: "red" }}>*</span>
+          </label>
           <textarea
             name="detailedInfo"
             value={formData.detailedInfo}
             onChange={handleChange}
             required
-            className='detailTextInput'
+            className="detailTextInput"
           />
         </div>
 
         <div className="regist-group-buttons">
           <button
             type="button"
-            onClick={() => navigate(-1)}  // This will navigate to the previous page
+            onClick={() => navigate(-1)} // This will navigate to the previous page
           >
             작성취소
           </button>
@@ -221,17 +235,16 @@ const GroupRegist = () => {
   );
 };
 
-
 // 지도추가요소
 const MapModal = ({ onClose, onSelectAddress }) => {
-  const [inputAddress, setInputAddress] = useState(''); // 입력된 주소
-  const [clickedAddress, setClickedAddress] = useState(''); // 클릭된 주소
-  const [extraAddress, setExtraAddress] = useState(''); // 추가 주소 입력란
+  const [inputAddress, setInputAddress] = useState(""); // 입력된 주소
+  const [clickedAddress, setClickedAddress] = useState(""); // 클릭된 주소
+  const [extraAddress, setExtraAddress] = useState(""); // 추가 주소 입력란
   const [map, setMap] = useState(null);
   const [geocoder, setGeocoder] = useState(null);
 
   const initializeMap = () => {
-    const mapContainer = document.getElementById('map'); // 지도 표시 영역
+    const mapContainer = document.getElementById("map"); // 지도 표시 영역
     const mapOption = {
       center: new window.kakao.maps.LatLng(37.5665, 126.978), // 기본 중심 좌표 (서울)
       level: 3,
@@ -250,32 +263,38 @@ const MapModal = ({ onClose, onSelectAddress }) => {
           const coords = new window.kakao.maps.LatLng(result[0].y, result[0].x);
           map.setCenter(coords); // 지도 중심 이동
         } else {
-          alert('주소를 찾을 수 없습니다.');
+          alert("주소를 찾을 수 없습니다.");
         }
       });
     }
   };
 
-   // '추가 주소 입력'란 값이 변경될 때마다 상태 업데이트
-   const handleExtraAddressChange = (e) => {
+  // '추가 주소 입력'란 값이 변경될 때마다 상태 업데이트
+  const handleExtraAddressChange = (e) => {
     setExtraAddress(e.target.value);
   };
 
   // 완료 버튼 클릭 시, 주소와 추가 주소를 결합해서 전달
   const handleComplete = () => {
-    const fullAddress = clickedAddress ? `${clickedAddress} ${extraAddress}` : extraAddress;
+    const fullAddress = clickedAddress
+      ? `${clickedAddress} ${extraAddress}`
+      : extraAddress;
     onSelectAddress(fullAddress);
     onClose();
   };
 
   const handleMapClick = (mouseEvent) => {
     const coords = mouseEvent.latLng;
-    geocoder.coord2Address(coords.getLng(), coords.getLat(), (result, status) => {
-      if (status === window.kakao.maps.services.Status.OK) {
-        const address = result[0].address.address_name;
-        setClickedAddress(address); // 상태 업데이트 추가
+    geocoder.coord2Address(
+      coords.getLng(),
+      coords.getLat(),
+      (result, status) => {
+        if (status === window.kakao.maps.services.Status.OK) {
+          const address = result[0].address.address_name;
+          setClickedAddress(address); // 상태 업데이트 추가
+        }
       }
-    });
+    );
   };
 
   React.useEffect(() => {
@@ -289,18 +308,18 @@ const MapModal = ({ onClose, onSelectAddress }) => {
     };
     waitForKakao();
   }, []);
-  
+
   React.useEffect(() => {
     if (map) {
-      window.kakao.maps.event.addListener(map, 'click', handleMapClick);
+      window.kakao.maps.event.addListener(map, "click", handleMapClick);
     }
     return () => {
       if (map) {
-        window.kakao.maps.event.removeListener(map, 'click', handleMapClick);
+        window.kakao.maps.event.removeListener(map, "click", handleMapClick);
       }
     };
   }, [map]);
-  
+
   return (
     <div className="map-modal">
       <div className="map-modal-content">
@@ -312,7 +331,10 @@ const MapModal = ({ onClose, onSelectAddress }) => {
           placeholder="주소를 입력하세요"
         />
         <button onClick={searchAddress}>검색</button>
-        <div id="map" style={{ width: '100%', height: '400px', margin: '10px 0' }}></div>
+        <div
+          id="map"
+          style={{ width: "100%", height: "400px", margin: "10px 0" }}
+        ></div>
 
         {/* 클릭된 주소 표시 */}
         {clickedAddress && (
