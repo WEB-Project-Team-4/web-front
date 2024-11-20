@@ -2,8 +2,14 @@ import React, { useState } from "react";
 import { useNavigate } from "react-router-dom"; // Import useNavigate from react-router-dom
 import "../../assets/styles/Group.css";
 import "../../assets/styles/General.css";
+import { registGroup } from "../../API/group";
 
 const GroupRegist = () => {
+  localStorage.setItem(
+    "token",
+    "Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ1c2VyMDQiLCJhdXRoIjoiVVNFUiIsImlhdCI6MTczMjA2NDg2MiwiZXhwIjoxNzMyOTI4ODYyfQ.5MFiTpK4098vIeV2eIf424QdejYlFSNEPrZmDxsg8WI"
+  );
+
   const [formData, setFormData] = useState({
     recruitmentName: "",
     description: "",
@@ -32,10 +38,33 @@ const GroupRegist = () => {
     setFormData({ ...formData, representativeImage: e.target.files[0] });
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     // Handle form submission logic
     console.log(formData);
+
+    const response = await registGroup(
+      {
+        categoryId:
+          formData.category === "스터디"
+            ? 100
+            : formData.category === "스포츠"
+            ? 200
+            : formData.category === "음식"
+            ? 300
+            : 900,
+        groupName: formData.recruitmentName,
+        introText: formData.description,
+        groupContent: formData.detailedInfo,
+        groupLimit: formData.maxParticipants,
+        groupDate: formData.endDate,
+        closeDate: formData.startDate,
+        city: formData.city,
+        district: formData.district,
+        detailAddr: formData.detailAddr,
+      },
+      formData.representativeImage
+    );
   };
 
   const openMap = () => {
@@ -54,7 +83,13 @@ const GroupRegist = () => {
   // 주소 선택 후 처리 함수
   const handleAddressSelect = (address) => {
     const { city, district, addr } = splitAddress(address);
-    setFormData({ ...formData, location: address, city, district, addr });
+    setFormData({
+      ...formData,
+      location: address,
+      city: city,
+      district: district,
+      detailAddr: addr,
+    });
     setIsMapOpen(false);
   };
 
