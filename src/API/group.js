@@ -13,7 +13,7 @@ export const fetchGroups = async ({
   currentPage = 1,
   pageSize = 9,
   searchParam = "",
-  isActive = true,
+  isActive,
   city,
   district,
 }) => {
@@ -25,7 +25,7 @@ export const fetchGroups = async ({
   // 쿼리 매개변수 설정
   const params = {
     searchParam: searchParam || undefined, // 검색어
-    isActive: isActive ? "Y" : "N", // 모집 중 여부
+    isActive: isActive, // 모집 중 여부
     city: city,
     district: district,
   };
@@ -53,4 +53,46 @@ export const fetchGroupDetail = async (groupId) => {
     console.error(`Failed to fetch group detail for ID: ${groupId}`, error);
     throw error; // 에러 다시 던지기
   }
+};
+
+export const registGroup = async (params, fileImg) => {
+  const path = process.env.REACT_APP_API_BASE_URL + `group/regist`;
+
+  const formData = new FormData();
+  formData.append(
+    "group",
+    new Blob([JSON.stringify(params)], { type: "application/json" })
+  );
+  formData.append("fileImg", fileImg);
+
+  // console.log(params);
+  // console.log(fileImg);
+
+  try {
+    const response = await axios.post(path, formData, {
+      headers: {
+        Authorization: `${localStorage.getItem("token")}`,
+        "Content-Type": "multipart/form-data",
+      },
+      withCredentials: true,
+    });
+    console.log(response);
+
+    return response.data;
+  } catch (error) {
+    alert("등록에 실패했습니다");
+    throw error;
+  }
+
+  // "categoryId": 100,
+  //   "groupName": "스터디 그룹100",
+  //   "introText": "컴퓨터 공학 스터디",
+  //   "groupContent": "자세한 스터디 내용2",
+  //   "groupLimit": 10,
+  //   "groupDate": "2024-11-14T04:31:25.000+00:00",
+  //   "closeDate": "2024-11-14T04:42:26.000+00:00",
+  //   "city": "Seoul",
+  //   "district": "Gwanak",
+  //   "detailAddr": "서울특별시 관악구",
+  //   "groupImg": "default url"
 };

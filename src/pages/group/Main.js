@@ -48,7 +48,7 @@ function Main() {
           pageSize: cardsPerPage,
           searchParam: searchQuery,
           // loc: region || subRegion, // 시/도 + 군/구 결합
-          isActive: isRecruiting,
+          isActive: isRecruiting ? "Y" : "N",
           city: region === "" ? "all" : region,
           district: subRegion === "" ? "all" : subRegion,
         });
@@ -102,23 +102,33 @@ function Main() {
           BANNER
         </Typography>
       </Box>
+      {/* <Box className="search-box">
+        <TextField
+          variant="outlined"
+          placeholder="검색어를 입력해주세요"
+          InputProps={{
+            startAdornment: <SearchIcon onClick={handleSearchBtn} />,
+          }}
+          className="search-input"
+          onChange={handleSearchText}
+        />
+      </Box> */}
       <Box className="search-box">
-      <TextField
-        variant="outlined"
-        placeholder="검색어를 입력해주세요"
-        InputProps={{
-          startAdornment: <SearchIcon onClick={handleSearchBtn} />,
-        }}
-        className="search-input"
-        onChange={handleSearchText}
-        onKeyPress={(event) => {
-          if (event.key === "Enter") {
-            handleSearchBtn(); // 엔터키로 검색 실행
-          }
-        }}
-      />
-    </Box>
-
+        <TextField
+          variant="outlined"
+          placeholder="검색어를 입력해주세요"
+          InputProps={{
+            startAdornment: <SearchIcon onClick={handleSearchBtn} />,
+          }}
+          className="search-input"
+          onChange={handleSearchText}
+          onKeyPress={(event) => {
+            if (event.key === "Enter") {
+              handleSearchBtn(); // 엔터키로 검색 실행
+            }
+          }}
+        />
+      </Box>
 
       {/* 네비게이션 메뉴 */}
       <Box sx={{ display: "flex", justifyContent: "center", my: 2 }}>
@@ -180,22 +190,22 @@ function Main() {
           }}
         >
           <MenuItem value="">시/도 선택</MenuItem>
-          <MenuItem value="gangwon">강원</MenuItem>
-          <MenuItem value="gyeonggi">경기</MenuItem>
-          <MenuItem value="gyeongnam">경남</MenuItem>
-          <MenuItem value="gyeongbuk">경북</MenuItem>
-          <MenuItem value="gwangju">광주</MenuItem>
-          <MenuItem value="daegu">대구</MenuItem>
-          <MenuItem value="daejeon">대전</MenuItem>
-          <MenuItem value="busan">부산</MenuItem>
-          <MenuItem value="seoul">서울</MenuItem>
-          <MenuItem value="ulsan">울산</MenuItem>
-          <MenuItem value="incheon">인천</MenuItem>
-          <MenuItem value="jeonnam">전남</MenuItem>
-          <MenuItem value="jeonbuk">전북</MenuItem>
-          <MenuItem value="jeju">제주</MenuItem>
-          <MenuItem value="chungnam">충남</MenuItem>
-          <MenuItem value="chungbuk">충북</MenuItem>
+          <MenuItem value="강원">강원</MenuItem>
+          <MenuItem value="경기">경기</MenuItem>
+          <MenuItem value="경남">경남</MenuItem>
+          <MenuItem value="경북">경북</MenuItem>
+          <MenuItem value="광주">광주</MenuItem>
+          <MenuItem value="대구">대구</MenuItem>
+          <MenuItem value="대전">대전</MenuItem>
+          <MenuItem value="부산">부산</MenuItem>
+          <MenuItem value="서울">서울</MenuItem>
+          <MenuItem value="울산">울산</MenuItem>
+          <MenuItem value="인천">인천</MenuItem>
+          <MenuItem value="전남">전남</MenuItem>
+          <MenuItem value="전북">전북</MenuItem>
+          <MenuItem value="제주">제주</MenuItem>
+          <MenuItem value="충남">충남</MenuItem>
+          <MenuItem value="충북">충북</MenuItem>
         </Select>
 
         <Select
