@@ -65,6 +65,10 @@ const GroupRegist = () => {
       },
       formData.representativeImage
     );
+
+    if (response == 200) {
+      navigate("/");
+    }
   };
 
   const openMap = () => {
@@ -128,7 +132,7 @@ const GroupRegist = () => {
       <form onSubmit={handleSubmit}>
         <div className="group-regist-row  regist-group-spacing regist-group-up-spacing ">
           <label className="regist-group-label">
-            모집명(20자 이내) <span style={{ color: "red" }}>*</span>
+            모임명(20자 이내) <span style={{ color: "red" }}>*</span>
           </label>
           <input
             type="text"

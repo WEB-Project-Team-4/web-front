@@ -26,7 +26,7 @@ function Main() {
   const [activeLink, setActiveLink] = useState("전체");
   const [region, setRegion] = useState("");
   const [subRegion, setSubRegion] = useState("");
-  const [isRecruiting, setIsRecruiting] = useState(false); // 모집 여부
+  const [isRecruiting, setIsRecruiting] = useState(true); // 모집 여부
   const [searchQuery, setSearchQuery] = useState(""); // 검색어
   const [page, setPage] = useState(1);
 
@@ -292,7 +292,7 @@ function Main() {
                 people={`${cardItem.group.participationCount}/${cardItem.group.groupLimit}`}
                 comments={cardItem.group.commentCount}
                 imageUrl={
-                  cardItem.group.groupImg === "default url"
+                  cardItem.group.groupImg === null
                     ? defaultImg
                     : cardItem.group.groupImg
                 }
