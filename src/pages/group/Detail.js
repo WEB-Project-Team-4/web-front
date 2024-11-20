@@ -26,13 +26,14 @@ import MoreVertIcon from "@mui/icons-material/MoreVert";
 import defaultImg from "../../img/card_test.jpg";
 
 import { fetchGroupDetail } from "../../API/group"; // 추가한 API 함수 import
-import { registComment } from "../../API/group_comment"; // API 요청 함수 import
+import { registComment } from "../../API/groupComment"; // API 요청 함수 import
+import { registParticipation } from "../../API/groupParticipate";
 import "../../assets/styles/Group.css";
 
 function GroupDetailPage() {
   localStorage.setItem(
     "token",
-    "Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ0ZXN0MSIsImF1dGgiOiJVU0VSIiwiaWF0IjoxNzMyMDAzOTUyLCJleHAiOjE3MzI4Njc5NTJ9.q_cy4rA6xMsmGAlq-9lDqUtCXFz2Sjeczbc3E7lTJxs"
+    "Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ1c2VyMDQiLCJhdXRoIjoiVVNFUiIsImlhdCI6MTczMjAxOTcyOCwiZXhwIjoxNzMyODgzNzI4fQ.cAZ-C2Ega3Q7Ga37b2dkSn2IAU11v63meTjDV0QdSeY"
   );
   const { groupId } = useParams(); // URL 파라미터에서 groupId 추출
   const navigate = useNavigate();
@@ -49,6 +50,8 @@ function GroupDetailPage() {
   const [isLoading, setIsLoading] = useState(true);
   const [categoryName, setCategoryName] = useState("");
   const [isChange, setIsChange] = useState(false);
+  const [leaderName, setLeaderName] = useState("");
+
   // 서버 데이터 로드
   useEffect(() => {
     const loadGroupDetail = async () => {
@@ -59,6 +62,8 @@ function GroupDetailPage() {
         setMembers(data.groupDetailVO.members || []);
         setIsBookmarked(data.isLike === "Y"); // 북마크 여부
         setCategoryName(data.categoryName);
+        setLeaderName(data.groupLeaderName);
+        setIsChange(false);
       } catch (error) {
         console.error("Failed to load group detail:", error);
         navigate("/error"); // 에러 발생 시 에러 페이지로 이동
@@ -66,7 +71,7 @@ function GroupDetailPage() {
     };
 
     loadGroupDetail();
-  }, [groupId, navigate]);
+  }, [groupId, navigate, isChange]);
 
   const isMenuOpen = Boolean(anchorEl);
 
@@ -78,24 +83,14 @@ function GroupDetailPage() {
       commentContent: newComment,
     });
 
-    // const data = await fetchGroups({
-    //   category: activeLink === "전체" ? "all" : activeLink,
-    //   currentPage: page,
-    //   pageSize: cardsPerPage,
-    //   searchParam: searchQuery,
-    //   // loc: region || subRegion, // 시/도 + 군/구 결합
-    //   isActive: isRecruiting,
-    //   city: region === "" ? "all" : region,
-    //   district: subRegion === "" ? "all" : subRegion,
-    // });
-
     // const newCommentObj = {
     //   author: "현재 사용자",
     //   content: newComment,
     //   createdAt: new Date().toLocaleString(),
     // };
-    setIsChange(true);
     // setComments([...comments, newCommentObj]);
+
+    setIsChange(true);
     setNewComment("");
   };
 
@@ -116,6 +111,21 @@ function GroupDetailPage() {
 
   const handleModalClose = () => {
     setShowModal(false);
+  };
+
+  const handleParticipation = async () => {
+    const status = await registParticipation({
+      groupId: groupId,
+    });
+
+    if (status == 200) {
+      alert("참가 성공");
+      setIsChange(true);
+    } else if (status == 208) {
+      alert("이미 참가한 모임입니다");
+    } else {
+      alert("참여에 실패했습니다.");
+    }
   };
 
   const formatDate = (dateString) => {
@@ -177,6 +187,7 @@ function GroupDetailPage() {
           <IconButton onClick={handleMenuClick}>
             <MoreVertIcon />
           </IconButton>
+          {/* 현재 ID와 모임 작성자 ID가 동일한 경우만 뜨게 해야할 듯 */}
           <Menu anchorEl={anchorEl} open={isMenuOpen} onClose={handleMenuClose}>
             <MenuItem component={Link} to="/group/modify">
               모임 수정
@@ -206,7 +217,7 @@ function GroupDetailPage() {
             <Box className="group-author-card">
               <Avatar className="group-author-avatar">A</Avatar>
               <Typography variant="body1" className="group-author-name">
-                {groupDetail.groupLeaderId}
+                {leaderName}
               </Typography>
             </Box>
 
@@ -315,6 +326,7 @@ function GroupDetailPage() {
             variant="contained"
             className="group-join-button"
             sx={{ marginLeft: "auto" }}
+            onClick={handleParticipation}
           >
             참가하기
           </Button>
