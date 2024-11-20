@@ -1,6 +1,6 @@
-// src/pages/member/PwdModify.js
 import React, { useState } from 'react';
 import { Box, TextField, Button, Typography } from '@mui/material';
+import axios from 'axios'; // axios 추가
 import '../../assets/styles/My.css';
 
 function PwdModify() {
@@ -9,10 +9,12 @@ function PwdModify() {
   const [error, setError] = useState(''); // 에러 메시지
   const [successMessage, setSuccessMessage] = useState(''); // 성공 메시지
   
+  const token = localStorage.getItem('token'); // localStorage에서 토큰 가져오기
+
   // 비밀번호 변경 처리
-  const handlePasswordChange = () => {
+  const handlePasswordChange = async () => {
     // 비밀번호 필드 값 검증
-    if ( !newPassword || !confirmPassword) {
+    if (!newPassword || !confirmPassword) {
       setError('모든 필드를 입력해주세요.');
       return;
     }
@@ -23,9 +25,27 @@ function PwdModify() {
       return;
     }
 
-    // 비밀번호 변경 성공
-    setError('');
-    setSuccessMessage('비밀번호가 성공적으로 변경되었습니다!');
+    try {
+      // axios로 비밀번호 변경 요청
+      const response = await axios.post(
+        process.env.REACT_APP_API_BASE_URL + 'my/pwd-modify', // 백엔드 URL
+        { password : newPassword }, // 새 비밀번호 전송
+        {
+          headers: {
+            Authorization: `${token}`, // Authorization 헤더에 토큰 포함
+          },
+        }
+      );
+
+      if (response.status === 200) {
+        setSuccessMessage('비밀번호가 성공적으로 변경되었습니다!');
+        setError(''); // 에러 메시지 초기화
+      }
+    } catch (error) {
+      console.error(error);
+      setError('비밀번호 변경에 실패했습니다. 다시 시도해주세요.');
+      setSuccessMessage(''); // 성공 메시지 초기화
+    }
   };
 
   // 로그인 페이지로 리디렉션
@@ -38,7 +58,6 @@ function PwdModify() {
       <Typography variant="h5" component="h1" className="general-form-title">
         비밀번호 변경
       </Typography>
-
 
       {/* 새 비밀번호 입력 */}
       <Box className="general-form-row">
@@ -92,7 +111,7 @@ function PwdModify() {
         className="button-general pwdModify-topMargin"
         onClick={handlePasswordChange}
       >
-        수정하기
+        비밀번호 변경하기
       </Button>
 
       {/* 로그인 페이지로 이동 버튼 */}

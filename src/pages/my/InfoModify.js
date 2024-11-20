@@ -10,6 +10,7 @@ function InfoModify() {
 
   // 임의의 아이디 (DB에서 가져오는 값으로 변경 예정)
   const userId = "sampleUser123";
+  const userEmail = "juth@naver.com"
 
   // 사용자 정보 상태 관리
   const [userInfo, setUserInfo] = useState({
@@ -90,17 +91,11 @@ function InfoModify() {
         </div>
 
         <div className="general-form-row">
-        <Typography variant="body1" className="general-form-label">이메일 <span style={{ color: 'red' }}>*</span></Typography>
+        <Typography variant="body1" className="general-form-label">이메일</Typography>
         
-          <TextField
-            label="이메일"
-            name="email"
-            value={userInfo.email}
-            onChange={handleInputChange}
-            fullWidth
-            margin="normal"
-            required
-          />
+        <Typography variant="body2" className="general-form-id">
+          {userEmail}
+        </Typography>
         </div>
         <div className="general-form-row">
         <Typography variant="body1" className="general-form-label">전화번호</Typography>
