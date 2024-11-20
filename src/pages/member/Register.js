@@ -98,6 +98,37 @@ function Register() {
       setOpenDialog(true);
       return;
     }
+
+    // 회원가입 클릭시 제출될 데이터
+    const data = {
+      id: username,
+      password: password,
+      name: name,
+      nickname: nickname,
+      phoneNumber: phone || "", // 비어있을 경우 빈 값
+      email: email,
+      favCategoryId: category || 0, // 선택하지 않았을 경우 0
+      profileUrl: profilePicture ? profilePicture : "default url", // 프로필 사진이 있으면 해당 사진을, 없으면 디폴트 URL로 설정
+};
+
+    //회원가입 버튼 axios 추가
+    axios
+      .post(process.env.REACT_APP_API_BASE_URL + "register/register-confirm", data)
+      .then((response) => {
+        if (response.status === 200) {
+          setDialogMessage("회원가입이 완료되었습니다!");
+        } else {
+          setDialogMessage("회원가입 중 문제가 발생했습니다.");
+        }
+        setOpenDialog(true);
+      })
+      .catch((error) => {
+        setDialogMessage("회원가입 요청 중 오류가 발생했습니다.");
+        setOpenDialog(true);
+        console.error("회원가입 오류:", error);
+      });
+
+
   };
 
   const handleUsernameCheck = () => {
@@ -249,11 +280,10 @@ function Register() {
         }
       })
       .catch((error) => {
-        alert("멈춰!");
 
         //! 되살려야하는 부분
-        // console.error('인증번호 발송 실패:', error); // 에러 로그 추가
-        // setDialogMessage('인증번호 발송에 실패했습니다.');
+        console.error('인증번호 발송 실패:', error); // 에러 로그 추가
+        setDialogMessage('인증번호 발송에 실패했습니다.');
       })
       .finally(() => {
         setOpenDialog(true);
@@ -267,36 +297,39 @@ function Register() {
       return;
     }
 
-    // 인증번호 확인 요청
-    const datacertiNum = JSON.stringify({ certiNum });
-    console.log("Sending data:", datacertiNum); // 실제로 보내는 데이터 로그
+      // 인증번호 확인 요청
     axios
-      .post(
-        process.env.REACT_APP_API_BASE_URL + "register/certi-check",
-        { certiNum },
-        {
-          withCredentials: true, // 이 옵션을 설정하여 쿠키와 인증 정보를 함께 보냄
-        }
-      )
-      .then((response) => {
-        if (response.status === 200) {
-          // 인증 성공 시, 다이어로그를 띄우지 않음
-          setDialogMessage("인증이 완료되었습니다.");
-          setVerificationError(""); // 인증번호 입력란 오류 상태 초기화
-          setIsEmailVerified(true); // 인증 완료시 상태 변경
-          // 폼의 유효성 검사 업데이트
-          setIsFormValid(
-            username &&
-              nickname &&
-              email &&
-              certiNum &&
-              verificationError === ""
-          );
-        }
-      })
-      .catch((error) => {
-        setVerificationError("인증번호가 잘못되었습니다.");
-      });
+    .post(
+      process.env.REACT_APP_API_BASE_URL + "register/certi-check",
+      { certiNum },
+      {
+        withCredentials: true,
+      }
+    )
+    .then((response) => {
+      if (response.status === 200) {
+        // 인증 성공
+        setDialogMessage("인증이 완료되었습니다.");
+        setVerificationError(""); // 오류 메시지 초기화
+        setIsEmailVerified(true); // 인증 상태 업데이트
+        setOpenDialog(true); // 다이얼로그 열기
+        // 인증 완료 후 폼 유효성 체크
+        setIsFormValid(
+          username &&
+            nickname &&
+            email &&
+            certiNum &&
+            verificationError === "" &&
+            isUsernameAvailable && // 아이디 중복 확인 상태 유지
+            isNicknameAvailable // 닉네임 중복 확인 상태 유지
+        );
+      }
+    })
+    .catch((error) => {
+      setVerificationError("인증번호가 잘못되었습니다."); // 오류 메시지 설정
+      setDialogMessage("인증번호 확인에 실패했습니다.");
+      setOpenDialog(true); // 다이얼로그 열기
+    });
   };
 
   // 프로필 사진 업로드 핸들러
@@ -315,9 +348,9 @@ function Register() {
 
       {/* 아이디 입력과 "중복확인" 버튼 */}
       <Box className="general-form-row">
-        <Typography variant="body1" className="general-form-label">
+        {/* <Typography variant="body1" className="general-form-label">
           아이디<span style={{ color: "red" }}>*</span>
-        </Typography>
+        </Typography> */}
 
         <Typography
           variant="body1"
@@ -554,14 +587,15 @@ function Register() {
           <Select
             labelId="category-label"
             value={category}
-            onChange={(e) => setCategory(e.target.value)}
+            onChange={(e) => setCategory(Number(e.target.value))}  // 선택된 값을 숫자로 변환
           >
-            <MenuItem value="sports">스터디</MenuItem>
-            <MenuItem value="music">스포츠</MenuItem>
-            <MenuItem value="tech">음식</MenuItem>
-            <MenuItem value="art">기타</MenuItem>
+            <MenuItem value={100}>스터디</MenuItem>
+            <MenuItem value={200}>스포츠</MenuItem>
+            <MenuItem value={300}>음식</MenuItem>
+            <MenuItem value={400}>기타</MenuItem>
           </Select>
         </FormControl>
+
       </Box>
 
       {/* 프로필 사진 업로드 */}

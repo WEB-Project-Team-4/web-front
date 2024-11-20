@@ -103,16 +103,22 @@ function Main() {
         </Typography>
       </Box>
       <Box className="search-box">
-        <TextField
-          variant="outlined"
-          placeholder="검색어를 입력해주세요"
-          InputProps={{
-            startAdornment: <SearchIcon onClick={handleSearchBtn} />,
-          }}
-          className="search-input"
-          onChange={handleSearchText}
-        />
-      </Box>
+      <TextField
+        variant="outlined"
+        placeholder="검색어를 입력해주세요"
+        InputProps={{
+          startAdornment: <SearchIcon onClick={handleSearchBtn} />,
+        }}
+        className="search-input"
+        onChange={handleSearchText}
+        onKeyPress={(event) => {
+          if (event.key === "Enter") {
+            handleSearchBtn(); // 엔터키로 검색 실행
+          }
+        }}
+      />
+    </Box>
+
 
       {/* 네비게이션 메뉴 */}
       <Box sx={{ display: "flex", justifyContent: "center", my: 2 }}>
