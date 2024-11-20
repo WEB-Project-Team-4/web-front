@@ -35,6 +35,7 @@ function GroupDetailPage() {
     "token",
     "Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ1c2VyMDQiLCJhdXRoIjoiVVNFUiIsImlhdCI6MTczMjA3Njc5NywiZXhwIjoxNzMyOTQwNzk3fQ.CFImWB5J7gERXdYciOkRWa4QaiZOTI7eQ07jUqRxxoA"
   );
+
   const { groupId } = useParams(); // URL 파라미터에서 groupId 추출
   const navigate = useNavigate();
 

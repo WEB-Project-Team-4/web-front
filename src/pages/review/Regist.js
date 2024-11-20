@@ -1,34 +1,47 @@
-import React, { useState } from 'react';
-import { Box, Grid, Typography, Button, Pagination } from '@mui/material';
-import { Link } from 'react-router-dom';
-import '../../assets/styles/Group.css';
-import '../../assets/styles/Review.css';
-import '../../assets/styles/General.css';
-import CardItem from '../../components/CardItem';
-
-// 가상의 모임 데이터 예시
-const meetings = [
-  { id: 1, name: '모임 1', description: '모임 설명 1', location: '서울', imageUrl: '', participants: '3/10' },
-  { id: 2, name: '모임 2', description: '모임 설명 2', location: '부산', imageUrl: '', participants: '5/10' },
-  { id: 3, name: '모임 3', description: '모임 설명 3', location: '대구', imageUrl: '', participants: '8/10' },
-  { id: 4, name: '모임 4', description: '모임 설명 4', location: '인천', imageUrl: '', participants: '2/10' },
-  { id: 5, name: '모임 5', description: '모임 설명 5', location: '광주', imageUrl: '', participants: '7/10' },
-  { id: 6, name: '모임 6', description: '모임 설명 6', location: '대전', imageUrl: '', participants: '4/10' },
-  { id: 7, name: '모임 7', description: '모임 설명 7', location: '울산', imageUrl: '', participants: '9/10' },
-  { id: 8, name: '모임 8', description: '모임 설명 8', location: '경기', imageUrl: '', participants: '6/10' },
-  { id: 9, name: '모임 9', description: '모임 설명 9', location: '충북', imageUrl: '', participants: '10/10' },
-  { id: 9, name: '모임 9', description: '모임 설명 9', location: '충북', imageUrl: '', participants: '10/10' },
-];
+import React, { useState, useEffect } from "react";
+import { Box, Grid, Typography, Pagination } from "@mui/material";
+import { Link } from "react-router-dom";
+import "../../assets/styles/Group.css";
+import "../../assets/styles/Review.css";
+import "../../assets/styles/General.css";
+import CardItem from "../../components/CardItem";
+import { fetchReviewGroups } from "../../API/review"; // API 함수 import
 
 function RegistPage() {
-  const [page, setPage] = useState(1);
-  const itemsPerPage = 9;
+  localStorage.setItem(
+    "token",
+    "Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ0ZXN0MSIsImF1dGgiOiJVU0VSIiwiaWF0IjoxNzMyMDc3MDExLCJleHAiOjE3MzI5NDEwMTF9.zCHOfA1F-0Y0bFD0KVf5Tq3x-7az-sP8T7BbRnRoUXY"
+  );
+  
+  const [page, setPage] = useState(1); // 현재 페이지
+  const [items, setItems] = useState([]); // API에서 받은 데이터
+  const [totalPages, setTotalPages] = useState(1); // 전체 페이지 수
+  const [loading, setLoading] = useState(false); // 로딩 상태
+  const itemsPerPage = 9; // 페이지당 항목 수
 
-  const indexOfLastItem = page * itemsPerPage;
-  const indexOfFirstItem = indexOfLastItem - itemsPerPage;
-  const currentItems = meetings.slice(indexOfFirstItem, indexOfLastItem);
-  const totalPages = Math.ceil(meetings.length / itemsPerPage);
+  // 데이터 가져오기
+  useEffect(() => {
+    const fetchData = async () => {
+      setLoading(true);
+      try {
+        const data = await fetchReviewGroups({
+          currentPage: page,
+          pageSize: itemsPerPage,
+        });
 
+        setItems(data.list || []); // 받아온 데이터 리스트
+        setTotalPages(data.totalPages || 1); // 총 페이지 수
+      } catch (error) {
+        console.error("Failed to fetch review groups:", error);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchData();
+  }, [page]);
+
+  // 페이지 변경 핸들러
   const handlePageChange = (_, value) => {
     setPage(value);
   };
@@ -43,31 +56,44 @@ function RegistPage() {
       {/* 카드 컨테이너 */}
       <Box className="card-container">
         <Grid container spacing={2} columns={12}>
+          {/* 로딩 상태 */}
+          {loading && (
+            <Typography variant="h6" sx={{ textAlign: "center", width: "100%" }}>
+              로딩 중...
+            </Typography>
+          )}
+
           {/* 카드 데이터 렌더링 */}
-          {currentItems.map((meeting) => (
-            <Grid item xs={4} sm={4} md={4} key={meeting.id}>
-              <Link to={`/review/write?=${meeting.id}`} style={{ textDecoration: 'none' }}>
-                <CardItem
-                  to=""
-                  category={meeting.name}
-                  location={meeting.location}
-                  title={meeting.name}
-                  description={meeting.description}
-                  people={meeting.participants}
-                  imageUrl={meeting.imageUrl || '/default-image.png'} // 기본 이미지 사용
-                />
-              </Link>
-            </Grid>
-          ))}
+          {!loading &&
+            items.map((item) => (
+              <Grid item xs={4} sm={4} md={4} key={item.groupId}>
+                <Link
+                  to={`/review/write/${item.groupId}`}
+                  style={{ textDecoration: "none" }}
+                >
+                  <CardItem
+                    category={item.categoryName}
+                    location={item.groupVo.city}
+                    title={item.groupVo.groupName}
+                    description={item.groupVo.introText}
+                    people={`${item.groupVo.participationCount}/${item.groupVo.groupLimit}`}
+                    imageUrl={
+                      item.groupVo.groupImg === "default url" ? "/default-image.png" : item.groupVo.groupImg
+                    }
+                  />
+                </Link>
+              </Grid>
+            ))}
 
           {/* 빈 카드로 레이아웃 채우기 */}
-          {Array.from({ length: itemsPerPage - currentItems.length }).map((_, index) => (
-            <Grid item xs={4} sm={4} md={4} key={`empty-card-${index}`}>
-              <Box className="empty-card">
-                {/* 빈 카드에 내용 없음 */}
-              </Box>
-            </Grid>
-          ))}
+          {!loading &&
+            Array.from({ length: itemsPerPage - items.length }).map((_, index) => (
+              <Grid item xs={4} sm={4} md={4} key={`empty-card-${index}`}>
+                <Box className="empty-card">
+                  {/* 빈 카드에 내용 없음 */}
+                </Box>
+              </Grid>
+            ))}
         </Grid>
       </Box>
 
@@ -79,19 +105,19 @@ function RegistPage() {
           page={page}
           onChange={handlePageChange}
           sx={{
-            '& .MuiPaginationItem-root': {
-              color: '#7F86EC',
-              fontSize: '1.2rem',
-              minWidth: '48px',
-              minHeight: '48px',
-              padding: '8px',
+            "& .MuiPaginationItem-root": {
+              color: "#7F86EC",
+              fontSize: "1.2rem",
+              minWidth: "48px",
+              minHeight: "48px",
+              padding: "8px",
             },
-            '& .MuiPaginationItem-root.Mui-selected': {
-              backgroundColor: '#7F86EC',
-              color: '#fff',
+            "& .MuiPaginationItem-root.Mui-selected": {
+              backgroundColor: "#7F86EC",
+              color: "#fff",
             },
-            '& .MuiPaginationItem-root:hover': {
-              backgroundColor: 'rgba(127, 134, 236, 0.1)',
+            "& .MuiPaginationItem-root:hover": {
+              backgroundColor: "rgba(127, 134, 236, 0.1)",
             },
           }}
         />
