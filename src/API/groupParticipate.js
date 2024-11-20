@@ -5,6 +5,8 @@ import axios from "axios";
  */
 export const registParticipation = async ({ groupId }) => {
   const path = process.env.REACT_APP_API_BASE_URL + `group/join`;
+  const token = localStorage.getItem("token")
+  console.log(token);
   // 쿼리 매개변수 설정
   const params = {
     groupId: groupId,

@@ -82,7 +82,7 @@ function App() {
                 <Route path="/review/main" element={<ReviewMain />} />
                 <Route path="/review/detail/:reviewId" element={<ReviewDetail />} />
                 <Route path="/review/regist" element={<ReviewRegist />} />
-                <Route path="/review/write" element={<ReviewWrite />} />
+                <Route path="/review/write/:groupId" element={<ReviewWrite />} />
                 <Route path="/review/modify" element={<ReviewModify />} />
 
               </Routes>

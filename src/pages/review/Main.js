@@ -99,20 +99,19 @@ function Main() {
 
       <Box className="search-box">
         <TextField
-          variant="outlined"
-          placeholder="검색어를 입력해주세요"
-          InputProps={{
-            startAdornment: (
-              <SearchIcon
-                onClick={handleSearchBtn}
-                style={{ cursor: "pointer" }}
-              />
-            ),
-          }}
-          className="search-input"
-          // onChange={(e) => setSearchText(e.target.value)}
-          onChange={handleSearchText}
-        />
+        variant="outlined"
+        placeholder="검색어를 입력해주세요"
+        InputProps={{
+          startAdornment: <SearchIcon onClick={handleSearchBtn} />,
+        }}
+        className="search-input"
+        onChange={handleSearchText}
+        onKeyPress={(event) => {
+          if (event.key === "Enter") {
+            handleSearchBtn(); // 엔터키로 검색 실행
+          }
+        }}
+      />
       </Box>
 
       {/* 네비게이션 메뉴 */}
@@ -255,10 +254,10 @@ function Main() {
                 <Box className="review-card">
                   <Box className="review-card-content">
                     <Typography className="review-card-title">
-                      {review.reviewTitle}
+                      {review.reviewTitle} {review.reviewId}
                     </Typography>
                     <Typography className="review-card-description">
-                      {review.reviewContent}
+                      {review.reviewContent.replace(/<[^>]+>/g, '')}
                     </Typography>
                     <Typography className="review-card-meta">
                       댓글 {review.reviewCommentCnt}개 | 작성자{" "}

@@ -33,8 +33,9 @@ import "../../assets/styles/Group.css";
 function GroupDetailPage() {
   localStorage.setItem(
     "token",
-    "Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ1c2VyMDQiLCJhdXRoIjoiVVNFUiIsImlhdCI6MTczMjAxOTcyOCwiZXhwIjoxNzMyODgzNzI4fQ.cAZ-C2Ega3Q7Ga37b2dkSn2IAU11v63meTjDV0QdSeY"
+    "Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ0ZXN0MSIsImF1dGgiOiJVU0VSIiwiaWF0IjoxNzMyMDc3MDExLCJleHAiOjE3MzI5NDEwMTF9.zCHOfA1F-0Y0bFD0KVf5Tq3x-7az-sP8T7BbRnRoUXY"
   );
+  
   const { groupId } = useParams(); // URL 파라미터에서 groupId 추출
   const navigate = useNavigate();
 

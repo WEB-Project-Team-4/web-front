@@ -2,6 +2,8 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { Box, Button, Typography, TextField } from '@mui/material';
 import { uploadImage } from '../../API/review';
+import { fetchOpenRegistReveiw, fetchRegistReveiw } from "../../API/review";
+import { useParams,useNavigate } from "react-router-dom";
 import '../../assets/styles/Review.css'; // 스타일 파일 추가
 
 function WriteReview() {
@@ -9,7 +11,25 @@ function WriteReview() {
   const [content, setContent] = useState('');
   const [imageUrls, setImageUrls] = useState([]);
   const [title, setTitle] = useState(''); // 제목 관리
-  const meetingName = '모임 1'; // 모임 이름 (예제)
+  const [isChange, setIsChange] = useState(false);
+  const [meetingName, setmeetingName] = useState(false);
+  const { groupId } = useParams();
+  const navigate = useNavigate();
+  // 서버 데이터 로드
+  useEffect(() => {
+    const loadwritereview = async () => {
+      try {
+        const data = await fetchOpenRegistReveiw(groupId);
+        setmeetingName(data);
+        setIsChange(false);
+      } catch (error) {
+        console.error("Failed to load group detail:", error);
+        navigate("/error"); // 에러 발생 시 에러 페이지로 이동
+      }
+    };
+
+    loadwritereview();
+  }, [ isChange,meetingName]);
 
   useEffect(() => {
     window.$(editorRef.current).summernote({
@@ -57,10 +77,26 @@ function WriteReview() {
   //   }
   // };
 
-  const handleSubmit = () => {
-    console.log('제목:', title);
-    console.log('제출된 내용:', content);
-    // console.log('이미지 URL 목록:', imageUrls);
+
+  const handleSubmit = async () => {
+    try {
+      console.log("제목:", title);
+      console.log("제출된 내용:", content);
+
+      // API 호출
+      await fetchRegistReveiw({
+        reviewGroupId: groupId, // groupId를 정수로 변환
+        reviewTitle: title,
+        reviewContent: content,
+        reviewImgList: [], // 이미지 목록 비우기
+      });
+
+      console.log("리뷰 등록 성공");
+      navigate(`/review/main`);
+    } catch (error) {
+      console.error("리뷰 등록 실패:", error);
+      navigate("/error");
+    }
   };
 
   return (
