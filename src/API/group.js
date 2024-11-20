@@ -55,6 +55,7 @@ export const fetchGroupDetail = async (groupId) => {
   }
 };
 
+// 모임 등록
 export const registGroup = async (params, fileImg) => {
   const path = process.env.REACT_APP_API_BASE_URL + `group/regist`;
 
@@ -78,7 +79,7 @@ export const registGroup = async (params, fileImg) => {
     });
     console.log(response);
 
-    return response.data;
+    return response.status;
   } catch (error) {
     alert("등록에 실패했습니다");
     throw error;
@@ -95,4 +96,23 @@ export const registGroup = async (params, fileImg) => {
   //   "district": "Gwanak",
   //   "detailAddr": "서울특별시 관악구",
   //   "groupImg": "default url"
+};
+
+// 모임 삭제
+export const deleteGroup = async (params) => {
+  const path = process.env.REACT_APP_API_BASE_URL + `group/remove`;
+
+  try {
+    const response = await axios.put(path, params, {
+      headers: {
+        Authorization: `${localStorage.getItem("token")}`,
+      },
+      withCredentials: true,
+    });
+    console.log(response);
+    return response.status;
+  } catch (error) {
+    alert("삭제에 실패했습니다.");
+    throw error;
+  }
 };

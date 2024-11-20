@@ -25,7 +25,7 @@ import CloseIcon from "@mui/icons-material/Close";
 import MoreVertIcon from "@mui/icons-material/MoreVert";
 import defaultImg from "../../img/card_test.jpg";
 
-import { fetchGroupDetail } from "../../API/group"; // 추가한 API 함수 import
+import { deleteGroup, fetchGroupDetail } from "../../API/group"; // 추가한 API 함수 import
 import { registComment } from "../../API/groupComment"; // API 요청 함수 import
 import { registParticipation } from "../../API/groupParticipate";
 import "../../assets/styles/Group.css";
@@ -33,9 +33,9 @@ import "../../assets/styles/Group.css";
 function GroupDetailPage() {
   localStorage.setItem(
     "token",
-    "Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ0ZXN0MSIsImF1dGgiOiJVU0VSIiwiaWF0IjoxNzMyMDc3MDExLCJleHAiOjE3MzI5NDEwMTF9.zCHOfA1F-0Y0bFD0KVf5Tq3x-7az-sP8T7BbRnRoUXY"
+    "Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ1c2VyMDQiLCJhdXRoIjoiVVNFUiIsImlhdCI6MTczMjA3Njc5NywiZXhwIjoxNzMyOTQwNzk3fQ.CFImWB5J7gERXdYciOkRWa4QaiZOTI7eQ07jUqRxxoA"
   );
-  
+
   const { groupId } = useParams(); // URL 파라미터에서 groupId 추출
   const navigate = useNavigate();
 
@@ -114,6 +114,21 @@ function GroupDetailPage() {
     setShowModal(false);
   };
 
+  const handleGroupDelete = async () => {
+    const status = await deleteGroup({
+      groupId: groupId,
+    });
+
+    if (status == 200) {
+      alert("모임이 삭제되었습니다.");
+      navigate("/");
+    } else if (status == 405) {
+      alert("삭제 권한이 없습니다");
+    } else {
+      alert("삭제에 실패했습니다.");
+    }
+  };
+
   const handleParticipation = async () => {
     const status = await registParticipation({
       groupId: groupId,
@@ -190,12 +205,10 @@ function GroupDetailPage() {
           </IconButton>
           {/* 현재 ID와 모임 작성자 ID가 동일한 경우만 뜨게 해야할 듯 */}
           <Menu anchorEl={anchorEl} open={isMenuOpen} onClose={handleMenuClose}>
-            <MenuItem component={Link} to="/group/modify">
+            <MenuItem component={Link} to={`/group/modify/${groupId}`}>
               모임 수정
             </MenuItem>
-            <MenuItem component={Link} to="/delete">
-              모임 삭제
-            </MenuItem>
+            <MenuItem onClick={handleGroupDelete}>모임 삭제</MenuItem>
           </Menu>
         </Box>
       </Box>
@@ -267,7 +280,7 @@ function GroupDetailPage() {
           <Box className="group-thumbnail-container">
             <img
               src={
-                groupDetail.groupImg === "default url"
+                groupDetail.groupImg === null
                   ? defaultImg
                   : groupDetail.groupImg
               }
