@@ -23,18 +23,18 @@ function MyPageLayout() {
               className="profile-image"
             />
           </a>
-          {/* <div className='my-nickname'> {user.nickname}</div> */}
-          <div className='my-nickname'> 아이디 {user}</div>
+          <div className='my-nickname'> {user.nickname}</div>
+          {/* <div className='my-nickname'> 아이디 </div> */}
           <div className="my-info">
             <div className="my-info-item">
               <span className="my-info-label">관심 카테고리 :</span>
-              {/* <span className="my-info-value">#{user.favCategoryName}</span> */}
-              <span className="my-info-value">#스포츠</span>
+              <span className="my-info-value">#{user.favCategoryName}</span>
+              {/* <span className="my-info-value">#스포츠</span> */}
             </div>
             <div className="my-info-item">
               <span className="my-info-label">만든 그룹 개수 :</span>
-              {/* <span className="my-info-value">{user.madeGroupNumber}개</span> */}
-              <span className="my-info-value">3개</span>
+              <span className="my-info-value">{user.madeGroupNumber}개</span>
+              {/* <span className="my-info-value">3개</span> */}
             </div>
           </div>
 
