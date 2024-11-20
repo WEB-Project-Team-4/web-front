@@ -48,7 +48,7 @@ function Main() {
           pageSize: cardsPerPage,
           searchParam: searchQuery,
           // loc: region || subRegion, // 시/도 + 군/구 결합
-          isActive: isRecruiting,
+          isActive: isRecruiting ? "Y" : "N",
           city: region === "" ? "all" : region,
           district: subRegion === "" ? "all" : subRegion,
         });
@@ -102,6 +102,17 @@ function Main() {
           BANNER
         </Typography>
       </Box>
+      {/* <Box className="search-box">
+        <TextField
+          variant="outlined"
+          placeholder="검색어를 입력해주세요"
+          InputProps={{
+            startAdornment: <SearchIcon onClick={handleSearchBtn} />,
+          }}
+          className="search-input"
+          onChange={handleSearchText}
+        />
+      </Box> */}
       <Box className="search-box">
         <TextField
           variant="outlined"
@@ -111,6 +122,11 @@ function Main() {
           }}
           className="search-input"
           onChange={handleSearchText}
+          onKeyPress={(event) => {
+            if (event.key === "Enter") {
+              handleSearchBtn(); // 엔터키로 검색 실행
+            }
+          }}
         />
       </Box>
 

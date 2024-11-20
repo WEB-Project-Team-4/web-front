@@ -11,16 +11,12 @@ export const registComment = async ({ groupId, commentContent }) => {
     commentContent: commentContent,
   };
   // 요청 보내기
-  const response = await axios.post(
-    path,
-    { params },
-    {
-      headers: {
-        Authorization: `${localStorage.getItem("token")}`,
-      },
-      // withCredentials: true,
-    }
-  );
+  const response = await axios.post(path, params, {
+    headers: {
+      Authorization: `${localStorage.getItem("token")}`,
+    },
+    withCredentials: true,
+  });
   console.log(response);
   return response.status; // 데이터 반환
 };
