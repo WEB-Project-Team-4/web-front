@@ -1,55 +1,62 @@
-// // src/API/review.js
-// import axios from 'axios';
-// import axiosInstance from "./axiosInstance";
+// src/API/review.js
+import axios from 'axios';
+import axiosInstance from "./axiosInstance";
 
-// const API_BASE_URL = process.env.REACT_APP_API_BASE_URL
-// // axios.post(process.env.REACT_APP_API_BASE_URL + 'register/send-code', { email } , {
-// //   withCredentials: true, // 이 옵션을 설정하여 쿠키와 인증 정보를 함께 보냄
-// // })    
+const API_BASE_URL = process.env.REACT_APP_API_BASE_URL
+// axios.post(process.env.REACT_APP_API_BASE_URL + 'register/send-code', { email } , {
+//   withCredentials: true, // 이 옵션을 설정하여 쿠키와 인증 정보를 함께 보냄
+// })    
 
-// // 이미지 업로드 API
-// export const uploadImage = (file) => {
-//   const formData = new FormData();
-//   formData.append('file', file);
+// 이미지 업로드 API
+export const uploadImage = (file) => {
+  const formData = new FormData();
+  formData.append('file', file);
 
-//   return axios.post(API_BASE_URL + 'api/review/image-upload', formData, {withCredentials: true}, {
-//     headers: {
-//       'Content-Type': 'multipart/form-data',
-//     },
-//   });
-// };
+  return axios.post(API_BASE_URL + 'api/review/image-upload', formData, {withCredentials: true}, {
+    headers: {
+      'Content-Type': 'multipart/form-data',
+    },
+  });
+};
 
-// // src/API/review.js
-// // src/API/group.js
+// src/API/review.js
+// src/API/group.js
 
-// /**
-//  * 서버로 리뷰데이터를 요청하는 함수
-//  * @param {Object} options 요청 옵션 (카테고리, 페이지 번호, 페이지 크기, 검색어, 지역, 모집 중 여부 등)
-//  * @returns {Promise} 서버에서 반환된 데이터
-//  */
-// export const fetchReviews = async ({
-//   category = "전체",
-//   currentPage = 1,
-//   pageSize = 6,
-//   searchParam = "",
-//   city = "all",
-//   district = "all",
-// }) => {
-//   // 경로 동적으로 설정
-//   // const path = `/group/${category}/${currentPage}/${pageSize}`;
-//   const path = `/review/main/${category}/${currentPage}/${pageSize}`;
-//   // 쿼리 매개변수 설정
-//   const params = {
-//     // searchParam: searchParam || undefined, // 검색어
-//     // loc: loc || undefined, // 지역
-//     searchParam: searchParam,
-//     city: city,
-//     district: district,
-//   };
-//   // 요청 보내기
-//   const response = await axiosInstance.get(path, { params });
-//   return response.data; // 데이터 반환
-// };
+/**
+ * 서버로 리뷰데이터를 요청하는 함수
+ * @param {Object} options 요청 옵션 (카테고리, 페이지 번호, 페이지 크기, 검색어, 지역, 모집 중 여부 등)
+ * @returns {Promise} 서버에서 반환된 데이터
+ */
+export const fetchReviews = async ({
+  category = "전체",
+  currentPage = 1,
+  pageSize = 6,
+  searchParam = "",
+  city = "all",
+  district = "all",
+}) => {
+  // 경로 동적으로 설정
+  // const path = `/group/${category}/${currentPage}/${pageSize}`;
+  const path = `review/main/${category}/${currentPage}/${pageSize}`;
+  // 쿼리 매개변수 설정
+  const params = {
+    // searchParam: searchParam || undefined, // 검색어
+    // loc: loc || undefined, // 지역
+    searchParam: searchParam || undefined, // 검색어
+    city: city,
+    district: district,
+  };
+  // 요청 보내기
+  const response = await axios.get(API_BASE_URL + path, { params });
+  console.log(response);
+  return response.data; // 데이터 반환
+};
+
+
+
+
+
+
 
 // /**
 //  * 서버로 리뷰할 그룹 데이터를 요청하는 함수

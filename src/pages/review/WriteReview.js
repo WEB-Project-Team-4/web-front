@@ -21,12 +21,12 @@ function WriteReview() {
           setContent(contents);
 
           // 이미지 URL 추출
-          const urls = extractImageUrlsFromContent(contents);
-          setImageUrls(urls);
+          // const urls = extractImageUrlsFromContent(contents);
+          // setImageUrls(urls);
         },
-        onImageUpload: (files) => {
-          handleImageUpload(files)// TODO: 이미지 업로드 API 호출
-        },
+        // onImageUpload: (files) => {
+        //   handleImageUpload(files)// TODO: 이미지 업로드 API 호출
+        // },
       },
     });
 
@@ -37,30 +37,30 @@ function WriteReview() {
     };
   }, []);
 
-  const extractImageUrlsFromContent = (content) => {
-    const parser = new DOMParser();
-    const doc = parser.parseFromString(content, 'text/html');
-    const imgElements = doc.querySelectorAll('img');
-    return Array.from(imgElements).map(img => img.src);
-  };
+  // const extractImageUrlsFromContent = (content) => {
+  //   const parser = new DOMParser();
+  //   const doc = parser.parseFromString(content, 'text/html');
+  //   const imgElements = doc.querySelectorAll('img');
+  //   return Array.from(imgElements).map(img => img.src);
+  // };
 
-  const handleImageUpload = async (files) => {
-    for (let i = 0; i < files.length; i++) {
-      try {
-        // const response = await uploadImage(files[i]);
-        const response = await uploadImage(1);
-        const imageUrl = response.data;
-        window.$(editorRef.current).summernote('insertImage', imageUrl);
-      } catch (error) {
-        console.error('이미지 업로드 실패:', error);
-      }
-    }
-  };
+  // const handleImageUpload = async (files) => {
+  //   for (let i = 0; i < files.length; i++) {
+  //     try {
+  //       // const response = await uploadImage(files[i]);
+  //       const response = await uploadImage(1);
+  //       const imageUrl = response.data;
+  //       window.$(editorRef.current).summernote('insertImage', imageUrl);
+  //     } catch (error) {
+  //       console.error('이미지 업로드 실패:', error);
+  //     }
+  //   }
+  // };
 
   const handleSubmit = () => {
     console.log('제목:', title);
     console.log('제출된 내용:', content);
-    console.log('이미지 URL 목록:', imageUrls);
+    // console.log('이미지 URL 목록:', imageUrls);
   };
 
   return (
