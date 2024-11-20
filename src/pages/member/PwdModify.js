@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { Box, TextField, Button, Typography, IconButton } from '@mui/material';
 import Visibility from '@mui/icons-material/Visibility';
 import VisibilityOff from '@mui/icons-material/VisibilityOff';
+import axios from 'axios'; // axios 추가
 import '../../assets/styles/Member.css';
 import '../../assets/styles/General.css';
 
@@ -10,12 +11,12 @@ function PasswordChange() {
   const [newPassword, setNewPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
   const [error, setError] = useState('');
-  const [showNewPassword, setShowNewPassword] = useState(false);  // 새 비밀번호 보이기 상태
-  const [showConfirmPassword, setShowConfirmPassword] = useState(false);  // 비밀번호 확인 보이기 상태
+  const [showNewPassword, setShowNewPassword] = useState(false); // 새 비밀번호 보이기 상태
+  const [showConfirmPassword, setShowConfirmPassword] = useState(false); // 비밀번호 확인 보이기 상태
   
-  const userId = "sampleUser123";
+  const token = localStorage.getItem('token'); // localStorage에서 토큰 가져오기
 
-  const handlePasswordChange = () => {
+  const handlePasswordChange = async () => {
     if (!newPassword || !confirmPassword) {
       setError('모든 필드를 입력해주세요.');
       return;
@@ -26,9 +27,26 @@ function PasswordChange() {
       return;
     }
 
-    setError('');
-    alert('비밀번호가 변경되었습니다!');
-    window.location.href = '/member/login'; // 로그인 페이지로 이동
+    try {
+      // axios로 비밀번호 변경 요청
+      const response = await axios.post(
+        process.env.REACT_APP_API_BASE_URL + 'member/pwd-modify', // 백엔드 URL
+        { newPassword }, // 새 비밀번호 전송
+        {
+          headers: {
+            Authorization: `${token}`, // Authorization 헤더에 토큰 포함
+          },
+        }
+      );
+
+      if (response.status === 200) {
+        alert('비밀번호가 변경되었습니다!');
+        window.location.href = '/member/login'; // 로그인 페이지로 이동
+      }
+    } catch (error) {
+      console.error(error);
+      setError('비밀번호 변경에 실패했습니다. 다시 시도해주세요.');
+    }
   };
 
   return (
@@ -41,7 +59,7 @@ function PasswordChange() {
       <Box className="general-form-row">
         <Typography variant="body1" className="general-form-label">아이디</Typography>
         <Typography variant="body2" className="general-form-id">
-          {userId}
+          {currentPassword} {/* 사용자의 아이디 또는 다른 정보를 표시할 수 있습니다. */}
         </Typography>
       </Box>
 
@@ -118,7 +136,7 @@ function PasswordChange() {
         className="button-general"
         onClick={handlePasswordChange}
       >
-        수정하기
+        비밀번호 변경하기
       </Button>
     </Box>
   );

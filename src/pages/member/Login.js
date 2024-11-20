@@ -19,6 +19,9 @@ function Login() {
     password: '',
   });
 
+  // 로그인 실패 시 오류 메시지 상태 추가
+  const [errorMessage, setErrorMessage] = useState('');
+
   const handleChange = (e) => {
     const { name, value } = e.target;
     setCredentials((prev) => ({ ...prev, [name]: value }));
@@ -32,16 +35,27 @@ function Login() {
       });
 
       if (response.status === 200) {
+        // 응답 헤더 가져오기
+        const headers = response.headers;
+
+        // 특정 헤더 값 가져오기
+        const token = headers['authorization']; // 예: Authorization 헤더
+
+        localStorage.setItem('token', token); // 토큰을 localStorage에 저장
+
+        //유저 정보 저장 : mypage 레이아웃 등에서 사용
         const userData = response.data; // 서버에서 받은 데이터
         login(userData); // Context에 유저 정보 저장
-        alert('로그인 성공');
+
+        console.log(token);
         setTimeout(() => {
-          // navigate('/'); // 페이지 이동
-        }, 2000);
+          alert("로그인 성공");
+          navigate('/'); // 로그인 후 메인 페이지 이동
+        }, 0);
       }
     } catch (error) {
       console.error(error);
-      alert('로그인 실패. 아이디와 비밀번호를 확인하세요.');
+      setErrorMessage('로그인 실패. 아이디와 비밀번호를 확인하세요.');
     }
   };
 
@@ -121,6 +135,13 @@ function Login() {
       >
         회원가입
       </Button>
+
+      {/* 로그인 실패 시 오류 메시지 표시 */}
+      {errorMessage && (
+        <Typography variant="body2" color="error" style={{ marginTop: 10 }}>
+          {errorMessage}
+        </Typography>
+      )}
     </Box>
   );
 }
