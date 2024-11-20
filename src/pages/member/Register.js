@@ -22,6 +22,8 @@ import VisibilityOff from "@mui/icons-material/VisibilityOff";
 // import axiosInstance from '../../API/axiosInstance'; // axiosInstance import
 import axios from "axios";
 
+import { useNavigate } from "react-router-dom";
+
 function Register() {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
@@ -42,6 +44,7 @@ function Register() {
   const [profilePicture, setProfilePicture] = useState(null); // 프로필 사진 상태 추가
 
   const emailRegex = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,6}$/;
+  const navigate = useNavigate();
 
   //인증체크용 변수들
   const [isUsernameAvailable, setIsUsernameAvailable] = useState(false);
@@ -92,6 +95,7 @@ function Register() {
 
     setDialogMessage("회원가입이 완료되었습니다!");
     setOpenDialog(true);
+    navigate('/member/login')
 
     if (!isFormValid) {
       setDialogMessage("모든 인증과정을 거쳐야 합니다.");
@@ -586,7 +590,7 @@ function Register() {
           <InputLabel id="category-label">관심 카테고리</InputLabel>
           <Select
             labelId="category-label"
-            value={category}
+            value={category || 900} // 선택하지 않았을 경우 900을 기본값으로 설정
             onChange={(e) => setCategory(Number(e.target.value))}  // 선택된 값을 숫자로 변환
           >
             <MenuItem value={100}>스터디</MenuItem>

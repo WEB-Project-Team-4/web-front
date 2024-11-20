@@ -49,6 +49,7 @@ function Header() {
   // 로그아웃 처리
   const handleLogout = () => {
     logout(); // 로그아웃 함수 호출
+    localStorage.removeItem('token');
     setAnchorEl(null); // 메뉴 닫기
     window.location.href = '/'; // 메인 페이지로 이동
   };
@@ -127,7 +128,7 @@ function Header() {
           open={Boolean(anchorEl)} // 메뉴 열기 여부
           onClose={handleMenuClose} // 메뉴 닫기
         >
-          {user ? (
+          {localStorage.getItem('token') ? (
             <>
               <MenuItem onClick={handleMyClick}>마이페이지</MenuItem>
               <MenuItem onClick={handleLogout}>로그아웃</MenuItem>
@@ -136,6 +137,7 @@ function Header() {
             <MenuItem onClick={handleLoginClick}>로그인</MenuItem>
           )}
         </Menu>
+
       </Toolbar>
     </AppBar>
   );

@@ -1,40 +1,92 @@
-// src/pages/member/Resign.js
 import React, { useState } from 'react';
-import { Box, Button, Typography, TextField, Dialog, DialogActions, DialogContent, DialogTitle } from '@mui/material';
+import { Box, Button, Typography, TextField, IconButton, Dialog, DialogActions, DialogContent, DialogTitle } from '@mui/material';
 import { useNavigate } from 'react-router-dom';
+import Visibility from '@mui/icons-material/Visibility';
+import VisibilityOff from '@mui/icons-material/VisibilityOff';
+import axios from 'axios'; // axios 추가
 import '../../assets/styles/My.css';
 import '../../assets/styles/General.css'; // 스타일 적용
 
 function Resign() {
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
+  const [showPassword, setShowPassword] = useState(false); // 비밀번호 보이게 하는 상태 관리
   const [isPasswordValid, setIsPasswordValid] = useState(false);
   const [openDialog, setOpenDialog] = useState(false); // 탈퇴 확인 다이얼로그 상태
   const navigate = useNavigate();
 
-  const handleResign = () => {
+  // 로그인 상태 체크 (localStorage에서 토큰 확인)
+  const token = localStorage.getItem('token');
+
+  // 토큰이 없으면 로그인 페이지로 리다이렉트
+  if (!token) {
+    alert('로그인 후 이용해 주세요.');
+    navigate('/login');
+    return null;
+  }
+
+  const handlePasswordChange = (e) => {
+    setPassword(e.target.value);
+  };
+
+  const togglePasswordVisibility = () => {
+    setShowPassword(!showPassword);
+  };
+
+  const handleResign = async () => {
     if (!password) {
       setError('비밀번호를 입력해주세요.');
       return;
     }
 
-    // 여기에 비밀번호 확인 로직을 추가
-    if (password === 'test') {
-      setError('');
-      setIsPasswordValid(true);  // 비밀번호가 올바르면 탈퇴 확인 다이얼로그 띄우기
-      setOpenDialog(true);  // 다이얼로그 열기
-    } else {
-      setError('비밀번호가 올바르지 않습니다.');
+    try {
+      // 서버에 비밀번호와 토큰을 보내서 인증 요청
+      const response = await axios.post(
+        process.env.REACT_APP_API_BASE_URL + 'my/pwd-check', // 백엔드 URL
+        { password }, // 비밀번호를 JSON 형태로 전송
+        {
+          headers: {
+            Authorization: `${token}`, // Authorization 헤더에 토큰 포함
+          },
+          withCredentials: true,
+        }
+      );
+
+      if (response.status === 200) {
+        setError('');
+        setIsPasswordValid(true); // 비밀번호가 올바르면 탈퇴 확인 다이얼로그 띄우기
+        setOpenDialog(true); // 다이얼로그 열기
+      }
+    } catch (error) {
+      console.error(error);
+      setError('비밀번호가 올바르지 않습니다. 다시 시도해주세요.');
     }
   };
 
-  const handleDialogClose = (confirm) => {
+  const handleDialogClose = async (confirm) => {
     if (confirm) {
-      // 여기서 탈퇴 처리 로직을 넣을 수 있습니다.
-      setTimeout(() => {
-        alert('모인은 당신이 되돌아오길 손꼽아 기다리겠습니다...');
-        navigate('/member/login'); // 탈퇴 후 로그인 페이지로 이동
-      }, 1500);
+      try {
+        // axios로 탈퇴 요청 보내기
+        const response = await axios.get(
+          process.env.REACT_APP_API_BASE_URL + 'my/resign', // 탈퇴 URL
+          {
+            headers: {
+              Authorization: `${token}`, // Authorization 헤더에 토큰 포함
+            },
+            withCredentials: true, // 크로스 도메인 인증을 위한 옵션
+          }
+        );
+
+        if (response.status === 200) {
+          // 탈퇴 성공 처리
+          localStorage.removeItem('token'); // 토큰 삭제
+          alert('모인은 당신이 되돌아오길 손꼽아 기다리겠습니다...');
+          navigate('/member/login'); // 탈퇴 후 로그인 페이지로 이동
+        }
+      } catch (error) {
+        console.error(error);
+        alert('탈퇴 처리 중 오류가 발생했습니다. 다시 시도해주세요.');
+      }
     }
     setOpenDialog(false); // 다이얼로그 닫기
   };
@@ -52,21 +104,27 @@ function Resign() {
             </Typography>
             <TextField
               variant="outlined"
-              type="password"
+              type={showPassword ? "text" : "password"} // 비밀번호 보이게 설정
               placeholder="비밀번호를 입력해주세요"
               fullWidth
               margin="normal"
               value={password}
-              onChange={(e) => setPassword(e.target.value)}
+              onChange={handlePasswordChange}
               className="general-form-input"
+              error={!!error}
+              helperText={error}
+              InputProps={{
+                endAdornment: (
+                  <IconButton
+                    aria-label="toggle password visibility"
+                    onClick={togglePasswordVisibility}
+                    edge="end"
+                  >
+                    {showPassword ? <VisibilityOff /> : <Visibility />}
+                  </IconButton>
+                ),
+              }}
             />
-
-            {/* 에러 메시지 */}
-            {error && (
-              <Typography color="error" variant="body2" className="error-message">
-                {error}
-              </Typography>
-            )}
           </Box>
           {/* 회원탈퇴 버튼 */}
           <Button
@@ -89,7 +147,7 @@ function Resign() {
             variant="contained"
             color="primary"
             fullWidth
-            onClick={() => navigate('http://localhost:3000/my/group')}
+            onClick={() => navigate('/my/group')}
             className="button-general"
           >
             마이페이지로 되돌아가기
