@@ -118,7 +118,7 @@ function Login() {
         <Divider orientation="vertical" flexItem sx={{ mx: 1, height: 20 }} />
 
         <Link href="/member/pwd-search" underline="hover" className="link-text">
-          비밀번호 변경
+          비밀번호 찾기
         </Link>
       </Box>
 
