@@ -3,6 +3,8 @@
 /* 제목 글자 */
 .title-text {
   text-align: center;
+  color:  #7F86EC !important;
+  font-weight: bold !important;
   size: 15px;
 }
 
@@ -18,6 +20,17 @@
   display: flex;
   flex-direction: column;
   align-items: center;
+  }
+  .my-write-button{
+    background-color: #acb6f0 !important;
+    color: #4a4949 !important;
+    font-weight: bold !important;
+    padding: 10px 20px !important;
+    border-radius: 30px !important;
+    transition: background-color 0.3s ease !important;
+  }
+  .my-write-button:hover {
+    background-color: #7F86EC !important;
   }
 
 /* 프로필 섹션 스타일 */
