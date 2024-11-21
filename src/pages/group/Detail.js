@@ -79,6 +79,13 @@ function GroupDetailPage() {
   const isMenuOpen = Boolean(anchorEl);
 
   const handleCommentSubmit = async () => {
+    const token = localStorage.getItem("token");
+
+    if (!token) {
+    alert("로그인이 필요합니다."); // 혹은 다른 안내 메시지
+    return; // Token이 없으므로 함수 실행 중단
+    }
+
     if (newComment.trim() === "") return;
 
     await registComment({
@@ -147,6 +154,12 @@ function GroupDetailPage() {
   };
 
   const handleParticipation = async () => {
+    const token = localStorage.getItem("token");
+
+    if (!token) {
+    alert("로그인이 필요합니다."); // 혹은 다른 안내 메시지
+    return; // Token이 없으므로 함수 실행 중단
+    }
     const status = await registParticipation({
       groupId: groupId,
     });

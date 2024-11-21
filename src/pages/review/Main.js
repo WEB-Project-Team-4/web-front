@@ -53,6 +53,17 @@ function Main() {
     fetchData();
   }, [activeLink, region, subRegion, page, searchQuery]);
 
+// 작성하기 버튼
+  const handleButtonClick = () => {
+    const token = localStorage.getItem("token");
+  
+    if (!token) {
+      alert("로그인이 필요합니다.");
+    } else {
+      window.location.href = "/review/regist"; // 페이지 이동
+    }
+  };
+
   const handleNavigation = (label) => {
     setActiveLink(label);
     setPage(1);
@@ -76,6 +87,18 @@ function Main() {
   const handlePageChange = (event, value) => {
     setPage(value);
   };
+
+
+  const handleLinkClick = (e, reviewId) => {
+    const token = localStorage.getItem("token");
+    if (!token) {
+      e.preventDefault(); // 링크 기본 동작 막기
+      alert("로그인이 필요합니다.");
+    } else {
+      console.log(`Navigating to review ID: ${reviewId}`);
+    }
+  };
+  
 
   const formatDate = (dateString) => {
     const date = new Date(dateString);
@@ -237,9 +260,9 @@ function Main() {
             모임 후기
           </Typography>
 
-          <Link to="/review/regist">
-            <Button className="write-button-right">작성하기</Button>
-          </Link>
+          <Button className="write-button-right" onClick={handleButtonClick}>
+            작성하기
+          </Button>
 
           {reviews.length > 0 ? (
             reviews.map((review) => (
@@ -247,6 +270,7 @@ function Main() {
                 key={review.reviewId}
                 to={`/review/detail/${review.reviewId}`}
                 style={{ textDecoration: "none", color: "inherit" }}
+                onClick={(e) => handleLinkClick(e, review.reviewId)}
               >
                 <Divider className="id-navigation-divider" flexItem />
                 <Box className="review-card">
