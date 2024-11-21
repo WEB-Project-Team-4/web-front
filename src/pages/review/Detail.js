@@ -16,6 +16,9 @@ import {
 } from "@mui/material";
 import MoreVertIcon from "@mui/icons-material/MoreVert";
 import DeleteForeverIcon from "@mui/icons-material/DeleteForever";
+import ReactMarkdown from "react-markdown";
+import rehypeRaw from "rehype-raw";
+import remarkGfm from "remark-gfm"; // GitHub Flavored Markdown 지원
 import {
   fetchRegistReveiwComment,
   fetchRemoveReview,
@@ -187,8 +190,22 @@ function Detail() {
         className="review-detail-divider"
         flexItem
       />
+      {/* 마크다운 렌더링 */}
+      <div className="review-detail-image-container">
+        <img
+          className="review-detail-image"
+          src="https://via.placeholder.com/1920x1080"
+          alt="Review Detail"
+        />
+      </div>
+      <ReactMarkdown
+        children={review.reviewContent}
+        remarkPlugins={[remarkGfm]}
+        rehypePlugins={[rehypeRaw]}
+        className="review-markdown-content"
+      />
 
-      <Typography className="review-content">{review.reviewContent}</Typography>
+      {/* <Typography className="review-content">{review.reviewContent}</Typography> */}
 
       {/* {review.uploadedImages && review.uploadedImages.length > 0 && (
   <Box className="review-detail-uploaded-images">
@@ -228,10 +245,10 @@ function Detail() {
                   {review.reviewGroup.categoryName}
                 </Typography>
                 <Typography className="review-detail-navigation-cardtitle">
-                  {review.reviewTitle}
+                  {review.reviewGroup.groupVo.groupName}
                 </Typography>
                 <Typography className="review-detail-navigation-subtitle">
-                  {review.reviewContent}
+                  {review.reviewGroup.groupVo.introText}
                 </Typography>
                 <Box
                   display="flex"

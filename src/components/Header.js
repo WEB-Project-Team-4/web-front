@@ -132,19 +132,20 @@ function Header() {
 
         {/* 드롭다운 메뉴 */}
         <Menu
-          anchorEl={anchorEl} // 메뉴를 열 때 사용할 앵커 엘리먼트
-          open={Boolean(anchorEl)} // 메뉴 열기 여부
-          onClose={handleMenuClose} // 메뉴 닫기
-        >
-          {localStorage.getItem("token") ? (
-            <>
-              <MenuItem onClick={handleMyClick}>마이페이지</MenuItem>
-              <MenuItem onClick={handleLogout}>로그아웃</MenuItem>
-            </>
-          ) : (
-            <MenuItem onClick={handleLoginClick}>로그인</MenuItem>
-          )}
-        </Menu>
+  anchorEl={anchorEl}
+  open={Boolean(anchorEl)}
+  onClose={handleMenuClose}
+>
+  {localStorage.getItem("token") && (
+    <MenuItem onClick={handleMyClick}>마이페이지</MenuItem>
+  )}
+  {localStorage.getItem("token") ? (
+    <MenuItem onClick={handleLogout}>로그아웃</MenuItem>
+  ) : (
+    <MenuItem onClick={handleLoginClick}>로그인</MenuItem>
+  )}
+</Menu>
+
       </Toolbar>
     </AppBar>
   );

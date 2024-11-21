@@ -148,7 +148,6 @@ const reviewImgList = [
     throw error; // 에러 다시 던지기
   }
 };
-
 /**
  * 서버로 그룹에 따른 리뷰 수정 페이지로 이동하는 함수
  * @param {string | number} reviewId - 등록할 리뷰 그룹의 ID

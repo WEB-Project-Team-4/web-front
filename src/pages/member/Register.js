@@ -601,7 +601,7 @@ function Register() {
         </FormControl>
       </Box>
 
-      {/* 프로필 사진 업로드 */}
+      {/* 프로필 사진 업로드 
       <Box className="general-form-row">
         <Typography variant="body1" className="general-form-label ">
           프로필 사진
@@ -613,7 +613,7 @@ function Register() {
           style={{ display: "none" }}
           id="profile-pic-upload"
         />
-        {/* 사진 업로드 버튼 css */}
+         사진 업로드 버튼 css
         <label
           htmlFor="profile-pic-upload"
           style={{
@@ -653,8 +653,8 @@ function Register() {
               }}
             />
           </Box>
-        )}
-      </Box>
+        )} 
+      </Box>*/}
 
       {/* 회원가입 버튼 */}
       <Button
