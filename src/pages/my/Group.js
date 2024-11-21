@@ -190,7 +190,7 @@ function Group() {
             onClick={() => handleFilterChange("participating")}
             className={filter === "participating" ? "active" : ""}
           >
-            참여중인 모임
+            참여한 모임
           </Button>
           <Button
             onClick={() => handleFilterChange("pastMeetings")}

@@ -164,10 +164,11 @@ export const fetchOpenModifyReveiw = async (reviewId) => {
       },
       withCredentials: true,
     });
-    return response.data; // 데이터 반환
+    return response; // 데이터 반환
   } catch (error) {
     console.error(`Failed to open review modify page`, error);
-    throw error; // 에러 다시 던지기
+    return error;
+    // throw error; // 에러 다시 던지기
   }
 };
 

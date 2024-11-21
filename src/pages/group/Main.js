@@ -17,8 +17,8 @@ import "../../assets/styles/General.css";
 import { regionData } from "../../data/regionData";
 import CardItem from "../../components/CardItem";
 import cardTestImage from "../../img/card_test.jpg";
-import cardTestImage2 from "../../img/card_test2.png";
-import defaultImg from "../../img/card_test.jpg";
+import bannerImg from "../../img/MOIN_banner.jpg";
+import defaultImg from "../../img/group_default_img.jpg";
 
 import { fetchGroups } from "../../API/group"; // API 요청 함수 import
 
@@ -304,11 +304,11 @@ function Main() {
           ))}
 
           {/* 빈 카드로 레이아웃 채우기 */}
-          {Array.from({ length: 9 - cards.length }).map((_, index) => (
-            <Grid item xs={4} sm={4} md={4} key={`empty-card-${index}`}>
-              <Box className="empty-card">{/* 빈 카드에 들어갈 내용 */}</Box>
-            </Grid>
-          ))}
+          {/* {Array.from({ length: 9 - cards.length }).map((_, index) => ( */}
+          {/* <Grid item xs={4} sm={4} md={4} key={`empty-card-${index}`}> */}
+          {/* <Box className="empty-card">빈 카드에 들어갈 내용</Box> */}
+          {/* </Grid> */}
+          {/* ))} */}
         </Grid>
       </Box>
 

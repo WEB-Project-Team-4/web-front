@@ -46,8 +46,15 @@ function Modify() {
 
     // 기존 데이터 읽어오기
     const fetchData = async () => {
-      const data = await fetchOpenModifyReveiw(reviewId);
-      const groupName = await fetchOpenRegistReveiw(reviewId); // 한 쿼리로 합치기
+      const response = await fetchOpenModifyReveiw(reviewId);
+      if (response.status === 405) {
+        alert("수정 권한이 없습니다!");
+        navigate("/");
+        return;
+      }
+
+      const data = response.data;
+      const groupName = await fetchOpenRegistReveiw(data.reviewGroupId); // 한 쿼리로 합치기
       console.log(data);
       setReviewData({
         reviewGroupId: data.reviewGroupId,

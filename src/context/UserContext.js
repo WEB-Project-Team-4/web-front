@@ -23,13 +23,20 @@ export const UserProvider = ({ children }) => {
     localStorage.removeItem("user"); // LocalStorage에서 제거
   };
 
+  const modify = (userData) => {
+    console.log(userData);
+    setUser(userData);
+    localStorage.removeItem("user"); // LocalStorage에서 제거
+    localStorage.setItem("user", JSON.stringify(userData)); // LocalStorage에 저장
+  };
+
   // user 상태가 변경될 때마다 콘솔 출력 (디버깅용)
   useEffect(() => {
     console.log("Current User State:", user);
   }, [user]);
 
   return (
-    <UserContext.Provider value={{ user, login, logout }}>
+    <UserContext.Provider value={{ user, login, logout, modify }}>
       {children}
     </UserContext.Provider>
   );
