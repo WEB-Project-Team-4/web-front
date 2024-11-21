@@ -189,11 +189,12 @@ function GroupDetailPage() {
           >
             {isBookmarked ? (
               <BookmarkIcon className="group-bookmarked" />
+              
             ) : (
               <BookmarkBorderIcon />
             )}
           </IconButton>
-          {isBookmarked && <BookmarkIcon className="group-bookmarkIcon" />}
+          {/* {isBookmarked && <BookmarkIcon className="group-bookmarked" />} */}
           <Typography variant="h6">{groupDetail.likeCount}</Typography>
         </Box>
 

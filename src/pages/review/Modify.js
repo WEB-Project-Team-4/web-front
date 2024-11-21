@@ -47,7 +47,7 @@ function Modify() {
     // 기존 데이터 읽어오기
     const fetchData = async () => {
       const data = await fetchOpenModifyReveiw(reviewId);
-      const groupName = await fetchOpenRegistReveiw(reviewId); // 한 쿼리로 합치기
+      const groupName = await fetchOpenRegistReveiw(data.reviewGroupId); // 한 쿼리로 합치기
       console.log(data);
       setReviewData({
         reviewGroupId: data.reviewGroupId,
@@ -78,24 +78,48 @@ function Modify() {
 
   const handleUpdate = async () => {
     try {
+      console.log("제목:", reviewData.title);
+      console.log("제출된 내용:", reviewData.content);
+      console.log("첨부된 파일:", selectedImage);
       // API 호출
-      const response = await fetchModifyReveiw({
+      // FormData 생성 및 데이터 추가
+      const formData = new FormData();
+      // formData.append("reviewGroupId", groupId); // 그룹 ID
+      // formData.append("reviewTitle", title); // 제목
+      // formData.append("reviewContent", content); // 내용
+      if (selectedImage) {
+        formData.append("reviewImg", selectedImage); // 첨부된 이미지
+      }
+
+      const params = {
         reviewGroupId: reviewData.reviewGroupId,
-        reviewId: reviewData.id,
         reviewTitle: reviewData.title,
         reviewContent: reviewData.content,
-        reviewImgList: [], // 이미지 목록 비우기
-      });
+      }
+
+      formData.append(
+        "reviewDTO",
+        new Blob([JSON.stringify(params)], { type: "application/json" })
+      );
+
+      // API 호출
+      await fetchModifyReveiw(formData,reviewId);
+
+      // await fetchModifyReveiw({
+      //   reviewGroupId: reviewData.reviewGroupId,
+      //   reviewId: reviewData.id,
+      //   reviewTitle: reviewData.title,
+      //   reviewContent: reviewData.content,
+      //   reviewImgList: [], // 이미지 목록 비우기
+      // });
 
       console.log("리뷰 수정 성공");
       navigate(`/review/detail/${reviewData.id}`);
     } catch (error) {
       console.error("리뷰 수정 실패:", error);
-      navigate("/error");
+      // navigate("/error");
     }
 
-    // console.log("수정된 데이터:", reviewData);
-    // navigate("/my/review"); // 수정 완료 후 리뷰 목록 페이지로 이동
   };
 
   const handleDelete = async () => {
