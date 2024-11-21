@@ -125,27 +125,27 @@ function Header() {
         {/* 사람 프로필 아이콘 */}
         <Avatar
           alt="Profile"
-          src={user?.profileUrl || "/path/to/default-avatar.png"} // user가 null이면 기본 아바타 사용
+          // src={user?.profileUrl || "/path/to/default-avatar.png"} // user가 null이면 기본 아바타 사용
+          // src={"/path/to/default-avatar.png"} // user가 null이면 기본 아바타 사용
           sx={{ width: 30, height: 30, marginLeft: 3 }}
           onClick={handleMenuOpen}
         />
 
         {/* 드롭다운 메뉴 */}
         <Menu
-  anchorEl={anchorEl}
-  open={Boolean(anchorEl)}
-  onClose={handleMenuClose}
->
-  {localStorage.getItem("token") && (
-    <MenuItem onClick={handleMyClick}>마이페이지</MenuItem>
-  )}
-  {localStorage.getItem("token") ? (
-    <MenuItem onClick={handleLogout}>로그아웃</MenuItem>
-  ) : (
-    <MenuItem onClick={handleLoginClick}>로그인</MenuItem>
-  )}
-</Menu>
-
+          anchorEl={anchorEl}
+          open={Boolean(anchorEl)}
+          onClose={handleMenuClose}
+        >
+          {localStorage.getItem("token") && (
+            <MenuItem onClick={handleMyClick}>마이페이지</MenuItem>
+          )}
+          {localStorage.getItem("token") ? (
+            <MenuItem onClick={handleLogout}>로그아웃</MenuItem>
+          ) : (
+            <MenuItem onClick={handleLoginClick}>로그인</MenuItem>
+          )}
+        </Menu>
       </Toolbar>
     </AppBar>
   );

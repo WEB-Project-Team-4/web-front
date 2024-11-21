@@ -46,69 +46,60 @@ function App() {
   return (
     <UserProvider>
       <Router>
-        <AxiosErrorHandler>
-          <div
-            style={{
-              display: "flex",
-              flexDirection: "column",
-              minHeight: "100vh",
-            }}
-          >
-            <Header />
+        {/* <AxiosErrorHandler> */}
+        <div
+          style={{
+            display: "flex",
+            flexDirection: "column",
+            minHeight: "100vh",
+          }}
+        >
+          <Header />
 
-            <main style={{ flexGrow: 1, padding: "1rem 10%" }}>
-              <Routes>
-                <Route path="/" element={<Main />} />
+          <main style={{ flexGrow: 1, padding: "1rem 10%" }}>
+            <Routes>
+              <Route path="/" element={<Main />} />
 
-                <Route
-                  path="/group/detail/:groupId"
-                  element={<GroupDetail />}
-                />
-                <Route path="/group/regist" element={<GroupRegist />} />
-                <Route
-                  path="/group/modify/:groupId"
-                  element={<GroupModify />}
-                />
+              <Route path="/group/detail/:groupId" element={<GroupDetail />} />
+              <Route path="/group/regist" element={<GroupRegist />} />
+              <Route path="/group/modify/:groupId" element={<GroupModify />} />
 
-                <Route path="/member/login" element={<Login />} />
-                <Route path="/member/register" element={<Register />} />
-                <Route path="/member/id-search" element={<IdSearch />} />
-                <Route path="/member/pwd-search" element={<PwdSearch />} />
-                <Route path="/member/pwd-modify" element={<PwdModify />} />
+              <Route path="/member/login" element={<Login />} />
+              <Route path="/member/register" element={<Register />} />
+              <Route path="/member/id-search" element={<IdSearch />} />
+              <Route path="/member/pwd-search" element={<PwdSearch />} />
+              <Route path="/member/pwd-modify" element={<PwdModify />} />
 
-                {/* /my 경로 내에서 공통 레이아웃을 적용 */}
-                <Route path="/my" element={<MyPageLayout />}>
-                  <Route path="group" element={<Group />} />
-                  <Route path="review" element={<Review />} />
-                  <Route path="pwd-check-info" element={<PwdCheckInfo />} />
-                  <Route
-                    path="pwd-check-pwdModify"
-                    element={<PwdCheckPwdModify />}
-                  />
-                  <Route path="info-modify" element={<InfoModify />} />
-                  <Route path="pwd-modify" element={<PwdModifyMy />} />
-                  <Route path="resign" element={<Resign />} />
-                </Route>
+              {/* /my 경로 내에서 공통 레이아웃을 적용 */}
+              <Route path="/my" element={<MyPageLayout />}>
+                <Route path="group" element={<Group />} />
+                <Route path="review" element={<Review />} />
+                <Route path="pwd-check-info" element={<PwdCheckInfo />} />
+                <Route
+                  path="pwd-check-pwdModify"
+                  element={<PwdCheckPwdModify />}
+                />
+                <Route path="info-modify" element={<InfoModify />} />
+                <Route path="pwd-modify" element={<PwdModifyMy />} />
+                <Route path="resign" element={<Resign />} />
+              </Route>
 
-                <Route path="/review/main" element={<ReviewMain />} />
-                <Route
-                  path="/review/detail/:reviewId"
-                  element={<ReviewDetail />}
-                />
-                <Route path="/review/regist" element={<ReviewRegist />} />
-                <Route
-                  path="/review/write/:groupId"
-                  element={<ReviewWrite />}
-                />
-                <Route
-                  path="/review/modify/:reviewId"
-                  element={<ReviewModify />}
-                />
-              </Routes>
-            </main>
-            <Footer />
-          </div>
-        </AxiosErrorHandler>
+              <Route path="/review/main" element={<ReviewMain />} />
+              <Route
+                path="/review/detail/:reviewId"
+                element={<ReviewDetail />}
+              />
+              <Route path="/review/regist" element={<ReviewRegist />} />
+              <Route path="/review/write/:groupId" element={<ReviewWrite />} />
+              <Route
+                path="/review/modify/:reviewId"
+                element={<ReviewModify />}
+              />
+            </Routes>
+          </main>
+          <Footer />
+        </div>
+        {/* </AxiosErrorHandler> */}
       </Router>
     </UserProvider>
   );

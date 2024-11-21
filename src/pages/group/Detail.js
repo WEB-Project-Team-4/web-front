@@ -23,10 +23,15 @@ import LocationOnIcon from "@mui/icons-material/LocationOn";
 import PeopleIcon from "@mui/icons-material/People";
 import CloseIcon from "@mui/icons-material/Close";
 import MoreVertIcon from "@mui/icons-material/MoreVert";
-import defaultImg from "../../img/card_test.jpg";
+import defaultImg from "../../img/group_default_img.jpg";
 
 import DeleteForeverIcon from "@mui/icons-material/DeleteForever";
-import { deleteGroup, fetchGroupDetail } from "../../API/group"; // 추가한 API 함수 import
+import {
+  deleteGroup,
+  fetchGroupDetail,
+  likeGroup,
+  unlikeGroup,
+} from "../../API/group"; // 추가한 API 함수 import
 import { fetchRemoveGroupComment, registComment } from "../../API/groupComment"; // API 요청 함수 import
 import { registParticipation } from "../../API/groupParticipate";
 import "../../assets/styles/Group.css";
@@ -63,13 +68,13 @@ function GroupDetailPage() {
         setIsChange(false);
       } catch (error) {
         console.error("Failed to load group detail:", error);
-        alert("해당 페이지가 삭제되었거나, 찾을 수 없습니다.")
+        alert("해당 페이지가 삭제되었거나, 찾을 수 없습니다.");
         navigate("/"); // 에러 발생 시 에러 페이지로 이동
       }
     };
 
     loadGroupDetail();
-  }, [groupId, navigate, isChange]);
+  }, [groupId, navigate, isChange, isBookmarked]);
 
   const isMenuOpen = Boolean(anchorEl);
 
@@ -161,6 +166,31 @@ function GroupDetailPage() {
     return `${year}/${month}/${day} ${hours}:${minutes}`; // 원하는 형식으로 반환
   };
 
+  const toggleBookmark = async (e) => {
+    e.preventDefault(); // 링크 이동 방지
+    e.stopPropagation(); // 이벤트 전파 방지
+
+    if (groupId !== 0 && isBookmarked) {
+      // true였을 경우, 좋아요 취소 api 호출
+      const response = await unlikeGroup(groupId);
+      if (response == 200) {
+        alert("좋아요가 해제되었습니다.");
+      } else if (response == 405) {
+        alert("로그인 후 이용 가능합니다.");
+      }
+    } else if (groupId !== 0 && !isBookmarked) {
+      // false였을 경우, 좋아요 등록 api 호출
+      const response = await likeGroup(groupId);
+      if (response == 200) {
+        alert("좋아요가 등록되었습니다.");
+      } else if (response == 405) {
+        alert("로그인 후 이용 가능합니다.");
+      }
+    }
+
+    setIsBookmarked(!isBookmarked);
+  };
+
   // UI 렌더링 조건 확인
   if (!groupDetail) {
     return <Typography>Loading...</Typography>; // 로딩 상태
@@ -184,18 +214,19 @@ function GroupDetailPage() {
             <BookmarkBorderIcon />
           </IconButton> */}
           <IconButton
-            onClick={() => setIsBookmarked(!isBookmarked)}
+            onClick={toggleBookmark}
             className="group-bookmarkIconBorder"
           >
             {isBookmarked ? (
               <BookmarkIcon className="group-bookmarked" />
-              
             ) : (
               <BookmarkBorderIcon />
             )}
           </IconButton>
-          {/* {isBookmarked && <BookmarkIcon className="group-bookmarked" />} */}
-          <Typography variant="h6">{groupDetail.likeCount}</Typography>
+          {isBookmarked && <BookmarkIcon className="group-bookmarkIcon" />}
+          <Typography variant="h6">
+            {groupDetail.likeCount}명의 사람들이 좋아하는 모임이에요!
+          </Typography>
         </Box>
 
         <Box className="group-header-right">
@@ -237,7 +268,7 @@ function GroupDetailPage() {
           <Box className="group-info-bottom">
             {/* 작성자 정보 */}
             <Box className="group-author-card">
-              <Avatar className="group-author-avatar">A</Avatar>
+              <Avatar className="group-author-avatar" />
               <Typography variant="body1" className="group-author-name">
                 {leaderName}
               </Typography>
@@ -248,8 +279,11 @@ function GroupDetailPage() {
               <Box className="group-info-detail-item">
                 <CalendarTodayIcon fontSize="small" />
                 <Box>
-                  <Typography variant="body2">모임 일시</Typography>
-                  <Typography variant="caption" sx={{ color: "#909090" }}>
+                  <Typography variant="body4">모임 일시 </Typography>
+                  <Typography
+                    variant="body4 caption"
+                    sx={{ color: "#909090", marginLeft: "10px" }}
+                  >
                     {formatDate(groupDetail.groupDate)}
                   </Typography>
                 </Box>
@@ -258,7 +292,7 @@ function GroupDetailPage() {
               <Box className="group-info-detail-item">
                 <LocationOnIcon fontSize="small" />
                 <Box sx={{ maxWidth: "200px", overflow: "hidden" }}>
-                  <Typography variant="body2" sx={{ display: "block" }}>
+                  <Typography variant="body4" sx={{ display: "block" }}>
                     {groupDetail.city} {groupDetail.district}
                   </Typography>
                   <Typography

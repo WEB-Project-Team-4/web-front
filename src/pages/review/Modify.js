@@ -46,7 +46,14 @@ function Modify() {
 
     // 기존 데이터 읽어오기
     const fetchData = async () => {
-      const data = await fetchOpenModifyReveiw(reviewId);
+      const response = await fetchOpenModifyReveiw(reviewId);
+      if (response.status === 405) {
+        alert("수정 권한이 없습니다!");
+        navigate("/");
+        return;
+      }
+
+      const data = response.data;
       const groupName = await fetchOpenRegistReveiw(data.reviewGroupId); // 한 쿼리로 합치기
       console.log(data);
       setReviewData({
@@ -95,7 +102,7 @@ function Modify() {
         reviewGroupId: reviewData.reviewGroupId,
         reviewTitle: reviewData.title,
         reviewContent: reviewData.content,
-      }
+      };
 
       formData.append(
         "reviewDTO",
@@ -103,7 +110,7 @@ function Modify() {
       );
 
       // API 호출
-      await fetchModifyReveiw(formData,reviewId);
+      await fetchModifyReveiw(formData, reviewId);
 
       // await fetchModifyReveiw({
       //   reviewGroupId: reviewData.reviewGroupId,
@@ -119,7 +126,6 @@ function Modify() {
       console.error("리뷰 수정 실패:", error);
       // navigate("/error");
     }
-
   };
 
   const handleDelete = async () => {
