@@ -30,7 +30,13 @@ export const fetchGroups = async ({
     district: district,
   };
   // 요청 보내기
-  const response = await axios.get(path, { params }, { withCredentials: true });
+  const response = await axios.get(path, {
+    params: params,
+    headers: {
+      Authorization: `${localStorage.getItem("token")}`,
+    },
+    withCredentials: true,
+  });
   console.log(response);
   return response.data; // 데이터 반환
 };
@@ -46,7 +52,12 @@ export const fetchGroupDetail = async (groupId) => {
 
   try {
     // 요청 보내기
-    const response = await axios.get(path, { withCredentials: true });
+    const response = await axios.get(path, {
+      headers: {
+        Authorization: `${localStorage.getItem("token")}`,
+      },
+      withCredentials: true,
+    });
     console.log(response);
     return response.data; // 데이터 반환
   } catch (error) {
@@ -113,6 +124,51 @@ export const deleteGroup = async (params) => {
     return response.status;
   } catch (error) {
     alert("삭제에 실패했습니다.");
+    throw error;
+  }
+};
+
+// 모임 좋아요 취소
+export const unlikeGroup = async (groupId) => {
+  const path = process.env.REACT_APP_API_BASE_URL + `group/like`;
+  const params = {
+    groupId: groupId,
+  };
+
+  try {
+    const response = await axios.delete(path, {
+      data: params,
+      headers: {
+        Authorization: `${localStorage.getItem("token")}`,
+      },
+      withCredentials: true,
+    });
+    console.log(response);
+    return response.status;
+  } catch (error) {
+    alert("좋아요 취소에 실패했습니다.");
+    throw error;
+  }
+};
+
+// 모임 좋아요 등록
+export const likeGroup = async (groupId) => {
+  const path = process.env.REACT_APP_API_BASE_URL + `group/like`;
+  const params = {
+    groupId: groupId,
+  };
+
+  try {
+    const response = await axios.post(path, params, {
+      headers: {
+        Authorization: `${localStorage.getItem("token")}`,
+      },
+      withCredentials: true,
+    });
+    console.log(response);
+    return response.status;
+  } catch (error) {
+    alert("좋아요 등록에 실패했습니다.");
     throw error;
   }
 };

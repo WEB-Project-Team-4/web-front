@@ -238,6 +238,10 @@ function Group() {
                       ? defaultImg
                       : cardItem.group.groupImg
                   }
+                  curBookMark={
+                    cardItem.isCurUserFavorite === "Y" ? true : false
+                  }
+                  groupId={cardItem.group.groupId}
                   // recruitText={isRecruiting ? "모집중" : "모집마감"}
                 />
               </Grid>

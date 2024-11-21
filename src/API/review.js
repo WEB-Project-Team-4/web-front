@@ -338,7 +338,7 @@ export const fetchRemoveReviewComment = async (reviewCommentId) => {
     `review/detail/comment/${reviewCommentId}`;
   try {
     // 요청 보내기
-    const response = await axios.delete(path, null, {
+    const response = await axios.delete(path, {
       headers: {
         Authorization: `${localStorage.getItem("token")}`,
       },
