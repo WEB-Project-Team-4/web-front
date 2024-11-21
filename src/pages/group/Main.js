@@ -296,6 +296,7 @@ function Main() {
                     ? defaultImg
                     : cardItem.group.groupImg
                 }
+                recruitText={isRecruiting ? "모집중" : "모집마감"}
               />
             </Grid>
           ))}

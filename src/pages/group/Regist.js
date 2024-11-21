@@ -5,11 +5,6 @@ import "../../assets/styles/General.css";
 import { registGroup } from "../../API/group";
 
 const GroupRegist = () => {
-  localStorage.setItem(
-    "token",
-    "Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ1c2VyMDQiLCJhdXRoIjoiVVNFUiIsImlhdCI6MTczMjA2NDg2MiwiZXhwIjoxNzMyOTI4ODYyfQ.5MFiTpK4098vIeV2eIf424QdejYlFSNEPrZmDxsg8WI"
-  );
-
   const [formData, setFormData] = useState({
     recruitmentName: "",
     description: "",
@@ -285,7 +280,15 @@ const MapModal = ({ onClose, onSelectAddress }) => {
   const initializeMap = () => {
     const mapContainer = document.getElementById("map"); // 지도 표시 영역
     const mapOption = {
-      center: new window.kakao.maps.LatLng(37.5665, 126.978), // 기본 중심 좌표 (서울)
+      // center: new window.kakao.maps.LatLng(37.5665, 126.978), // 기본 중심 좌표 (서울)
+      center: new window.kakao.maps.LatLng(
+        process.env.REACT_APP_API_POS_X !== undefined
+          ? process.env.REACT_APP_API_POS_X
+          : 37.5665,
+        process.env.REACT_APP_API_POS_Y !== undefined
+          ? process.env.REACT_APP_API_POS_Y
+          : 126.978
+      ), // 기본 중심 좌표
       level: 3,
     };
 

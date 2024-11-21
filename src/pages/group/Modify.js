@@ -54,7 +54,8 @@ const GroupModify = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const data = await getGroupDetailForModify(groupId);
+        const response = await getGroupDetailForModify(groupId);
+        const data = response.data;
         setFormData({
           ...formData,
           ...{
@@ -86,7 +87,11 @@ const GroupModify = () => {
         console.log(formData.recruitmentName);
         console.log(data.groupVO.groupName);
       } catch (error) {
-        console.error("Failed to fetch groups:", error);
+        // console.error("Failed to fetch groups:", error);
+        if (error.status === 405) {
+          alert("수정 권한이 없습니다.");
+        }
+        navigate("/");
       }
     };
 
@@ -269,10 +274,10 @@ const GroupModify = () => {
         </div>
 
         <div className="regist-group-buttons">
-          <button type="button" onClick={() => setFormData({})}>
-            작성취소
+          <button type="button" onClick={() => navigate(-1)}>
+            돌아가기
           </button>
-          <button type="submit">작성완료</button>
+          <button type="submit">수정완료</button>
         </div>
         {/* 지도 모달 */}
         {isMapOpen && (
@@ -297,7 +302,15 @@ const MapModal = ({ onClose, onSelectAddress }) => {
   const initializeMap = () => {
     const mapContainer = document.getElementById("map"); // 지도 표시 영역
     const mapOption = {
-      center: new window.kakao.maps.LatLng(37.5665, 126.978), // 기본 중심 좌표 (서울)
+      // center: new window.kakao.maps.LatLng(37.5665, 126.978), // 기본 중심 좌표 (서울)
+      center: new window.kakao.maps.LatLng(
+        process.env.REACT_APP_API_POS_X !== undefined
+          ? process.env.REACT_APP_API_POS_X
+          : 37.5665,
+        process.env.REACT_APP_API_POS_Y !== undefined
+          ? process.env.REACT_APP_API_POS_Y
+          : 126.978
+      ), // 기본 중심 좌표
       level: 3,
     };
 

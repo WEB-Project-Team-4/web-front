@@ -8,11 +8,6 @@ import CardItem from "../../components/CardItem";
 import { fetchReviewGroups } from "../../API/review"; // API 함수 import
 
 function RegistPage() {
-  localStorage.setItem(
-    "token",
-    "Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ0ZXN0MSIsImF1dGgiOiJVU0VSIiwiaWF0IjoxNzMyMDc3MDExLCJleHAiOjE3MzI5NDEwMTF9.zCHOfA1F-0Y0bFD0KVf5Tq3x-7az-sP8T7BbRnRoUXY"
-  );
-  
   const [page, setPage] = useState(1); // 현재 페이지
   const [items, setItems] = useState([]); // API에서 받은 데이터
   const [totalPages, setTotalPages] = useState(1); // 전체 페이지 수
@@ -58,7 +53,10 @@ function RegistPage() {
         <Grid container spacing={2} columns={12}>
           {/* 로딩 상태 */}
           {loading && (
-            <Typography variant="h6" sx={{ textAlign: "center", width: "100%" }}>
+            <Typography
+              variant="h6"
+              sx={{ textAlign: "center", width: "100%" }}
+            >
               로딩 중...
             </Typography>
           )}
@@ -78,7 +76,9 @@ function RegistPage() {
                     description={item.groupVo.introText}
                     people={`${item.groupVo.participationCount}/${item.groupVo.groupLimit}`}
                     imageUrl={
-                      item.groupVo.groupImg === "default url" ? "/default-image.png" : item.groupVo.groupImg
+                      item.groupVo.groupImg === "default url"
+                        ? "/default-image.png"
+                        : item.groupVo.groupImg
                     }
                   />
                 </Link>
@@ -87,13 +87,13 @@ function RegistPage() {
 
           {/* 빈 카드로 레이아웃 채우기 */}
           {!loading &&
-            Array.from({ length: itemsPerPage - items.length }).map((_, index) => (
-              <Grid item xs={4} sm={4} md={4} key={`empty-card-${index}`}>
-                <Box className="empty-card">
-                  {/* 빈 카드에 내용 없음 */}
-                </Box>
-              </Grid>
-            ))}
+            Array.from({ length: itemsPerPage - items.length }).map(
+              (_, index) => (
+                <Grid item xs={4} sm={4} md={4} key={`empty-card-${index}`}>
+                  <Box className="empty-card">{/* 빈 카드에 내용 없음 */}</Box>
+                </Grid>
+              )
+            )}
         </Grid>
       </Box>
 

@@ -15,7 +15,13 @@ import {
   MenuItem,
 } from "@mui/material";
 import MoreVertIcon from "@mui/icons-material/MoreVert";
-import { fetchReviewDetail } from "../../API/review";
+import DeleteForeverIcon from "@mui/icons-material/DeleteForever";
+import {
+  fetchRegistReveiwComment,
+  fetchRemoveReview,
+  fetchRemoveReviewComment,
+  fetchReviewDetail,
+} from "../../API/review";
 import "../../assets/styles/Review.css";
 
 function Detail() {
@@ -25,8 +31,10 @@ function Detail() {
   const [error, setError] = useState(false);
   const [newComment, setNewComment] = useState("");
   const [anchorEl, setAnchorEl] = useState(null);
+  const [anchorElComment, setAnchorElComment] = useState(null);
+  const [isChange, setIsChange] = useState(false);
 
-  const loggedInUserId = "현재 사용자"; // 더미 데이터 (로그인된 사용자 ID)
+  // const loggedInUserId = "현재 사용자"; // 더미 데이터 (로그인된 사용자 ID)
 
   // 리뷰 데이터 가져오기
   useEffect(() => {
@@ -34,6 +42,7 @@ function Detail() {
       try {
         const data = await fetchReviewDetail(reviewId);
         setReview(data); // 데이터 상태 저장
+        setIsChange(false);
       } catch (err) {
         console.error("Failed to fetch review detail:", err);
         setError(true); // 에러 상태 설정
@@ -44,21 +53,38 @@ function Detail() {
       fetchData();
     } else {
       console.error("Review ID is missing");
-      navigate("/error");
+      // navigate("/error");
     }
-  }, [reviewId, navigate]);
+  }, [reviewId, navigate, isChange]);
 
-  const handleCommentSubmit = () => {
-    if (newComment.trim() === "") return;
-    const newCommentObj = {
-      author: loggedInUserId,
-      content: newComment,
-      createdAt: new Date().toISOString(),
-    };
-    setReview((prevReview) => ({
-      ...prevReview,
-      reviewCommentList: [...prevReview.reviewCommentList, newCommentObj],
-    }));
+  const handleCommentSubmit = async () => {
+    if (newComment.trim() === "") {
+      alert("댓글 내용을 작성해주세요.");
+      return;
+    }
+    await fetchRegistReveiwComment({
+      reviewId: reviewId,
+      commentContent: newComment,
+    });
+
+    // const newCommentObj = {
+    //   author: "현재 사용자",
+    //   content: newComment,
+    //   createdAt: new Date().toLocaleString(),
+    // };
+    // setComments([...comments, newCommentObj]);
+
+    // const newCommentObj = {
+    //   author: loggedInUserId,
+    //   content: newComment,
+    //   createdAt: new Date().toISOString(),
+    // };
+    // setReview((prevReview) => ({
+    //   ...prevReview,
+    //   reviewCommentList: [...prevReview.reviewCommentList, newCommentObj],
+    // }));
+
+    setIsChange(true);
     setNewComment("");
   };
 
@@ -73,6 +99,29 @@ function Detail() {
   const handleEditClick = () => {
     navigate(`/review/modify/${reviewId}`);
     handleMenuClose();
+  };
+
+  const handleReviewRemove = async (reviewCommentId) => {
+    const status = await fetchRemoveReviewComment(reviewCommentId);
+
+    setIsChange(true);
+  };
+
+  const handleDeleteReview = async () => {
+    try {
+      // API 호출
+      const response = await fetchRemoveReview(reviewId);
+
+      console.log("리뷰 삭제 성공");
+      alert("리뷰가 삭제되었습니다.");
+      navigate(`/review/main`);
+    } catch (error) {
+      console.error("리뷰 삭제 실패:", error);
+      navigate("/error");
+    }
+
+    // console.log("삭제된 리뷰 ID:", reviewData.id);
+    // navigate("/my/review"); // 삭제 후 내 리뷰 목록 페이지로 이동
   };
 
   const formatDate = (dateString) => {
@@ -104,8 +153,8 @@ function Detail() {
           </IconButton>
         )} */}
         <IconButton onClick={handleMenuClick}>
-            <MoreVertIcon />
-          </IconButton>
+          <MoreVertIcon />
+        </IconButton>
       </Typography>
       <Menu
         anchorEl={anchorEl}
@@ -113,7 +162,7 @@ function Detail() {
         onClose={handleMenuClose}
       >
         <MenuItem onClick={handleEditClick}>수정하기</MenuItem>
-        <MenuItem onClick={handleMenuClose}>삭제하기</MenuItem>
+        <MenuItem onClick={handleDeleteReview}>삭제하기</MenuItem>
       </Menu>
 
       <Box className="review-detail-author-info">
@@ -191,7 +240,10 @@ function Detail() {
                   justifyContent="flex-end"
                 >
                   <Avatar sx={{ width: 20, height: 20, mr: 1 }}>👤</Avatar>
-                  <Typography>참가자 {review.reviewGroup.groupVo.participationCount}/{review.reviewGroup.groupVo.groupLimit}</Typography>
+                  <Typography>
+                    참가자 {review.reviewGroup.groupVo.participationCount}/
+                    {review.reviewGroup.groupVo.groupLimit}
+                  </Typography>
                 </Box>
               </CardContent>
             </CardActionArea>
@@ -244,15 +296,43 @@ function Detail() {
         <Box className="group-comments-list">
           {review.reviewCommentList.map((comment, index) => (
             <Box key={index} className="group-comment-item">
+              <Box
+                className="group-author-container"
+                sx={{ display: "flex", alignItems: "center", gap: "8px" }}
+              >
+                <Avatar></Avatar>
+                <Typography variant="body2" className="group-comment-author">
+                  {comment.rcWriter}
+                </Typography>
+              </Box>
               <Typography variant="body2" className="group-comment-content">
-                {comment.content}
+                {comment.commentContent}
               </Typography>
               <Typography variant="caption" className="group-comment-date">
-                {comment.createdAt}
+                {formatDate(comment.rcCreatedAt)}
               </Typography>
+              <DeleteForeverIcon
+                color="disabled"
+                fontSize="small"
+                sx={{ marginLeft: "10px" }}
+                onClick={() => handleReviewRemove(comment.reviewCommentId)}
+              ></DeleteForeverIcon>
             </Box>
           ))}
         </Box>
+
+        {/* <Box className="group-comments-list">
+          {review.reviewCommentList.map((comment, index) => (
+            <Box key={index} className="group-comment-item">
+              <Typography variant="body2" className="group-comment-content">
+                {comment.commentContent}
+              </Typography>
+              <Typography variant="caption" className="group-comment-date">
+                {formatDate(comment.rcCreatedAt)}
+              </Typography>
+            </Box>
+          ))}
+        </Box> */}
 
         <Divider className="group-comments-divider" />
 
