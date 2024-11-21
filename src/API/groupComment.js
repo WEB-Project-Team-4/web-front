@@ -20,3 +20,30 @@ export const registComment = async ({ groupId, commentContent }) => {
   console.log(response);
   return response.status; // 데이터 반환
 };
+
+/**
+ * 모임 댓글 삭제
+ * @param {*} commentId
+ * @returns
+ */
+export const fetchRemoveGroupComment = async (commentId, groupId) => {
+  // 요청 경로 설정
+  const path = process.env.REACT_APP_API_BASE_URL + `group/comment`;
+  try {
+    // 요청 보내기
+    const response = await axios.delete(path, {
+      data: {
+        commentId: commentId,
+        groupId: groupId,
+      },
+      headers: {
+        Authorization: `${localStorage.getItem("token")}`,
+      },
+      withCredentials: true,
+    });
+    return response.status; // 데이터 반환
+  } catch (error) {
+    console.error(`Failed to remove comment`, error);
+    throw error; // 에러 다시 던지기
+  }
+};

@@ -7,6 +7,7 @@ import {
   Menu,
   MenuItem,
   Grid,
+  Pagination,
 } from "@mui/material";
 import { Link } from "react-router-dom";
 import MoreVertIcon from "@mui/icons-material/MoreVert";
@@ -19,7 +20,6 @@ function Group() {
   const [filter, setFilter] = useState("myMeetings");
   const [anchorEl, setAnchorEl] = useState(null);
   const [selectedMeetingId, setSelectedMeetingId] = useState(null);
-  const [currentPage, setCurrentPage] = useState(1);
   // const itemsPerPage = 5;
 
   const [page, setPage] = useState(1);
@@ -35,10 +35,13 @@ function Group() {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const data = await fetchMyGroups({
-          currentPage: page,
-          pageSize: cardsPerPage,
-        });
+        const data = await fetchMyGroups(
+          {
+            currentPage: page,
+            pageSize: cardsPerPage,
+          },
+          filter
+        );
 
         setCards(data.list); // 그룹 데이터 추출
         setTotalPages(data.totalPages); // 전체 페이지 수 설정
@@ -48,11 +51,11 @@ function Group() {
     };
 
     fetchData();
-  }, [page]);
+  }, [page, filter]);
 
   const handleFilterChange = (newFilter) => {
     setFilter(newFilter);
-    setCurrentPage(1);
+    setPage(1);
   };
 
   const handleClick = (event, meetingId) => {
@@ -70,43 +73,47 @@ function Group() {
     handleClose();
   };
 
-  const mockData = {
-    myMeetings: [
-      { id: 1, title: "내가 만든 모임 1", description: "모임 1 설명" },
-      { id: 2, title: "내가 만든 모임 2", description: "모임 2 설명" },
-    ],
-    participating: [
-      { id: 3, title: "참여중인 모임 1", description: "모임 3 설명" },
-      { id: 4, title: "참여중인 모임 2", description: "모임 4 설명" },
-    ],
-    pastMeetings: [
-      { id: 5, title: "지난 모임 1", description: "모임 5 설명" },
-      { id: 6, title: "지난 모임 2", description: "모임 6 설명" },
-    ],
-    likedMeetings: [
-      {
-        id: 7,
-        title: "좋아요 한 모임 1",
-        description: "모임 7 설명",
-        participated: false,
-        myMeeting: false,
-      },
-      {
-        id: 8,
-        title: "좋아요 한 모임 2",
-        description: "모임 8 설명",
-        participated: true,
-        myMeeting: false,
-      },
-      {
-        id: 9,
-        title: "좋아요 한 모임 3",
-        description: "모임 9 설명",
-        participated: false,
-        myMeeting: true,
-      },
-    ],
+  const handlePageChange = (event, value) => {
+    setPage(value);
   };
+
+  // const mockData = {
+  //   myMeetings: [
+  //     { id: 1, title: "내가 만든 모임 1", description: "모임 1 설명" },
+  //     { id: 2, title: "내가 만든 모임 2", description: "모임 2 설명" },
+  //   ],
+  //   participating: [
+  //     { id: 3, title: "참여중인 모임 1", description: "모임 3 설명" },
+  //     { id: 4, title: "참여중인 모임 2", description: "모임 4 설명" },
+  //   ],
+  //   pastMeetings: [
+  //     { id: 5, title: "지난 모임 1", description: "모임 5 설명" },
+  //     { id: 6, title: "지난 모임 2", description: "모임 6 설명" },
+  //   ],
+  //   likedMeetings: [
+  //     {
+  //       id: 7,
+  //       title: "좋아요 한 모임 1",
+  //       description: "모임 7 설명",
+  //       participated: false,
+  //       myMeeting: false,
+  //     },
+  //     {
+  //       id: 8,
+  //       title: "좋아요 한 모임 2",
+  //       description: "모임 8 설명",
+  //       participated: true,
+  //       myMeeting: false,
+  //     },
+  //     {
+  //       id: 9,
+  //       title: "좋아요 한 모임 3",
+  //       description: "모임 9 설명",
+  //       participated: false,
+  //       myMeeting: true,
+  //     },
+  //   ],
+  // };
 
   // const currentData = mockData[filter] || [];
   // const totalPages = Math.ceil(currentData.length / itemsPerPage);
@@ -189,7 +196,7 @@ function Group() {
             onClick={() => handleFilterChange("pastMeetings")}
             className={filter === "pastMeetings" ? "active" : ""}
           >
-            지난 모임
+            지난 참여 모임
           </Button>
           <Button
             onClick={() => handleFilterChange("likedMeetings")}
@@ -231,14 +238,8 @@ function Group() {
                       ? defaultImg
                       : cardItem.group.groupImg
                   }
+                  // recruitText={isRecruiting ? "모집중" : "모집마감"}
                 />
-              </Grid>
-            ))}
-
-            {/* 빈 카드로 레이아웃 채우기 */}
-            {Array.from({ length: 9 - cards.length }).map((_, index) => (
-              <Grid item xs={4} sm={4} md={4} key={`empty-card-${index}`}>
-                <Box className="empty-card">{/* 빈 카드에 들어갈 내용 */}</Box>
               </Grid>
             ))}
           </Grid>
@@ -284,8 +285,33 @@ function Group() {
           )}
         </Box> */}
 
+        <Box className="pagination-box">
+          <Pagination
+            count={totalPages}
+            shape="rounded"
+            page={page}
+            onChange={handlePageChange}
+            sx={{
+              "& .MuiPaginationItem-root": {
+                color: "#7F86EC",
+                fontSize: "1.2rem",
+                minWidth: "48px",
+                minHeight: "48px",
+                padding: "8px",
+              },
+              "& .MuiPaginationItem-root.Mui-selected": {
+                backgroundColor: "#7F86EC",
+                color: "#fff",
+              },
+              "& .MuiPaginationItem-root:hover": {
+                backgroundColor: "rgba(127, 134, 236, 0.1)",
+              },
+            }}
+          />
+        </Box>
+
         {/* 페이지네이션 */}
-        <Box className="pagination">
+        {/* <Box className="pagination">
           <Button
             onClick={() => setCurrentPage((prev) => Math.max(prev - 1, 1))}
             disabled={currentPage === 1}
@@ -301,7 +327,7 @@ function Group() {
           >
             다음
           </Button>
-        </Box>
+        </Box> */}
       </Box>
     </Box>
   );

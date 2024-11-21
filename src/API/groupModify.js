@@ -12,7 +12,7 @@ export const getGroupDetailForModify = async (groupId) => {
     },
     withCredentials: true,
   });
-  return response.data; // 데이터 반환
+  return response; // 데이터 반환
 };
 
 // 모임 수정

@@ -149,64 +149,75 @@ const reviewImgList = [
   }
 };
 
-// /**
-//  * 서버로 그룹에 따른 리뷰 수정 페이지로 이동하는 함수
-//  * @param {string | number} reviewId - 등록할 리뷰 그룹의 ID
-//  * @returns {Promise} 서버에서 반환된 데이터
-//  */
-// export const fetchOpenModifyReveiw = async (reviewId) => {
-//   // 요청 경로 설정
-//   const path = `review/modify/${reviewId}`;
-//   try {
-//     // 요청 보내기
-//     const response = await axiosInstance.get(path);
-//     return response.data; // 데이터 반환
-//   } catch (error) {
-//     console.error(`Failed to open review modify page`, error);
-//     throw error; // 에러 다시 던지기
-//   }
-// };
+/**
+ * 서버로 그룹에 따른 리뷰 수정 페이지로 이동하는 함수
+ * @param {string | number} reviewId - 등록할 리뷰 그룹의 ID
+ * @returns {Promise} 서버에서 반환된 데이터
+ */
+export const fetchOpenModifyReveiw = async (reviewId) => {
+  // 요청 경로 설정
+  const path = API_BASE_URL + `review/modify/${reviewId}`;
+  try {
+    // 요청 보내기
+    const response = await axios.get(path, {
+      headers: {
+        Authorization: `${localStorage.getItem("token")}`,
+      },
+      withCredentials: true,
+    });
+    return response.data; // 데이터 반환
+  } catch (error) {
+    console.error(`Failed to open review modify page`, error);
+    throw error; // 에러 다시 던지기
+  }
+};
 
-// /**
-//  * 서버로 그룹에 따른 리뷰 수정 등록하는 함수
-//  * @param {int} reviewGroupId - 등록할 리뷰 그룹의 ID
-//  * @param {string} reviewTitle - 등록할 리뷰 제목
-//  * @param {string} reviewContent - 등록할 리뷰 내용
-//  * @param {Array} reviewImgList - 등록할 리뷰 이미지URL들
-//  * @returns {Promise} 서버에서 반환된 데이터
-//  */
-// export const fetchModifyReveiw = async ({
-//   reviewGroupId,
-//   reviewTitle,
-//   reviewContent,
-//   reviewImgList = [],
-// }) => {
-//   // 요청 경로 설정
-//   const path = `review/modify/${reviewGroupId}`;
-//   const body = {
-//     reviewGroupId,
-//     reviewTitle,
-//     reviewContent,
-//     reviewImgList: reviewImgList.map((url) => ({ reviewImgUrl: url })),
-//   };
+/**
+ * 서버로 그룹에 따른 리뷰 수정 등록하는 함수
+ * @param {int} reviewGroupId - 등록할 리뷰 그룹의 ID
+ * @param {string} reviewTitle - 등록할 리뷰 제목
+ * @param {string} reviewContent - 등록할 리뷰 내용
+ * @param {Array} reviewImgList - 등록할 리뷰 이미지URL들
+ * @returns {Promise} 서버에서 반환된 데이터
+ */
+export const fetchModifyReveiw = async ({
+  reviewGroupId,
+  reviewId,
+  reviewTitle,
+  reviewContent,
+  reviewImgList = [],
+}) => {
+  // 요청 경로 설정
+  const path = API_BASE_URL + `review/modify/${reviewId}`;
+  const body = {
+    reviewGroupId,
+    reviewTitle,
+    reviewContent,
+    reviewImgList: reviewImgList.map((url) => ({ reviewImgUrl: url })),
+  };
 
-//   /*
-//   const reviewImgList = [
-//     "https://example.com/img1.jpg",
-//     "https://example.com/img2.jpg",
-//     "https://example.com/img3.jpg"
-//   ];
-//     */
+  /*
+  const reviewImgList = [
+    "https://example.com/img1.jpg",
+    "https://example.com/img2.jpg",
+    "https://example.com/img3.jpg"
+  ];
+    */
 
-//   try {
-//     // 요청 보내기
-//     const response = await axiosInstance.put(path, body);
-//     return response.data; // 데이터 반환
-//   } catch (error) {
-//     console.error(`Failed to fetch review modify`, error);
-//     throw error; // 에러 다시 던지기
-//   }
-// };
+  try {
+    // 요청 보내기
+    const response = await axios.put(path, body, {
+      headers: {
+        Authorization: `${localStorage.getItem("token")}`,
+      },
+      withCredentials: true,
+    });
+    return response.status; // 응답 코드 반환
+  } catch (error) {
+    console.error(`Failed to fetch review modify`, error);
+    throw error; // 에러 다시 던지기
+  }
+};
 
 /**************리뷰 상세 페이지 관련 *************/
 /**
@@ -234,49 +245,60 @@ export const fetchReviewDetail = async (reviewId) => {
   }
 };
 
-// /**
-//  * 리뷰 삭제하는 함수
-//  * @param {string | number} reviewId - 삭제할 리뷰 ID
-//  * @returns {Promise} 서버에서 반환된 데이터
-//  */
-// export const fetchRemoveReview = async (reviewId) => {
-//   // 요청 경로 설정
-//   const path = `review/detail/${reviewId}`;
-//   try {
-//     // 요청 보내기
-//     const response = await axiosInstance.delete(path);
-//     return response.data; // 데이터 반환
-//   } catch (error) {
-//     console.error(`Failed to remove review`, error);
-//     throw error; // 에러 다시 던지기
-//   }
-// };
+/**
+ * 리뷰 삭제하는 함수
+ * @param {string | number} reviewId - 삭제할 리뷰 ID
+ * @returns {Promise} 서버에서 반환된 데이터
+ */
+export const fetchRemoveReview = async (reviewId) => {
+  // 요청 경로 설정
+  const path = API_BASE_URL + `review/detail/${reviewId}`;
+  try {
+    // 요청 보내기
+    const response = await axios.delete(path, {
+      headers: {
+        Authorization: `${localStorage.getItem("token")}`,
+      },
+      withCredentials: true,
+    });
+    return response.status; // 데이터 반환
+  } catch (error) {
+    console.error(`Failed to remove review`, error);
+    throw error; // 에러 다시 던지기
+  }
+};
 
-// /**
-//  * 리뷰 댓글 등록
-//  * @param {int} reviewId - 댓글 등록할 리뷰 아이디
-//  * @param {string} commentContent - 댓글 내용
-//  * @returns {Promise} 서버에서 반환된 데이터
-//  */
-// export const fetchRegistReveiwComment = async ({
-//   reviewId,
-//   commentContent,
-// }) => {
-//   // 요청 경로 설정
-//   const path = `review/detail/comment/${reviewId}`;
-//   const param = {
-//     commentContent,
-//   };
+/**
+ * 리뷰 댓글 등록
+ * @param {int} reviewId - 댓글 등록할 리뷰 아이디
+ * @param {string} commentContent - 댓글 내용
+ * @returns {Promise} 서버에서 반환된 데이터
+ */
+export const fetchRegistReveiwComment = async ({
+  reviewId,
+  commentContent,
+}) => {
+  // 요청 경로 설정
+  const path =
+    process.env.REACT_APP_API_BASE_URL + `review/detail/comment/${reviewId}`;
 
-//   try {
-//     // 요청 보내기
-//     const response = await axiosInstance.post(path, param);
-//     return response.data; // 데이터 반환
-//   } catch (error) {
-//     console.error(`Failed to regist review comment`, error);
-//     throw error; // 에러 다시 던지기
-//   }
-// };
+  try {
+    // 요청 보내기
+    const response = await axios.post(path, null, {
+      params: {
+        commentContent: commentContent,
+      },
+      headers: {
+        Authorization: `${localStorage.getItem("token")}`,
+      },
+      withCredentials: true,
+    });
+    return response.status; // 데이터 반환
+  } catch (error) {
+    console.error(`Failed to regist review comment`, error);
+    throw error; // 에러 다시 던지기
+  }
+};
 
 // /**
 //  * 리뷰 댓글 수정
@@ -304,23 +326,30 @@ export const fetchReviewDetail = async (reviewId) => {
 //   }
 // };
 
-// /**
-//  * 리뷰 댓글 삭제하는 함수
-//  * @param {string | number} reviewCommentId - 삭제할 리뷰 댓글 아이디
-//  * @returns {Promise} 서버에서 반환된 데이터
-//  */
-// export const fetchRemoveReviewComment = async (reviewCommentId) => {
-//   // 요청 경로 설정
-//   const path = `review/detail/comment/${reviewCommentId}`;
-//   try {
-//     // 요청 보내기
-//     const response = await axiosInstance.delete(path);
-//     return response.data; // 데이터 반환
-//   } catch (error) {
-//     console.error(`Failed to remove comment`, error);
-//     throw error; // 에러 다시 던지기
-//   }
-// };
+/**
+ * 리뷰 댓글 삭제하는 함수
+ * @param {string | number} reviewCommentId - 삭제할 리뷰 댓글 아이디
+ * @returns {Promise} 서버에서 반환된 데이터
+ */
+export const fetchRemoveReviewComment = async (reviewCommentId) => {
+  // 요청 경로 설정
+  const path =
+    process.env.REACT_APP_API_BASE_URL +
+    `review/detail/comment/${reviewCommentId}`;
+  try {
+    // 요청 보내기
+    const response = await axios.delete(path, null, {
+      headers: {
+        Authorization: `${localStorage.getItem("token")}`,
+      },
+      withCredentials: true,
+    });
+    return response.status; // 데이터 반환
+  } catch (error) {
+    console.error(`Failed to remove comment`, error);
+    throw error; // 에러 다시 던지기
+  }
+};
 
 // /**
 //  * 리뷰 대댓글 등록

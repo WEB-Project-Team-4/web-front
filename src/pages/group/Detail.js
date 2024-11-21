@@ -25,17 +25,13 @@ import CloseIcon from "@mui/icons-material/Close";
 import MoreVertIcon from "@mui/icons-material/MoreVert";
 import defaultImg from "../../img/card_test.jpg";
 
+import DeleteForeverIcon from "@mui/icons-material/DeleteForever";
 import { deleteGroup, fetchGroupDetail } from "../../API/group"; // 추가한 API 함수 import
-import { registComment } from "../../API/groupComment"; // API 요청 함수 import
+import { fetchRemoveGroupComment, registComment } from "../../API/groupComment"; // API 요청 함수 import
 import { registParticipation } from "../../API/groupParticipate";
 import "../../assets/styles/Group.css";
 
 function GroupDetailPage() {
-  localStorage.setItem(
-    "token",
-    "Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ1c2VyMDQiLCJhdXRoIjoiVVNFUiIsImlhdCI6MTczMjA3Njc5NywiZXhwIjoxNzMyOTQwNzk3fQ.CFImWB5J7gERXdYciOkRWa4QaiZOTI7eQ07jUqRxxoA"
-  );
-
   const { groupId } = useParams(); // URL 파라미터에서 groupId 추출
   const navigate = useNavigate();
 
@@ -93,6 +89,16 @@ function GroupDetailPage() {
 
     setIsChange(true);
     setNewComment("");
+  };
+
+  // 댓글 삭제
+  const handleCommentRemove = async (commentId) => {
+    const status = await fetchRemoveGroupComment(commentId, groupId);
+
+    if (status == 409) {
+      alert("자신이 작성한 댓글만 삭제할 수 있습니다.");
+    }
+    setIsChange(true);
   };
 
   // const toggleBookmark = () => {
@@ -397,6 +403,12 @@ function GroupDetailPage() {
               <Typography variant="caption" className="group-comment-date">
                 {formatDate(comment.createdAt)}
               </Typography>
+              <DeleteForeverIcon
+                color="disabled"
+                fontSize="small"
+                sx={{ marginLeft: "10px" }}
+                onClick={() => handleCommentRemove(comment.commentId)}
+              ></DeleteForeverIcon>
             </Box>
           ))}
         </Box>
