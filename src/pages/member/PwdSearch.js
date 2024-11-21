@@ -44,48 +44,49 @@ function PasswordReset() {
       // 성공 응답 처리
       if (response.status === 200) {
         setDialogTitle('성공');
-        setDialogMessage('인증번호가 발송되었습니다.');
+        setDialogMessage('인증되었습니다.');
+        window.location.href = '/member/pwd-modify';
       } else {
         setDialogTitle('오류');
-        setDialogMessage('인증번호 발송에 실패했습니다 : 아이디와 이메일을 확인해주세요.');
+        setDialogMessage('인증에 실패했습니다 : 아이디와 이메일을 확인해주세요.');
       }
     } catch (error) {
-      console.error('인증번호 발송 실패:', error);
+      console.error('인증 실패:', error);
       setDialogTitle('오류');
-      setDialogMessage('인증번호 발송에 실패했습니다 : 아이디와 이메일을 확인해주세요.');
+      setDialogMessage('인증에 실패했습니다 : 아이디와 이메일을 확인해주세요.');
     }
 
     setDialogOpen(true);
   };
 
-  // 인증번호 확인 처리
-  const handleVerifyCode = () => {
-      axios.post(
-        process.env.REACT_APP_API_BASE_URL + 'member/code-confirm',
-        // {"code" : verificationCode},
-        { verificationCode},
-          {
-            withCredentials: true,
-          }
-      )
+  // // 인증번호 확인 처리
+  // const handleVerifyCode = () => {
+  //     axios.post(
+  //       process.env.REACT_APP_API_BASE_URL + 'member/code-confirm',
+  //       // {"code" : verificationCode},
+  //       { verificationCode},
+  //         {
+  //           withCredentials: true,
+  //         }
+  //     )
 
-      // 성공 응답 처리
-      .then((response) => {
-      if (response.status === 200) {
-        handlePasswordModifyRedirect(); // 비밀번호 변경 페이지로 이동
-      } else {
-        setDialogTitle('오류');
-        setDialogMessage('인증번호가 틀렸습니다.');
-        setDialogOpen(true);
-      }
-    })
-     .catch((error)=> {
-      console.error('인증번호 확인 실패:', error);
-      setDialogTitle('오류');
-      setDialogMessage('인증번호가 틀렸습니다.');
-      setDialogOpen(true);
-    });
-  };
+  //     // 성공 응답 처리
+  //     .then((response) => {
+  //     if (response.status === 200) {
+  //       handlePasswordModifyRedirect(); // 비밀번호 변경 페이지로 이동
+  //     } else {
+  //       setDialogTitle('오류');
+  //       setDialogMessage('인증번호가 틀렸습니다.');
+  //       setDialogOpen(true);
+  //     }
+  //   })
+  //    .catch((error)=> {
+  //     console.error('인증번호 확인 실패:', error);
+  //     setDialogTitle('오류');
+  //     setDialogMessage('인증번호가 틀렸습니다.');
+  //     setDialogOpen(true);
+  //   });
+  // };
 
   // 다이얼로그 닫기
   const handleCloseDialog = () => {
@@ -93,9 +94,9 @@ function PasswordReset() {
   };
 
   // 비밀번호 변경 페이지로 리다이렉트
-  const handlePasswordModifyRedirect = () => {
-    window.location.href = '/member/pwd-modify';
-  };
+  // const handlePasswordModifyRedirect = () => {
+  //   window.location.href = '/member/pwd-modify';
+  // };
 
   return (
     <Box className="form-container">
@@ -152,12 +153,12 @@ function PasswordReset() {
           className="button-general-click"
           onClick={handleSendVerificationCode}
         >
-          인증번호 받기
+          인증
         </Button>
       </Box>
 
       {/* 인증번호 입력과 "인증하기" 버튼 */}
-      <Box className="general-form-row">
+      {/* <Box className="general-form-row">
         <Typography variant="body1" className="general-form-label">인증번호</Typography>
         <TextField
           variant="outlined"
@@ -175,7 +176,7 @@ function PasswordReset() {
         >
           인증하기
         </Button>
-      </Box>
+      </Box> */}
 
       {/* 다이얼로그 창 */}
       <Dialog open={dialogOpen} onClose={handleCloseDialog}>

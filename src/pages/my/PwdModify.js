@@ -39,7 +39,11 @@ function PwdModify() {
 
       if (response.status === 200) {
         setSuccessMessage('비밀번호가 성공적으로 변경되었습니다!');
+        localStorage.removeItem("token");
+        window.location.href = '/member/login';
+        alert("비밀번호가 성공적으로 변경되었습니다. 다시 로그인해주세요!")
         setError(''); // 에러 메시지 초기화
+        
       }
     } catch (error) {
       console.error(error);
@@ -115,7 +119,7 @@ function PwdModify() {
       </Button>
 
       {/* 로그인 페이지로 이동 버튼 */}
-      <Button
+      {/* <Button
         variant="outlined"
         color="secondary"
         fullWidth
@@ -123,7 +127,7 @@ function PwdModify() {
         className="button-general2"
       >
         로그인 페이지로 가기
-      </Button>
+      </Button> */}
     </Box>
   );
 }
