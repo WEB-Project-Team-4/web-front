@@ -95,7 +95,7 @@ function Register() {
 
     setDialogMessage("회원가입이 완료되었습니다!");
     setOpenDialog(true);
-    navigate('/member/login')
+    navigate("/member/login");
 
     if (!isFormValid) {
       setDialogMessage("모든 인증과정을 거쳐야 합니다.");
@@ -113,11 +113,14 @@ function Register() {
       email: email,
       favCategoryId: category || 900, // 선택하지 않았을 경우 0
       profileUrl: profilePicture ? profilePicture : "default url", // 프로필 사진이 있으면 해당 사진을, 없으면 디폴트 URL로 설정
-};
+    };
 
     //회원가입 버튼 axios 추가
     axios
-      .post(process.env.REACT_APP_API_BASE_URL + "register/register-confirm", data)
+      .post(
+        process.env.REACT_APP_API_BASE_URL + "register/register-confirm",
+        data
+      )
       .then((response) => {
         if (response.status === 200) {
           setDialogMessage("회원가입이 완료되었습니다!");
@@ -131,8 +134,6 @@ function Register() {
         setOpenDialog(true);
         console.error("회원가입 오류:", error);
       });
-
-
   };
 
   const handleUsernameCheck = () => {
@@ -284,10 +285,9 @@ function Register() {
         }
       })
       .catch((error) => {
-
         //! 되살려야하는 부분
-        console.error('인증번호 발송 실패:', error); // 에러 로그 추가
-        setDialogMessage('인증번호 발송에 실패했습니다.');
+        console.error("인증번호 발송 실패:", error); // 에러 로그 추가
+        setDialogMessage("인증번호 발송에 실패했습니다.");
       })
       .finally(() => {
         setOpenDialog(true);
@@ -301,39 +301,39 @@ function Register() {
       return;
     }
 
-      // 인증번호 확인 요청
+    // 인증번호 확인 요청
     axios
-    .post(
-      process.env.REACT_APP_API_BASE_URL + "register/certi-check",
-      { certiNum },
-      {
-        withCredentials: true,
-      }
-    )
-    .then((response) => {
-      if (response.status === 200) {
-        // 인증 성공
-        setDialogMessage("인증이 완료되었습니다.");
-        setVerificationError(""); // 오류 메시지 초기화
-        setIsEmailVerified(true); // 인증 상태 업데이트
+      .post(
+        process.env.REACT_APP_API_BASE_URL + "register/certi-check",
+        { certiNum },
+        {
+          withCredentials: true,
+        }
+      )
+      .then((response) => {
+        if (response.status === 200) {
+          // 인증 성공
+          setDialogMessage("인증이 완료되었습니다.");
+          setVerificationError(""); // 오류 메시지 초기화
+          setIsEmailVerified(true); // 인증 상태 업데이트
+          setOpenDialog(true); // 다이얼로그 열기
+          // 인증 완료 후 폼 유효성 체크
+          setIsFormValid(
+            username &&
+              nickname &&
+              email &&
+              certiNum &&
+              verificationError === "" &&
+              isUsernameAvailable && // 아이디 중복 확인 상태 유지
+              isNicknameAvailable // 닉네임 중복 확인 상태 유지
+          );
+        }
+      })
+      .catch((error) => {
+        setVerificationError("인증번호가 잘못되었습니다."); // 오류 메시지 설정
+        setDialogMessage("인증번호 확인에 실패했습니다.");
         setOpenDialog(true); // 다이얼로그 열기
-        // 인증 완료 후 폼 유효성 체크
-        setIsFormValid(
-          username &&
-            nickname &&
-            email &&
-            certiNum &&
-            verificationError === "" &&
-            isUsernameAvailable && // 아이디 중복 확인 상태 유지
-            isNicknameAvailable // 닉네임 중복 확인 상태 유지
-        );
-      }
-    })
-    .catch((error) => {
-      setVerificationError("인증번호가 잘못되었습니다."); // 오류 메시지 설정
-      setDialogMessage("인증번호 확인에 실패했습니다.");
-      setOpenDialog(true); // 다이얼로그 열기
-    });
+      });
   };
 
   // 프로필 사진 업로드 핸들러
@@ -591,7 +591,7 @@ function Register() {
           <Select
             labelId="category-label"
             value={category || 900} // 선택하지 않았을 경우 900을 기본값으로 설정
-            onChange={(e) => setCategory(Number(e.target.value))}  // 선택된 값을 숫자로 변환
+            onChange={(e) => setCategory(Number(e.target.value))} // 선택된 값을 숫자로 변환
           >
             <MenuItem value={100}>스터디</MenuItem>
             <MenuItem value={200}>스포츠</MenuItem>
@@ -599,7 +599,6 @@ function Register() {
             <MenuItem value={400}>기타</MenuItem>
           </Select>
         </FormControl>
-
       </Box>
 
       {/* 프로필 사진 업로드 

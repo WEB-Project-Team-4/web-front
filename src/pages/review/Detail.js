@@ -106,7 +106,6 @@ function Detail() {
 
   const handleReviewRemove = async (reviewCommentId) => {
     const status = await fetchRemoveReviewComment(reviewCommentId);
-
     setIsChange(true);
   };
 

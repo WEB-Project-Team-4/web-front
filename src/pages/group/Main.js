@@ -297,6 +297,8 @@ function Main() {
                     : cardItem.group.groupImg
                 }
                 recruitText={isRecruiting ? "모집중" : "모집마감"}
+                curBookMark={cardItem.isCurUserFavorite === "Y" ? true : false}
+                groupId={cardItem.group.groupId}
               />
             </Grid>
           ))}

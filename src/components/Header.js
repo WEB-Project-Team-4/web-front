@@ -7,6 +7,7 @@ import { UserContext } from "../context/UserContext";
 import Logo from "../img/Logo.png"; // 상대 경로로 이미지 불러오기
 import { Box, Menu, MenuItem, Typography } from "@mui/material"; // Menu와 MenuItem 추가
 import NotificationsIcon from "@mui/icons-material/Notifications"; // 알람 아이콘 추가
+import { useNavigate } from "react-router-dom";
 
 function Header() {
   const [anchorEl, setAnchorEl] = useState(null); // 메뉴 열기/닫기 상태 관리
@@ -38,12 +39,12 @@ function Header() {
 
   // 로그인 클릭 시 호출되는 함수
   const handleLoginClick = () => {
-    window.location.href = "http://localhost:3000/member/login";
+    window.location.pathname = "/member/login";
   };
 
   // 마이페이지 클릭 시 호출되는 함수
   const handleMyClick = () => {
-    window.location.href = "http://localhost:3000/my/Group";
+    window.location.pathname = "/my/Group";
   };
 
   // 로그아웃 처리
@@ -51,22 +52,22 @@ function Header() {
     logout(); // 로그아웃 함수 호출
     localStorage.removeItem("token");
     setAnchorEl(null); // 메뉴 닫기
-    window.location.href = "/"; // 메인 페이지로 이동
+    window.location.pathname = "/"; // 메인 페이지로 이동
   };
 
   // 로고 클릭 시 메인 페이지로 이동
   const handleLogoClick = () => {
-    window.location.href = "http://localhost:3000/";
+    window.location.pathname = "/";
   };
 
   // 각 항목 클릭 시 해당 페이지로 이동
   const handleNavigation = (page) => {
     if (page === "모임찾기") {
-      window.location.href = "http://localhost:3000/";
+      window.location.pathname = "/";
     } else if (page === "모임후기") {
-      window.location.href = "http://localhost:3000/review/main";
+      window.location.pathname = "/review/main";
     } else if (page === "모임등록") {
-      window.location.href = "http://localhost:3000/group/regist";
+      window.location.pathname = "/group/regist";
     }
   };
 

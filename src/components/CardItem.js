@@ -10,6 +10,7 @@ import PeopleIcon from "@mui/icons-material/People";
 import ChatBubbleOutlineIcon from "@mui/icons-material/ChatBubbleOutline";
 import Divider from "@mui/material/Divider";
 import { Typography, Box } from "@mui/material";
+import { likeGroup, unlikeGroup } from "../API/group";
 
 function CardItem({
   to,
@@ -23,12 +24,33 @@ function CardItem({
   imageUrl,
   icon,
   recruitText,
+  curBookMark,
+  groupId = 0,
 }) {
-  const [isBookmarked, setIsBookmarked] = useState(false);
+  const [isBookmarked, setIsBookmarked] = useState(curBookMark);
 
-  const toggleBookmark = (e) => {
+  const toggleBookmark = async (e) => {
     e.preventDefault(); // 링크 이동 방지
     e.stopPropagation(); // 이벤트 전파 방지
+
+    if (groupId !== 0 && isBookmarked) {
+      // true였을 경우, 좋아요 취소 api 호출
+      const response = await unlikeGroup(groupId);
+      if (response == 200) {
+        alert("좋아요가 해제되었습니다.");
+      } else if (response == 405) {
+        alert("로그인 후 이용 가능합니다.");
+      }
+    } else if (groupId !== 0 && !isBookmarked) {
+      // false였을 경우, 좋아요 등록 api 호출
+      const response = await likeGroup(groupId);
+      if (response == 200) {
+        alert("좋아요가 등록되었습니다.");
+      } else if (response == 405) {
+        alert("로그인 후 이용 가능합니다.");
+      }
+    }
+
     setIsBookmarked(!isBookmarked);
   };
 
@@ -45,8 +67,8 @@ function CardItem({
             fontSize: "2rem",
             color: "#000000",
             position: "absolute",
-            top: "8px",
-            left: "17px",
+            top: "4px",
+            left: "4px",
             cursor: "pointer",
             zIndex: 2,
           }}
@@ -60,8 +82,8 @@ function CardItem({
             color: isBookmarked ? "#FFD700" : "transparent",
             position: "absolute",
             // 위치 맞추기 용
-            top: "4px",
-            left: "4px",
+            top: "3px",
+            left: "2px",
             zIndex: 1,
           }}
         />
