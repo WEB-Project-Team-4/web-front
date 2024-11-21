@@ -50,8 +50,6 @@ function Main() {
         setLoading(false);
       }
     };
-    console.log(region);
-    console.log(subRegion);
     fetchData();
   }, [activeLink, region, subRegion, page, searchQuery]);
 
@@ -254,7 +252,7 @@ function Main() {
                 <Box className="review-card">
                   <Box className="review-card-content">
                     <Typography className="review-card-title">
-                      {review.reviewTitle} {review.reviewId}
+                      {review.reviewTitle} 
                     </Typography>
                     <Typography className="review-card-description">
                       {review.reviewContent.replace(/<[^>]+>/g, '')}
