@@ -67,6 +67,12 @@ function Header() {
     } else if (page === "모임후기") {
       window.location.pathname = "/review/main";
     } else if (page === "모임등록") {
+      const token = localStorage.getItem("token");
+
+    if (!token) {
+    alert("로그인이 필요합니다."); // 혹은 다른 안내 메시지
+    return; // Token이 없으므로 함수 실행 중단
+    }
       window.location.pathname = "/group/regist";
     }
   };
