@@ -16,6 +16,7 @@ function Modify() {
   const location = useLocation();
   const navigate = useNavigate();
   const editorRef = useRef(null);
+  const [selectedImage, setSelectedImage] = useState(null);
 
   const [reviewData, setReviewData] = useState({
     reviewGroupId: 0,
@@ -66,17 +67,14 @@ function Modify() {
         window.$(editorRef.current).summernote("destroy");
       }
     };
-    // }, [location.search]);
   }, []);
 
-  // const fetchReviewData = (id) => {
-  //   setReviewData({
-  //     id,
-  //     title: `후기 제목 ${id}`,
-  //     content: `후기 내용 ${id}`,
-  //     relatedMeeting: "예시 모임 이름",
-  //   });
-  // };
+  const handleFileChange = (e) => {
+    const file = e.target.files[0];
+    if (file) {
+      setSelectedImage(file);
+    }
+  };
 
   const handleUpdate = async () => {
     try {
@@ -177,7 +175,33 @@ function Modify() {
           dangerouslySetInnerHTML={{ __html: reviewData.content }}
         ></div>
       </Box>
+      {/* 이미지 첨부 섹션 */}
+      <Box className="group-grid-item" sx={{ marginTop: "20px" }}>
+        <label htmlFor="image-upload" style={{ marginRight: "10px" }}>
+          대표 이미지:
+        </label>
+        <input
+          id="image-upload"
+          type="file"
+          accept="image/*"
+          onChange={handleFileChange}
+        />
+      </Box>
 
+      {/* 첨부된 이미지 미리보기 */}
+      {selectedImage && (
+        <Box
+          sx={{
+            marginTop: "20px",
+            width: "100px",
+            height: "100px",
+            backgroundImage: `url(${URL.createObjectURL(selectedImage)})`,
+            backgroundSize: "cover",
+            backgroundPosition: "center",
+            borderRadius: "10px",
+          }}
+        />
+      )}
       {/* 작성 중인 모임 정보 */}
       <Typography variant="subtitle1" className="review-meeting-info">
         작성 중인 모임: {reviewData.relatedMeeting}

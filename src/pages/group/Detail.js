@@ -63,7 +63,8 @@ function GroupDetailPage() {
         setIsChange(false);
       } catch (error) {
         console.error("Failed to load group detail:", error);
-        navigate("/error"); // 에러 발생 시 에러 페이지로 이동
+        alert("해당 페이지가 삭제되었거나, 찾을 수 없습니다.")
+        navigate("/"); // 에러 발생 시 에러 페이지로 이동
       }
     };
 
