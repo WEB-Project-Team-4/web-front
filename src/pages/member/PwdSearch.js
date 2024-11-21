@@ -1,22 +1,100 @@
-// src/pages/member/PasswordReset.js
 import React, { useState } from 'react';
-import { Box, TextField, Button, Typography, MenuItem, Select, InputAdornment } from '@mui/material';
+import {
+  Box,
+  TextField,
+  Button,
+  Typography,
+  MenuItem,
+  Select,
+  InputAdornment,
+  Dialog,
+  DialogTitle,
+  DialogContent,
+} from '@mui/material';
+import axios from 'axios';
 import '../../assets/styles/Member.css';
 
 function PasswordReset() {
+  const [id, setId] = useState('');
+  const [emailLocal, setEmailLocal] = useState('');
   const [emailDomain, setEmailDomain] = useState('');
+  const [verificationCode, setVerificationCode] = useState('');
+  const [dialogOpen, setDialogOpen] = useState(false);
+  const [dialogMessage, setDialogMessage] = useState('');
+  const [dialogTitle, setDialogTitle] = useState('');
 
+  // 이메일 도메인 변경 처리
   const handleDomainChange = (event) => {
     setEmailDomain(event.target.value);
   };
 
-  const handlePasswordModifyRedirect = () => {
-    window.location.href = '/member/pwd-modify';
+  // 인증번호 받기 처리
+  const handleSendVerificationCode = async () => {
+    const email = `${emailLocal}${emailDomain}`;
+
+    try {
+      const response = await axios.post(
+        process.env.REACT_APP_API_BASE_URL + 'member/send-code',
+        {
+          id: id,
+          email: email,
+        }
+      );
+
+      // 성공 응답 처리
+      if (response.status === 200) {
+        setDialogTitle('성공');
+        setDialogMessage('인증번호가 발송되었습니다.');
+      } else {
+        setDialogTitle('오류');
+        setDialogMessage('인증번호 발송에 실패했습니다 : 아이디와 이메일을 확인해주세요.');
+      }
+    } catch (error) {
+      console.error('인증번호 발송 실패:', error);
+      setDialogTitle('오류');
+      setDialogMessage('인증번호 발송에 실패했습니다 : 아이디와 이메일을 확인해주세요.');
+    }
+
+    setDialogOpen(true);
   };
 
-//   만들어야 할 요소 : 회원가입 누를경우 회원가입 후 로그인으로 이동
-  const handleRegisterRedirect = () => {
-    window.location.href = '/member/login';
+  // 인증번호 확인 처리
+  const handleVerifyCode = () => {
+      axios.post(
+        process.env.REACT_APP_API_BASE_URL + 'member/code-confirm',
+        // {"code" : verificationCode},
+        { verificationCode},
+          {
+            withCredentials: true,
+          }
+      )
+
+      // 성공 응답 처리
+      .then((response) => {
+      if (response.status === 200) {
+        handlePasswordModifyRedirect(); // 비밀번호 변경 페이지로 이동
+      } else {
+        setDialogTitle('오류');
+        setDialogMessage('인증번호가 틀렸습니다.');
+        setDialogOpen(true);
+      }
+    })
+     .catch((error)=> {
+      console.error('인증번호 확인 실패:', error);
+      setDialogTitle('오류');
+      setDialogMessage('인증번호가 틀렸습니다.');
+      setDialogOpen(true);
+    });
+  };
+
+  // 다이얼로그 닫기
+  const handleCloseDialog = () => {
+    setDialogOpen(false);
+  };
+
+  // 비밀번호 변경 페이지로 리다이렉트
+  const handlePasswordModifyRedirect = () => {
+    window.location.href = '/member/pwd-modify';
   };
 
   return (
@@ -34,6 +112,8 @@ function PasswordReset() {
           fullWidth
           margin="normal"
           className="general-form-input"
+          value={id}
+          onChange={(e) => setId(e.target.value)}
         />
       </Box>
 
@@ -46,6 +126,8 @@ function PasswordReset() {
           fullWidth
           margin="normal"
           className="general-form-input"
+          value={emailLocal}
+          onChange={(e) => setEmailLocal(e.target.value)}
           InputProps={{
             endAdornment: (
               <InputAdornment position="end">
@@ -59,7 +141,7 @@ function PasswordReset() {
                   <MenuItem value="">직접 입력</MenuItem>
                   <MenuItem value="@gmail.com">@gmail.com</MenuItem>
                   <MenuItem value="@naver.com">@naver.com</MenuItem>
-                  <MenuItem value="@daum.net">daum.net</MenuItem>
+                  <MenuItem value="@daum.net">@daum.net</MenuItem>
                 </Select>
               </InputAdornment>
             ),
@@ -68,6 +150,7 @@ function PasswordReset() {
         <Button
           variant="outlined"
           className="button-general-click"
+          onClick={handleSendVerificationCode}
         >
           인증번호 받기
         </Button>
@@ -82,28 +165,25 @@ function PasswordReset() {
           fullWidth
           margin="normal"
           className="general-form-input"
+          value={verificationCode}
+          onChange={(e) => setVerificationCode(e.target.value)}
         />
         <Button
           variant="outlined"
           className="button-general-click"
+          onClick={handleVerifyCode}
         >
           인증하기
         </Button>
       </Box>
 
-      {/* 비밀번호 변경 버튼 */}
-
-
-    
-      <Button
-        variant="outlined"
-        // fullWidth
-        className="button-general"
-        onClick={handlePasswordModifyRedirect}
-      >
-        비밀번호 변경하기
-      </Button>
-
+      {/* 다이얼로그 창 */}
+      <Dialog open={dialogOpen} onClose={handleCloseDialog}>
+        <DialogTitle>{dialogTitle}</DialogTitle>
+        <DialogContent>
+          <Typography>{dialogMessage}</Typography>
+        </DialogContent>
+      </Dialog>
     </Box>
   );
 }
