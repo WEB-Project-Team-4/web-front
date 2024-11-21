@@ -7,7 +7,6 @@ import '../../assets/styles/Member.css';
 import '../../assets/styles/General.css';
 
 function PasswordChange() {
-  const [currentPassword, setCurrentPassword] = useState('');
   const [newPassword, setNewPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
   const [error, setError] = useState('');
@@ -16,6 +15,7 @@ function PasswordChange() {
   
   const token = localStorage.getItem('token'); // localStorage에서 토큰 가져오기
 
+  // 비밀번호 변경 처리
   const handlePasswordChange = async () => {
     if (!newPassword || !confirmPassword) {
       setError('모든 필드를 입력해주세요.');
@@ -28,18 +28,19 @@ function PasswordChange() {
     }
 
     try {
-      // axios로 비밀번호 변경 요청
+      // 비밀번호 변경 요청
       const response = await axios.post(
-        process.env.REACT_APP_API_BASE_URL + 'member/pwd-modify', // 백엔드 URL
-        { newPassword }, // 새 비밀번호 전송
-        {
-          headers: {
-            Authorization: `${token}`, // Authorization 헤더에 토큰 포함
-          },
-        }
+        process.env.REACT_APP_API_BASE_URL + 'member/pwd-reset', // 백엔드 URL
+        { password: newPassword }, // 새 비밀번호 전송
+        // {
+        //   headers: {
+        //     Authorization: `${token}`, // Authorization 헤더에 토큰 포함
+        //   },
+        // }
       );
 
       if (response.status === 200) {
+        // 비밀번호 변경 완료 시 알림 및 페이지 이동
         alert('비밀번호가 변경되었습니다!');
         window.location.href = '/member/login'; // 로그인 페이지로 이동
       }
@@ -54,14 +55,6 @@ function PasswordChange() {
       <Typography variant="h5" component="h1" className="general-form-title">
         비밀번호 변경
       </Typography>
-
-      {/* 아이디 표시 */}
-      <Box className="general-form-row">
-        <Typography variant="body1" className="general-form-label">아이디</Typography>
-        <Typography variant="body2" className="general-form-id">
-          {currentPassword} {/* 사용자의 아이디 또는 다른 정보를 표시할 수 있습니다. */}
-        </Typography>
-      </Box>
 
       {/* 새 비밀번호 입력 */}
       <Box className="general-form-row">
@@ -120,6 +113,13 @@ function PasswordChange() {
           }}
         />
       </Box>
+
+      {/* 비밀번호 일치 여부 체크 */}
+      {newPassword !== confirmPassword && confirmPassword && (
+        <Typography color="error" variant="body2" className="error-message">
+          비밀번호 확인과 일치하지 않습니다.
+        </Typography>
+      )}
 
       {/* 에러 메시지 */}
       {error && (

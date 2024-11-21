@@ -111,20 +111,15 @@ export const fetchOpenRegistReveiw = async (groupId) => {
  * @param {Array} reviewImgList - 등록할 리뷰 이미지URL들
  * @returns {Promise} 서버에서 반환된 데이터
  */
-export const fetchRegistReveiw = async ({
-  reviewGroupId,
-  reviewTitle,
-  reviewContent,
-  reviewImgList = [],
-}) => {
+export const fetchRegistReveiw = async (formData, reviewGroupId) => {
   // 요청 경로 설정
   const path = API_BASE_URL + `review/regist/${reviewGroupId}`;
-  const body = {
-    reviewGroupId,
-    reviewTitle,
-    reviewContent,
-    reviewImgList: reviewImgList.map((url) => ({ reviewImgUrl: url })),
-  };
+  // const body = {
+  //   reviewGroupId,
+  //   reviewTitle,
+  //   reviewContent,
+  //   reviewImgList: reviewImgList.map((url) => ({ reviewImgUrl: url })),
+  // };
 
   /*
 const reviewImgList = [
@@ -133,12 +128,12 @@ const reviewImgList = [
   "https://example.com/img3.jpg"
 ];
   */
-  console.log(body);
   try {
     // 요청 보내기
-    const response = await axios.post(path, body, {
+    const response = await axios.post(path, formData, {
       headers: {
         Authorization: `${localStorage.getItem("token")}`,
+        "Content-Type": "multipart/form-data",
       },
       withCredentials: true,
     });
@@ -180,35 +175,18 @@ export const fetchOpenModifyReveiw = async (reviewId) => {
  * @param {Array} reviewImgList - 등록할 리뷰 이미지URL들
  * @returns {Promise} 서버에서 반환된 데이터
  */
-export const fetchModifyReveiw = async ({
-  reviewGroupId,
-  reviewId,
-  reviewTitle,
-  reviewContent,
-  reviewImgList = [],
-}) => {
+export const fetchModifyReveiw = async (
+  formData, reviewGroupId
+) => {
   // 요청 경로 설정
-  const path = API_BASE_URL + `review/modify/${reviewId}`;
-  const body = {
-    reviewGroupId,
-    reviewTitle,
-    reviewContent,
-    reviewImgList: reviewImgList.map((url) => ({ reviewImgUrl: url })),
-  };
-
-  /*
-  const reviewImgList = [
-    "https://example.com/img1.jpg",
-    "https://example.com/img2.jpg",
-    "https://example.com/img3.jpg"
-  ];
-    */
+  const path = API_BASE_URL + `review/modify/${reviewGroupId}`;
 
   try {
     // 요청 보내기
-    const response = await axios.put(path, body, {
+    const response = await axios.put(path, formData, {
       headers: {
         Authorization: `${localStorage.getItem("token")}`,
+        "Content-Type": "multipart/form-data",
       },
       withCredentials: true,
     });

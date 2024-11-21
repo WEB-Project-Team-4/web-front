@@ -1,5 +1,6 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useContext } from "react";
 import { useParams, useNavigate } from "react-router-dom";
+import { UserContext } from "../../context/UserContext";
 import {
   Box,
   Typography,
@@ -36,6 +37,7 @@ function Detail() {
   const [anchorEl, setAnchorEl] = useState(null);
   const [anchorElComment, setAnchorElComment] = useState(null);
   const [isChange, setIsChange] = useState(false);
+  const { user } = useContext(UserContext);
 
   // const loggedInUserId = "현재 사용자"; // 더미 데이터 (로그인된 사용자 ID)
 
@@ -70,22 +72,6 @@ function Detail() {
       commentContent: newComment,
     });
 
-    // const newCommentObj = {
-    //   author: "현재 사용자",
-    //   content: newComment,
-    //   createdAt: new Date().toLocaleString(),
-    // };
-    // setComments([...comments, newCommentObj]);
-
-    // const newCommentObj = {
-    //   author: loggedInUserId,
-    //   content: newComment,
-    //   createdAt: new Date().toISOString(),
-    // };
-    // setReview((prevReview) => ({
-    //   ...prevReview,
-    //   reviewCommentList: [...prevReview.reviewCommentList, newCommentObj],
-    // }));
 
     setIsChange(true);
     setNewComment("");
@@ -108,6 +94,12 @@ function Detail() {
     const status = await fetchRemoveReviewComment(reviewCommentId);
     setIsChange(true);
   };
+  const handleNavigationGroup = () => {
+    navigate(`/group/detail/${review.reviewGroup.groupVo.groupId}`);
+  };
+  const handleNavigationRec = () => {
+    navigate(`/group/detail/${review.reviewRecGroup.groupVo.groupId}`);
+  };
 
   const handleDeleteReview = async () => {
     try {
@@ -122,8 +114,7 @@ function Detail() {
       navigate("/error");
     }
 
-    // console.log("삭제된 리뷰 ID:", reviewData.id);
-    // navigate("/my/review"); // 삭제 후 내 리뷰 목록 페이지로 이동
+ 
   };
 
   const formatDate = (dateString) => {
@@ -149,14 +140,11 @@ function Detail() {
     <Box className="review-detail">
       <Typography variant="h5" className="review-title">
         {review.reviewTitle}{" "}
-        {/* {review.reviewWriterId === loggedInUserId && (
+        {review.reviewWriterId === user.id && (
           <IconButton onClick={handleMenuClick}>
             <MoreVertIcon />
           </IconButton>
-        )} */}
-        <IconButton onClick={handleMenuClick}>
-          <MoreVertIcon />
-        </IconButton>
+        )}
       </Typography>
       <Menu
         anchorEl={anchorEl}
@@ -194,7 +182,7 @@ function Detail() {
       <div className="review-detail-image-container">
         <img
           className="review-detail-image"
-          src="https://via.placeholder.com/1920x1080"
+          src={review.reviewImgUrl}
           alt="Review Detail"
         />
       </div>
@@ -233,13 +221,13 @@ function Detail() {
           <Typography
             variant="h5"
             className="review-detail-navigation-title"
-            onClick={() => navigate("/group/detail/1")}
+            onClick={() => navigate(`/group/detail/${review.reviewGroup.groupVo.groupId}`)}
             style={{ cursor: "pointer" }}
           >
             모임 바로가기 {">"}{" "}
           </Typography>
           <Card className="review-detail-navigation-card">
-            <CardActionArea href="/group/detail/1">
+            <CardActionArea onClick={handleNavigationGroup}>
               <CardContent>
                 <Typography className="review-detail-navigation-category">
                   {review.reviewGroup.categoryName}
@@ -271,22 +259,22 @@ function Detail() {
           <Typography
             variant="h6"
             className="review-detail-navigation-title"
-            onClick={() => navigate("/category/sports")}
+            onClick={() => navigate(`/group/detail/${review.reviewRecGroup.groupVo.groupId}`)}
             style={{ cursor: "pointer" }}
           >
-            스포츠 카테고리 모임 보러가기 {">"}{" "}
+            {review.reviewRecGroup.categoryName} 카테고리 모임 보러가기 {">"}{" "}
           </Typography>
           <Card className="review-detail-navigation-card">
-            <CardActionArea href="/category/sports">
+            <CardActionArea  onClick={handleNavigationRec}>
               <CardContent>
                 <Typography className="review-detail-navigation-category">
-                  스포츠
+                {review.reviewRecGroup.categoryName}
                 </Typography>
                 <Typography className="review-detail-navigation-cardtitle">
-                  건대와 함께하는 달리기
+                {review.reviewRecGroup.groupVo.groupName}
                 </Typography>
                 <Typography className="review-detail-navigation-subtitle">
-                  건대의 달리기와 함께 새벽을~
+                {review.reviewRecGroup.groupVo.introText}
                 </Typography>
                 <Box
                   display="flex"
@@ -294,7 +282,7 @@ function Detail() {
                   justifyContent="flex-end"
                 >
                   <Avatar sx={{ width: 20, height: 20, mr: 1 }}>👤</Avatar>
-                  <Typography>참가자 5/10</Typography>
+                  <Typography>참가자 {review.reviewRecGroup.groupVo.participationCount}/{review.reviewRecGroup.groupVo.groupLimit}</Typography>
                 </Box>
               </CardContent>
             </CardActionArea>

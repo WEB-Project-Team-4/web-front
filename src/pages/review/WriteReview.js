@@ -76,15 +76,26 @@ function WriteReview() {
 
       // FormData 생성 및 데이터 추가
       const formData = new FormData();
-      formData.append("reviewGroupId", groupId); // 그룹 ID
-      formData.append("reviewTitle", title); // 제목
-      formData.append("reviewContent", content); // 내용
+      // formData.append("reviewGroupId", groupId); // 그룹 ID
+      // formData.append("reviewTitle", title); // 제목
+      // formData.append("reviewContent", content); // 내용
       if (selectedImage) {
         formData.append("reviewImg", selectedImage); // 첨부된 이미지
       }
 
+      const params = {
+        reviewGroupId: groupId,
+        reviewTitle: title,
+        reviewContent: content
+      }
+
+      formData.append(
+        "reviewDTO",
+        new Blob([JSON.stringify(params)], { type: "application/json" })
+      );
+
       // API 호출
-      await fetchRegistReveiw(formData);
+      await fetchRegistReveiw(formData, groupId);
 
       console.log("리뷰 등록 성공");
       navigate(`/review/main`);
