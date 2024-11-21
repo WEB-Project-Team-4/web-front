@@ -98,8 +98,13 @@ function GroupDetailPage() {
   };
 
   // 댓글 삭제
-  const handleCommentRemove = async (commentId) => {
-    const status = await fetchRemoveGroupComment(commentId, groupId);
+  const handleCommentRemove = async (commentId, commentWriterId) => {
+    console.log(commentWriterId);
+    const status = await fetchRemoveGroupComment(
+      commentId,
+      groupId,
+      commentWriterId
+    );
 
     if (status == 409) {
       alert("자신이 작성한 댓글만 삭제할 수 있습니다.");
@@ -235,10 +240,22 @@ function GroupDetailPage() {
               variant="caption"
               className="group-header-end-date-padding"
             >
-              마감일시 {formatDate(groupDetail.closeDate)}
+              {/* 마감일시 */}
+              {/* {formatDate(groupDetail.closeDate)} */}
+              {"마감일시" +
+                " " +
+                new Date(groupDetail.closeDate)
+                  .toISOString()
+                  .slice(0, 16)
+                  .split("T")[0] +
+                " " +
+                new Date(groupDetail.closeDate)
+                  .toISOString()
+                  .slice(0, 16)
+                  .split("T")[1]}
             </Typography>
           )}
-          <Box className="group-recruitingBox">모집중</Box>
+          {/* <Box className="group-recruitingBox">모집중</Box> */}
           <IconButton onClick={handleMenuClick}>
             <MoreVertIcon />
           </IconButton>
@@ -284,7 +301,16 @@ function GroupDetailPage() {
                     variant="body4 caption"
                     sx={{ color: "#909090", marginLeft: "10px" }}
                   >
-                    {formatDate(groupDetail.groupDate)}
+                    {/* {formatDate(groupDetail.groupDate)} */}
+                    {new Date(groupDetail.groupDate)
+                      .toISOString()
+                      .slice(0, 16)
+                      .split("T")[0] +
+                      " " +
+                      new Date(groupDetail.groupDate)
+                        .toISOString()
+                        .slice(0, 16)
+                        .split("T")[1]}
                   </Typography>
                 </Box>
               </Box>
@@ -443,7 +469,9 @@ function GroupDetailPage() {
                 color="disabled"
                 fontSize="small"
                 sx={{ marginLeft: "10px" }}
-                onClick={() => handleCommentRemove(comment.commentId)}
+                onClick={() =>
+                  handleCommentRemove(comment.commentId, comment.id)
+                }
               ></DeleteForeverIcon>
             </Box>
           ))}

@@ -72,7 +72,6 @@ function Detail() {
       commentContent: newComment,
     });
 
-
     setIsChange(true);
     setNewComment("");
   };
@@ -113,8 +112,6 @@ function Detail() {
       console.error("리뷰 삭제 실패:", error);
       navigate("/error");
     }
-
- 
   };
 
   const formatDate = (dateString) => {
@@ -221,7 +218,9 @@ function Detail() {
           <Typography
             variant="h5"
             className="review-detail-navigation-title"
-            onClick={() => navigate(`/group/detail/${review.reviewGroup.groupVo.groupId}`)}
+            onClick={() =>
+              navigate(`/group/detail/${review.reviewGroup.groupVo.groupId}`)
+            }
             style={{ cursor: "pointer" }}
           >
             모임 바로가기 {">"}{" "}
@@ -255,39 +254,48 @@ function Detail() {
         </Box>
 
         {/* 스포츠 카테고리 모임 더 보러가기 */}
-        <Box className="review-detail-more-category">
-          <Typography
-            variant="h6"
-            className="review-detail-navigation-title"
-            onClick={() => navigate(`/group/detail/${review.reviewRecGroup.groupVo.groupId}`)}
-            style={{ cursor: "pointer" }}
-          >
-            {review.reviewRecGroup.categoryName} 카테고리 모임 보러가기 {">"}{" "}
-          </Typography>
-          <Card className="review-detail-navigation-card">
-            <CardActionArea  onClick={handleNavigationRec}>
-              <CardContent>
-                <Typography className="review-detail-navigation-category">
-                {review.reviewRecGroup.categoryName}
-                </Typography>
-                <Typography className="review-detail-navigation-cardtitle">
-                {review.reviewRecGroup.groupVo.groupName}
-                </Typography>
-                <Typography className="review-detail-navigation-subtitle">
-                {review.reviewRecGroup.groupVo.introText}
-                </Typography>
-                <Box
-                  display="flex"
-                  alignItems="center"
-                  justifyContent="flex-end"
-                >
-                  <Avatar sx={{ width: 20, height: 20, mr: 1 }}>👤</Avatar>
-                  <Typography>참가자 {review.reviewRecGroup.groupVo.participationCount}/{review.reviewRecGroup.groupVo.groupLimit}</Typography>
-                </Box>
-              </CardContent>
-            </CardActionArea>
-          </Card>
-        </Box>
+        {review.reviewRecGroup && (
+          <Box className="review-detail-more-category">
+            <Typography
+              variant="h6"
+              className="review-detail-navigation-title"
+              onClick={() =>
+                navigate(
+                  `/group/detail/${review.reviewRecGroup.groupVo.groupId}`
+                )
+              }
+              style={{ cursor: "pointer" }}
+            >
+              {review.reviewRecGroup.categoryName} 카테고리 모임 보러가기 {">"}{" "}
+            </Typography>
+            <Card className="review-detail-navigation-card">
+              <CardActionArea onClick={handleNavigationRec}>
+                <CardContent>
+                  <Typography className="review-detail-navigation-category">
+                    {review.reviewRecGroup.categoryName}
+                  </Typography>
+                  <Typography className="review-detail-navigation-cardtitle">
+                    {review.reviewRecGroup.groupVo.groupName}
+                  </Typography>
+                  <Typography className="review-detail-navigation-subtitle">
+                    {review.reviewRecGroup.groupVo.introText}
+                  </Typography>
+                  <Box
+                    display="flex"
+                    alignItems="center"
+                    justifyContent="flex-end"
+                  >
+                    <Avatar sx={{ width: 20, height: 20, mr: 1 }}>👤</Avatar>
+                    <Typography>
+                      참가자 {review.reviewRecGroup.groupVo.participationCount}/
+                      {review.reviewRecGroup.groupVo.groupLimit}
+                    </Typography>
+                  </Box>
+                </CardContent>
+              </CardActionArea>
+            </Card>
+          </Box>
+        )}
       </Box>
       <Divider className="review-detail-divider" flexItem />
 

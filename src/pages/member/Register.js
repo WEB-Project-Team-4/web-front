@@ -123,7 +123,7 @@ function Register() {
       )
       .then((response) => {
         if (response.status === 200) {
-          setDialogMessage("회원가입이 완료되었습니다!");
+          alert("회원가입이 완료되었습니다!");
         } else {
           setDialogMessage("회원가입 중 문제가 발생했습니다.");
         }

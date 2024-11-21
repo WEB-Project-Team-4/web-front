@@ -136,6 +136,8 @@ const GroupModify = () => {
       formData.representativeImage
     );
 
+    console.log(response);
+
     if (response == 200) {
       alert("수정이 완료되었습니다!");
       navigate("/");
@@ -240,21 +242,25 @@ const GroupModify = () => {
 
         <div className="regist-group-row">
           <div className="regist-group-input-field">
-            <label className="regist-group-label">모임일시</label>
+            <label className="regist-group-label">
+              모집 마감 일시<span style={{ color: "red" }}>*</span>
+            </label>
             <input
               type="datetime-local"
-              name="groupDate"
-              value={formData.groupDate}
+              name="closeDate"
+              value={formData.closeDate}
               onChange={handleChange}
               required
             />
           </div>
           <div className="regist-group-input-field">
-            <label className="regist-group-label">모임마감 일시</label>
+            <label className="regist-group-label">
+              모임일시<span style={{ color: "red" }}>*</span>
+            </label>
             <input
               type="datetime-local"
-              name="closeDate"
-              value={formData.closeDate}
+              name="groupDate"
+              value={formData.groupDate}
               onChange={handleChange}
               required
             />

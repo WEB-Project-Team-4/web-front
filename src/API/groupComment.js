@@ -26,7 +26,11 @@ export const registComment = async ({ groupId, commentContent }) => {
  * @param {*} commentId
  * @returns
  */
-export const fetchRemoveGroupComment = async (commentId, groupId) => {
+export const fetchRemoveGroupComment = async (
+  commentId,
+  groupId,
+  commentWriterId
+) => {
   // 요청 경로 설정
   const path = process.env.REACT_APP_API_BASE_URL + `group/comment`;
   try {
@@ -35,6 +39,7 @@ export const fetchRemoveGroupComment = async (commentId, groupId) => {
       data: {
         commentId: commentId,
         groupId: groupId,
+        id: commentWriterId,
       },
       headers: {
         Authorization: `${localStorage.getItem("token")}`,
