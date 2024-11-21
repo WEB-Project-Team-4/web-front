@@ -111,7 +111,7 @@ function Register() {
       nickname: nickname,
       phoneNumber: phone || "", // 비어있을 경우 빈 값
       email: email,
-      favCategoryId: category || 0, // 선택하지 않았을 경우 0
+      favCategoryId: category || 900, // 선택하지 않았을 경우 0
       profileUrl: profilePicture ? profilePicture : "default url", // 프로필 사진이 있으면 해당 사진을, 없으면 디폴트 URL로 설정
 };
 
@@ -602,7 +602,7 @@ function Register() {
 
       </Box>
 
-      {/* 프로필 사진 업로드 */}
+      {/* 프로필 사진 업로드 
       <Box className="general-form-row">
         <Typography variant="body1" className="general-form-label ">
           프로필 사진
@@ -614,7 +614,7 @@ function Register() {
           style={{ display: "none" }}
           id="profile-pic-upload"
         />
-        {/* 사진 업로드 버튼 css */}
+         사진 업로드 버튼 css
         <label
           htmlFor="profile-pic-upload"
           style={{
@@ -654,8 +654,8 @@ function Register() {
               }}
             />
           </Box>
-        )}
-      </Box>
+        )} 
+      </Box>*/}
 
       {/* 회원가입 버튼 */}
       <Button
