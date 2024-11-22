@@ -1,26 +1,34 @@
-import React, { useState, useContext } from 'react';
-import { UserContext } from '../../context/UserContext';
+import React, { useState, useContext } from "react";
+import { UserContext } from "../../context/UserContext";
 import { useNavigate } from "react-router-dom";
-import axios from 'axios';
-import { Box, TextField, Button, Typography, Link, Divider, IconButton } from '@mui/material';
-import Visibility from '@mui/icons-material/Visibility';
-import VisibilityOff from '@mui/icons-material/VisibilityOff';
-import '../../assets/styles/Member.css';
-import '../../assets/styles/General.css'; // 스타일 적용
+import axios from "axios";
+import {
+  Box,
+  TextField,
+  Button,
+  Typography,
+  Link,
+  Divider,
+  IconButton,
+} from "@mui/material";
+import Visibility from "@mui/icons-material/Visibility";
+import VisibilityOff from "@mui/icons-material/VisibilityOff";
+import "../../assets/styles/Member.css";
+import "../../assets/styles/General.css"; // 스타일 적용
 
 function Login() {
   const [showPassword, setShowPassword] = useState(false);
   const { login } = useContext(UserContext);
   const navigate = useNavigate();
-  
+
   // 아이디와 비밀번호 상태 관리
   const [credentials, setCredentials] = useState({
-    id: '',
-    password: '',
+    id: "",
+    password: "",
   });
 
   // 로그인 실패 시 오류 메시지 상태 추가
-  const [errorMessage, setErrorMessage] = useState('');
+  const [errorMessage, setErrorMessage] = useState("");
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -29,19 +37,22 @@ function Login() {
 
   const handleLogin = async () => {
     try {
-      const response = await axios.post( process.env.REACT_APP_API_BASE_URL + 'member/login', {
-        id: credentials.id,
-        password: credentials.password,
-      });
+      const response = await axios.post(
+        process.env.REACT_APP_API_BASE_URL + "member/login",
+        {
+          id: credentials.id,
+          password: credentials.password,
+        }
+      );
 
       if (response.status === 200) {
         // 응답 헤더 가져오기
         const headers = response.headers;
 
         // 특정 헤더 값 가져오기
-        const token = headers['authorization']; // 예: Authorization 헤더
+        const token = headers["authorization"]; // 예: Authorization 헤더
 
-        localStorage.setItem('token', token); // 토큰을 localStorage에 저장
+        localStorage.setItem("token", token); // 토큰을 localStorage에 저장
 
         //유저 정보 저장 : mypage 레이아웃 등에서 사용
         const userData = response.data; // 서버에서 받은 데이터
@@ -50,17 +61,17 @@ function Login() {
         console.log(token);
         setTimeout(() => {
           alert("로그인 성공");
-          navigate('/'); // 로그인 후 메인 페이지 이동
+          navigate("/"); // 로그인 후 메인 페이지 이동
         }, 0);
       }
     } catch (error) {
       console.error(error);
-      setErrorMessage('로그인 실패. 아이디와 비밀번호를 확인하세요.');
+      setErrorMessage("로그인 실패. 아이디와 비밀번호를 확인하세요.");
     }
   };
 
   const handleRegisterRedirect = () => {
-    window.location.href = '/member/register';
+    window.location.href = "/member/register";
   };
 
   const togglePasswordVisibility = () => {
@@ -101,7 +112,7 @@ function Login() {
               onClick={togglePasswordVisibility}
               edge="end"
               sx={{
-                marginRight: -40
+                marginRight: -40,
               }}
             >
               {showPassword ? <VisibilityOff /> : <Visibility />}
@@ -122,7 +133,13 @@ function Login() {
         </Link>
       </Box>
 
-      <Button variant="contained" color="primary" fullWidth className="button-general" onClick={handleLogin}>
+      <Button
+        variant="contained"
+        color="primary"
+        fullWidth
+        className="button-general"
+        onClick={handleLogin}
+      >
         로그인
       </Button>
 

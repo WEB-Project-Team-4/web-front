@@ -7,7 +7,7 @@ import {
   MenuItem,
   Button,
   Pagination,
-  Divider
+  Divider,
 } from "@mui/material";
 import SearchIcon from "@mui/icons-material/Search";
 import { Link } from "react-router-dom";
@@ -15,8 +15,19 @@ import "../../assets/styles/Review.css";
 import "../../assets/styles/General.css";
 import { regionData } from "../../data/regionData";
 import { fetchReviews } from "../../API/review";
+import defaultImg from "../../img/MOIN_review_img.jpg";
+import bannerImg1 from "../../img/MOIN_banner.jpg";
+import bannerImg2 from "../../img/banner_party.png";
+import bannerImg3 from "../../img/banner_christmas.png";
+import bannerImg4 from "../../img/banner_nangmeyon.jpg";
+
+import Slider from "react-slick";
+import "slick-carousel/slick/slick.css";
+import "slick-carousel/slick/slick-theme.css";
 
 function Main() {
+  const banners = [bannerImg1, bannerImg2, bannerImg3, bannerImg4];
+
   const [activeLink, setActiveLink] = useState("전체");
   const [region, setRegion] = useState("");
   const [subRegion, setSubRegion] = useState("");
@@ -28,6 +39,17 @@ function Main() {
   const [loading, setLoading] = useState(false);
 
   const itemsPerPage = 3;
+
+  const settings = {
+    // dots: true, // 하단에 점 네비게이션 표시
+    infinite: true, // 무한 루프
+    speed: 500, // 슬라이딩 속도 (ms)
+    slidesToShow: 1, // 화면에 보여줄 슬라이드 수
+    slidesToScroll: 1, // 한 번에 이동할 슬라이드 수
+    autoplay: true, // 자동 재생
+    autoplaySpeed: 4000, // 자동 재생 속도 (ms)
+    // arrows: true, // 좌우 화살표 표시
+  };
 
   useEffect(() => {
     const fetchData = async () => {
@@ -53,10 +75,10 @@ function Main() {
     fetchData();
   }, [activeLink, region, subRegion, page, searchQuery]);
 
-// 작성하기 버튼
+  // 작성하기 버튼
   const handleButtonClick = () => {
     const token = localStorage.getItem("token");
-  
+
     if (!token) {
       alert("로그인이 필요합니다.");
     } else {
@@ -88,17 +110,15 @@ function Main() {
     setPage(value);
   };
 
-
   const handleLinkClick = (e, reviewId) => {
     const token = localStorage.getItem("token");
     if (!token) {
-      e.preventDefault(); // 링크 기본 동작 막기
-      alert("로그인이 필요합니다.");
+      // e.preventDefault(); // 링크 기본 동작 막기
+      // alert("로그인이 필요합니다.");
     } else {
       console.log(`Navigating to review ID: ${reviewId}`);
     }
   };
-  
 
   const formatDate = (dateString) => {
     const date = new Date(dateString);
@@ -112,27 +132,35 @@ function Main() {
 
   return (
     <Box className="main-container">
-      <Box className="banner">
+      <Slider {...settings}>
+        {banners.map((banner, index) => (
+          <div key={index}>
+            <img src={banner} alt={`Banner ${index + 1}`} className="banner" />
+          </div>
+        ))}
+      </Slider>
+      {/* <img src={bannerImg} className="banner" /> */}
+      {/* <Box className="banner">
         <Typography variant="h2" component="h1" className="banner-text">
           BANNER
         </Typography>
-      </Box>
+      </Box> */}
 
       <Box className="search-box">
         <TextField
-        variant="outlined"
-        placeholder="검색어를 입력해주세요"
-        InputProps={{
-          startAdornment: <SearchIcon onClick={handleSearchBtn} />,
-        }}
-        className="search-input"
-        onChange={handleSearchText}
-        onKeyPress={(event) => {
-          if (event.key === "Enter") {
-            handleSearchBtn(); // 엔터키로 검색 실행
-          }
-        }}
-      />
+          variant="outlined"
+          placeholder="검색어를 입력해주세요"
+          InputProps={{
+            startAdornment: <SearchIcon onClick={handleSearchBtn} />,
+          }}
+          className="search-input"
+          onChange={handleSearchText}
+          onKeyPress={(event) => {
+            if (event.key === "Enter") {
+              handleSearchBtn(); // 엔터키로 검색 실행
+            }
+          }}
+        />
       </Box>
 
       {/* 네비게이션 메뉴 */}
@@ -276,10 +304,10 @@ function Main() {
                 <Box className="review-card">
                   <Box className="review-card-content">
                     <Typography className="review-card-title">
-                      {review.reviewTitle} 
+                      {review.reviewTitle}
                     </Typography>
                     <Typography className="review-card-description">
-                      {review.reviewContent.replace(/<[^>]+>/g, '')}
+                      {review.reviewContent.replace(/<[^>]+>/g, "")}
                     </Typography>
                     <Typography className="review-card-meta">
                       댓글 {review.reviewCommentCnt}개 | 작성자{" "}
@@ -288,7 +316,11 @@ function Main() {
                   </Box>
                   {review.reviewImgUrl && (
                     <img
-                      src={review.reviewImgUrl}
+                      src={
+                        review.reviewImgUrl === "default url"
+                          ? defaultImg
+                          : review.reviewImgUrl
+                      }
                       alt=""
                       className="review-card-thumbnail"
                     />

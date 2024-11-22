@@ -141,6 +141,8 @@ const GroupModify = () => {
     if (response == 200) {
       alert("수정이 완료되었습니다!");
       navigate("/");
+    } else if (response == 413) {
+      console.log("1MB 이하의 이미지만 업로드 가능합니다.");
     }
   };
 

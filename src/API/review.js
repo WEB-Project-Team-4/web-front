@@ -72,11 +72,12 @@ export const fetchReviewGroups = async ({ currentPage = 1, pageSize = 9 }) => {
       },
       withCredentials: true,
     });
-    console.log(response.data);
-    return response.data; // 데이터 반환
+    console.log(response);
+    return response; // 데이터 반환
   } catch (error) {
-    console.error(`Failed to fetch review groups`, error);
-    throw error; // 에러 다시 던지기
+    return error;
+    // console.error(`Failed to fetch review groups`, error);
+    // throw error; // 에러 다시 던지기
   }
 };
 
@@ -96,10 +97,11 @@ export const fetchOpenRegistReveiw = async (groupId) => {
       },
       withCredentials: true,
     });
-    return response.data; // 데이터 반환
+    return response; // 데이터 반환
   } catch (error) {
-    console.error(`Failed to open review regist page`, error);
-    throw error; // 에러 다시 던지기
+    return error;
+    // console.error(`Failed to open review regist page`, error);
+    // throw error; // 에러 다시 던지기
   }
 };
 
@@ -140,7 +142,7 @@ const reviewImgList = [
     return response.data; // 데이터 반환
   } catch (error) {
     console.error(`Failed to fetch review regist`, error);
-    throw error; // 에러 다시 던지기
+    // throw error; // 에러 다시 던지기
   }
 };
 /**
@@ -175,9 +177,7 @@ export const fetchOpenModifyReveiw = async (reviewId) => {
  * @param {Array} reviewImgList - 등록할 리뷰 이미지URL들
  * @returns {Promise} 서버에서 반환된 데이터
  */
-export const fetchModifyReveiw = async (
-  formData, reviewGroupId
-) => {
+export const fetchModifyReveiw = async (formData, reviewGroupId) => {
   // 요청 경로 설정
   const path = API_BASE_URL + `review/modify/${reviewGroupId}`;
 
@@ -192,8 +192,8 @@ export const fetchModifyReveiw = async (
     });
     return response.status; // 응답 코드 반환
   } catch (error) {
-    console.error(`Failed to fetch review modify`, error);
-    throw error; // 에러 다시 던지기
+    // console.error(`Failed to fetch review modify`, error);
+    // throw error; // 에러 다시 던지기
   }
 };
 
@@ -218,8 +218,8 @@ export const fetchReviewDetail = async (reviewId) => {
     console.log(response.data);
     return response.data; // 데이터 반환
   } catch (error) {
-    console.error(`Failed to fetch review detail page`, error);
-    throw error; // 에러 다시 던지기
+    // console.error(`Failed to fetch review detail page`, error);
+    // throw error; // 에러 다시 던지기
   }
 };
 
@@ -241,8 +241,8 @@ export const fetchRemoveReview = async (reviewId) => {
     });
     return response.status; // 데이터 반환
   } catch (error) {
-    console.error(`Failed to remove review`, error);
-    throw error; // 에러 다시 던지기
+    // console.error(`Failed to remove review`, error);
+    // throw error; // 에러 다시 던지기
   }
 };
 
@@ -273,8 +273,9 @@ export const fetchRegistReveiwComment = async ({
     });
     return response.status; // 데이터 반환
   } catch (error) {
-    console.error(`Failed to regist review comment`, error);
-    throw error; // 에러 다시 던지기
+    return error.status;
+    // console.error(`Failed to regist review comment`, error);
+    // throw error; // 에러 다시 던지기
   }
 };
 
@@ -324,8 +325,9 @@ export const fetchRemoveReviewComment = async (reviewCommentId) => {
     });
     return response.status; // 데이터 반환
   } catch (error) {
-    console.error(`Failed to remove comment`, error);
-    throw error; // 에러 다시 던지기
+    return error.status;
+    // console.error(`Failed to remove comment`, error);
+    // throw error; // 에러 다시 던지기
   }
 };
 

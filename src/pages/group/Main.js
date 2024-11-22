@@ -1,5 +1,5 @@
 // src/pages/Main.js
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import {
   Box,
   Typography,
@@ -19,10 +19,21 @@ import CardItem from "../../components/CardItem";
 import cardTestImage from "../../img/card_test.jpg";
 import bannerImg from "../../img/MOIN_banner.jpg";
 import defaultImg from "../../img/group_default_img.jpg";
+import bannerImg1 from "../../img/MOIN_banner.jpg";
+import bannerImg2 from "../../img/banner_party.png";
+import bannerImg3 from "../../img/banner_christmas.png";
+import bannerImg4 from "../../img/banner_nangmeyon.jpg";
+import Slider from "react-slick";
+import "slick-carousel/slick/slick.css";
+import "slick-carousel/slick/slick-theme.css";
 
 import { fetchGroups } from "../../API/group"; // API 요청 함수 import
+import { UserContext } from "../../context/UserContext";
 
 function Main() {
+  const { user } = useContext(UserContext);
+  const banners = [bannerImg1, bannerImg2, bannerImg3, bannerImg4];
+
   const [activeLink, setActiveLink] = useState("전체");
   const [region, setRegion] = useState("");
   const [subRegion, setSubRegion] = useState("");
@@ -34,6 +45,17 @@ function Main() {
   const [totalPages, setTotalPages] = useState(1); // 전체 페이지 수
   const [searchText, setSearchText] = useState("");
   const cardsPerPage = 9; // 페이지당 카드 수
+
+  const settings = {
+    // dots: true, // 하단에 점 네비게이션 표시
+    infinite: true, // 무한 루프
+    speed: 500, // 슬라이딩 속도 (ms)
+    slidesToShow: 1, // 화면에 보여줄 슬라이드 수
+    slidesToScroll: 1, // 한 번에 이동할 슬라이드 수
+    autoplay: true, // 자동 재생
+    autoplaySpeed: 4000, // 자동 재생 속도 (ms)
+    // arrows: true, // 좌우 화살표 표시
+  };
 
   // // 현재 페이지에 표시할 카드 항목 계산
   const startIndex = (page - 1) * cardsPerPage;
@@ -97,11 +119,19 @@ function Main() {
 
   return (
     <Box className="main-container">
-      <Box className="banner">
-        <Typography variant="h2" component="h1" className="banner-text">
+      {/* <Box className="banner"> */}
+      <Slider {...settings}>
+        {banners.map((banner, index) => (
+          <div key={index}>
+            <img src={banner} alt={`Banner ${index + 1}`} className="banner" />
+          </div>
+        ))}
+      </Slider>
+      {/* <img src={bannerImg} className="banner" /> */}
+      {/* <Typography variant="h2" component="h1" className="banner-text">
           BANNER
-        </Typography>
-      </Box>
+        </Typography> */}
+      {/* </Box> */}
       {/* <Box className="search-box">
         <TextField
           variant="outlined"
@@ -292,13 +322,15 @@ function Main() {
                 people={`${cardItem.group.participationCount}/${cardItem.group.groupLimit}`}
                 comments={cardItem.group.commentCount}
                 imageUrl={
-                  cardItem.group.groupImg === null
+                  cardItem.group.groupImg === null ||
+                  cardItem.group.groupImg === "default url"
                     ? defaultImg
                     : cardItem.group.groupImg
                 }
                 recruitText={isRecruiting ? "모집중" : "모집마감"}
                 curBookMark={cardItem.isCurUserFavorite === "Y" ? true : false}
                 groupId={cardItem.group.groupId}
+                isHereBookMark={user !== null}
               />
             </Grid>
           ))}

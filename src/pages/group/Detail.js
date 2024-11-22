@@ -1,5 +1,5 @@
 // /group/detail/{groupId}
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { Link, useParams, useNavigate } from "react-router-dom";
 import {
   Box,
@@ -33,12 +33,17 @@ import {
   unlikeGroup,
 } from "../../API/group"; // 추가한 API 함수 import
 import { fetchRemoveGroupComment, registComment } from "../../API/groupComment"; // API 요청 함수 import
-import { registParticipation } from "../../API/groupParticipate";
+import {
+  registNotParticipation,
+  registParticipation,
+} from "../../API/groupParticipate";
 import "../../assets/styles/Group.css";
+import { UserContext } from "../../context/UserContext";
 
 function GroupDetailPage() {
   const { groupId } = useParams(); // URL 파라미터에서 groupId 추출
   const navigate = useNavigate();
+  const { user } = useContext(UserContext);
 
   // 상태 관리
   const [groupDetail, setGroupDetail] = useState(null);
@@ -53,6 +58,7 @@ function GroupDetailPage() {
   const [categoryName, setCategoryName] = useState("");
   const [isChange, setIsChange] = useState(false);
   const [leaderName, setLeaderName] = useState("");
+  const [isParticipation, setIsParticipation] = useState("");
 
   // 서버 데이터 로드
   useEffect(() => {
@@ -65,6 +71,7 @@ function GroupDetailPage() {
         setIsBookmarked(data.isLike === "Y"); // 북마크 여부
         setCategoryName(data.categoryName);
         setLeaderName(data.groupLeaderName);
+        setIsParticipation(data.isParticipation);
         setIsChange(false);
       } catch (error) {
         console.error("Failed to load group detail:", error);
@@ -82,8 +89,8 @@ function GroupDetailPage() {
     const token = localStorage.getItem("token");
 
     if (!token) {
-    alert("로그인이 필요합니다."); // 혹은 다른 안내 메시지
-    return; // Token이 없으므로 함수 실행 중단
+      alert("로그인이 필요합니다."); // 혹은 다른 안내 메시지
+      return; // Token이 없으므로 함수 실행 중단
     }
 
     if (newComment.trim() === "") return;
@@ -107,14 +114,16 @@ function GroupDetailPage() {
   // 댓글 삭제
   const handleCommentRemove = async (commentId, commentWriterId) => {
     console.log(commentWriterId);
-    const status = await fetchRemoveGroupComment(
+    const response = await fetchRemoveGroupComment(
       commentId,
       groupId,
       commentWriterId
     );
 
-    if (status == 409) {
-      alert("자신이 작성한 댓글만 삭제할 수 있습니다.");
+    if (response.status === 405) {
+      alert("삭제 권한이 없습니다.");
+    } else if (response.status === 200) {
+      alert("댓글이 삭제되었습니다.");
     }
     setIsChange(true);
   };
@@ -139,17 +148,19 @@ function GroupDetailPage() {
   };
 
   const handleGroupDelete = async () => {
-    const status = await deleteGroup({
+    const response = await deleteGroup({
       groupId: groupId,
     });
 
-    if (status == 200) {
+    if (response.status == 200) {
       alert("모임이 삭제되었습니다.");
       navigate("/");
-    } else if (status == 405) {
+    } else if (response.status == 405) {
       alert("삭제 권한이 없습니다");
+      navigate("/");
     } else {
       alert("삭제에 실패했습니다.");
+      navigate("/");
     }
   };
 
@@ -157,8 +168,8 @@ function GroupDetailPage() {
     const token = localStorage.getItem("token");
 
     if (!token) {
-    alert("로그인이 필요합니다."); // 혹은 다른 안내 메시지
-    return; // Token이 없으므로 함수 실행 중단
+      alert("로그인이 필요합니다."); // 혹은 다른 안내 메시지
+      return; // Token이 없으므로 함수 실행 중단
     }
     const status = await registParticipation({
       groupId: groupId,
@@ -171,6 +182,25 @@ function GroupDetailPage() {
       alert("이미 참가한 모임입니다");
     } else {
       alert("참여에 실패했습니다.");
+    }
+  };
+
+  const handleNotParticipation = async () => {
+    const token = localStorage.getItem("token");
+
+    if (!token) {
+      alert("로그인이 필요합니다."); // 혹은 다른 안내 메시지
+      return; // Token이 없으므로 함수 실행 중단
+    }
+    const status = await registNotParticipation({
+      groupId: groupId,
+    });
+
+    if (status == 200) {
+      alert("참가를 취소했습니다.");
+      setIsChange(true);
+    } else {
+      alert("참가 취소에 실패했습니다.");
     }
   };
 
@@ -231,17 +261,22 @@ function GroupDetailPage() {
           {/* <IconButton onClick={toggleBookmark} className="group-bookmarkIconBorder">
             <BookmarkBorderIcon />
           </IconButton> */}
-          <IconButton
-            onClick={toggleBookmark}
-            className="group-bookmarkIconBorder"
-          >
-            {isBookmarked ? (
-              <BookmarkIcon className="group-bookmarked" />
-            ) : (
-              <BookmarkBorderIcon />
-            )}
-          </IconButton>
-          {isBookmarked && <BookmarkIcon className="group-bookmarkIcon" />}
+          {user && (
+            <IconButton
+              onClick={toggleBookmark}
+              className="group-bookmarkIconBorder"
+            >
+              {isBookmarked ? (
+                <BookmarkIcon className="group-bookmarked" />
+              ) : (
+                <BookmarkBorderIcon />
+              )}
+            </IconButton>
+          )}
+
+          {user && isBookmarked && (
+            <BookmarkIcon className="group-bookmarkIcon" />
+          )}
           <Typography variant="h6">
             {groupDetail.likeCount}명의 사람들이 좋아하는 모임이에요!
           </Typography>
@@ -298,12 +333,11 @@ function GroupDetailPage() {
           <Box className="group-info-bottom">
             {/* 작성자 정보 */}
             <Box className="group-author-card">
-              <Avatar className="group-author-avatar" />
+              <Avatar className="group-author-avatar">L</Avatar>
               <Typography variant="body1" className="group-author-name">
-                {leaderName}
+                Leader. {leaderName}
               </Typography>
             </Box>
-
             {/* 모임 일시 및 장소 정보 */}
             <Box className="group-details-info">
               <Box className="group-info-detail-item">
@@ -332,7 +366,10 @@ function GroupDetailPage() {
                 <LocationOnIcon fontSize="small" />
                 <Box sx={{ maxWidth: "200px", overflow: "hidden" }}>
                   <Typography variant="body4" sx={{ display: "block" }}>
-                    {groupDetail.city} {groupDetail.district}
+                    {groupDetail.city === null
+                      ? "장소 미정"
+                      : groupDetail.detailAddr}{" "}
+                    {groupDetail.district}
                   </Typography>
                   <Typography
                     variant="caption"
@@ -361,7 +398,8 @@ function GroupDetailPage() {
           <Box className="group-thumbnail-container">
             <img
               src={
-                groupDetail.groupImg === null
+                groupDetail.groupImg === null ||
+                groupDetail.groupImg === "default url"
                   ? defaultImg
                   : groupDetail.groupImg
               }
@@ -417,14 +455,27 @@ function GroupDetailPage() {
           <Typography>
             참가자 {members.length} / {groupDetail.groupLimit}
           </Typography>
-          <Button
-            variant="contained"
-            className="group-join-button"
-            sx={{ marginLeft: "auto" }}
-            onClick={handleParticipation}
-          >
-            참가하기
-          </Button>
+          {isParticipation == "N" ? (
+            <Button
+              variant="contained"
+              className="group-join-button"
+              sx={{ marginLeft: "auto" }}
+              onClick={handleParticipation}
+            >
+              참가하기
+            </Button>
+          ) : !user || groupDetail.groupLeaderId !== user.id ? (
+            <Button
+              variant="contained"
+              className="group-join-button"
+              sx={{ marginLeft: "auto" }}
+              onClick={handleNotParticipation}
+            >
+              참가 취소
+            </Button>
+          ) : (
+            ""
+          )}
         </Box>
 
         <Box className="group-participant-list">

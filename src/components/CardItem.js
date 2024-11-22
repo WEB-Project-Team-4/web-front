@@ -11,6 +11,7 @@ import ChatBubbleOutlineIcon from "@mui/icons-material/ChatBubbleOutline";
 import Divider from "@mui/material/Divider";
 import { Typography, Box } from "@mui/material";
 import { likeGroup, unlikeGroup } from "../API/group";
+import defaultImg from "../img/group_default_img.jpg";
 
 function CardItem({
   to,
@@ -26,6 +27,7 @@ function CardItem({
   recruitText,
   curBookMark,
   groupId = 0,
+  isHereBookMark,
 }) {
   const [isBookmarked, setIsBookmarked] = useState(curBookMark);
 
@@ -57,36 +59,45 @@ function CardItem({
   const cardContent = (
     <Box className="group-cardContainer">
       <Box className="group-imageContainer">
-        <img src={imageUrl} alt="Card" className="group-cardImage" />
-
-        {/* 검정색 테두리 아이콘 */}
-        <BookmarkBorderIcon
-          onClick={toggleBookmark}
-          className="group-bookmarkIconBorder"
-          sx={{
-            fontSize: "2rem",
-            color: "#000000",
-            position: "absolute",
-            top: "4px",
-            left: "4px",
-            cursor: "pointer",
-            zIndex: 2,
-          }}
+        <img
+          src={
+            imageUrl === null || imageUrl === "default url"
+              ? defaultImg
+              : imageUrl
+          }
+          alt="Card"
+          className="group-cardImage"
         />
 
-        {/* 노란색 아이콘 */}
-        <BookmarkIcon
-          className="group-bookmarkIcon"
-          sx={{
-            fontSize: "2rem",
-            color: isBookmarked ? "#FFD700" : "transparent",
-            position: "absolute",
-            // 위치 맞추기 용
-            top: "3px",
-            left: "2px",
-            zIndex: 1,
-          }}
-        />
+        {isHereBookMark && (
+          <BookmarkBorderIcon
+            onClick={toggleBookmark}
+            className="group-bookmarkIconBorder"
+            sx={{
+              fontSize: "2rem",
+              color: "#000000",
+              position: "absolute",
+              top: "4px",
+              left: "4px",
+              cursor: "pointer",
+              zIndex: 2,
+            }}
+          />
+        )}
+        {isHereBookMark && (
+          <BookmarkIcon
+            className="group-bookmarkIcon"
+            sx={{
+              fontSize: "2rem",
+              color: isBookmarked ? "#FFD700" : "transparent",
+              position: "absolute",
+              // 위치 맞추기 용
+              top: "3px",
+              left: "2px",
+              zIndex: 1,
+            }}
+          />
+        )}
       </Box>
 
       <Box className="group-cardContent">
@@ -95,9 +106,12 @@ function CardItem({
             {category}
           </Typography>
           <Divider orientation="vertical" flexItem sx={{ mx: 1 }} />
-          <LocationOnIcon fontSize="small" sx={{ color: "#909090" }} />
+          {!(location === null || location === "null") && (
+            <LocationOnIcon fontSize="small" sx={{ color: "#909090" }} />
+          )}
+
           <Typography variant="caption" className="group-location">
-            {location} {date}
+            {location === "null" ? "" : location} {date}
           </Typography>
           {recruitText && (
             <Box className="group-recruitingBox">{recruitText}</Box>

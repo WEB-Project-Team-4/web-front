@@ -38,6 +38,11 @@ const GroupRegist = () => {
     // Handle form submission logic
     console.log(formData);
 
+    if (formData.maxParticipants > 10000) {
+      alert("최대 참여 인원은 10000명보다 클 수 없습니다");
+      return;
+    }
+
     const response = await registGroup(
       {
         categoryId:
@@ -61,8 +66,11 @@ const GroupRegist = () => {
       formData.representativeImage
     );
 
+    console.log(response);
     if (response == 200) {
       navigate("/");
+    } else if (response == 413) {
+      console.log("1MB 이하의 이미지만 업로드 가능합니다.");
     }
   };
 

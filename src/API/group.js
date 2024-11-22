@@ -61,8 +61,8 @@ export const fetchGroupDetail = async (groupId) => {
     console.log(response);
     return response.data; // 데이터 반환
   } catch (error) {
-    console.error(`Failed to fetch group detail for ID: ${groupId}`, error);
-    throw error; // 에러 다시 던지기
+    // console.error(`Failed to fetch group detail for ID: ${groupId}`, error);
+    // throw error; // 에러 다시 던지기
   }
 };
 
@@ -93,7 +93,7 @@ export const registGroup = async (params, fileImg) => {
     return response.status;
   } catch (error) {
     alert("등록에 실패했습니다");
-    throw error;
+    // throw error;
   }
 
   // "categoryId": 100,
@@ -121,10 +121,11 @@ export const deleteGroup = async (params) => {
       withCredentials: true,
     });
     console.log(response);
-    return response.status;
+    return response;
   } catch (error) {
-    alert("삭제에 실패했습니다.");
-    throw error;
+    return error;
+    // alert("삭제에 실패했습니다.");
+    // throw error;
   }
 };
 
@@ -147,7 +148,7 @@ export const unlikeGroup = async (groupId) => {
     return response.status;
   } catch (error) {
     alert("좋아요 취소에 실패했습니다.");
-    throw error;
+    // throw error;
   }
 };
 
@@ -169,6 +170,6 @@ export const likeGroup = async (groupId) => {
     return response.status;
   } catch (error) {
     alert("좋아요 등록에 실패했습니다.");
-    throw error;
+    // throw error;
   }
 };

@@ -27,6 +27,7 @@ import {
   fetchReviewDetail,
 } from "../../API/review";
 import "../../assets/styles/Review.css";
+import defaultImg from "../../img/MOIN_review_img.jpg";
 
 function Detail() {
   const { reviewId } = useParams();
@@ -67,7 +68,13 @@ function Detail() {
       alert("댓글 내용을 작성해주세요.");
       return;
     }
-    await fetchRegistReveiwComment({
+
+    if (user === null) {
+      alert("로그인이 필요합니다");
+      return;
+    }
+
+    const response = await fetchRegistReveiwComment({
       reviewId: reviewId,
       commentContent: newComment,
     });
@@ -91,6 +98,11 @@ function Detail() {
 
   const handleReviewRemove = async (reviewCommentId) => {
     const status = await fetchRemoveReviewComment(reviewCommentId);
+    if (status === 405) {
+      alert("삭제 권한이 없습니다.");
+    } else if (status === 200) {
+      alert("댓글이 삭제되었습니다.");
+    }
     setIsChange(true);
   };
   const handleNavigationGroup = () => {
@@ -137,7 +149,7 @@ function Detail() {
     <Box className="review-detail">
       <Typography variant="h5" className="review-title">
         {review.reviewTitle}{" "}
-        {review.reviewWriterId === user.id && (
+        {user && review.reviewWriterId === user.id && (
           <IconButton onClick={handleMenuClick}>
             <MoreVertIcon />
           </IconButton>
@@ -176,19 +188,37 @@ function Detail() {
         flexItem
       />
       {/* 마크다운 렌더링 */}
-      <div className="review-detail-image-container">
+      {/* <div className="review-detail-image-container">
         <img
           className="review-detail-image"
-          src={review.reviewImgUrl}
-          alt="Review Detail"
+          src={
+            review.reviewImgUrl === null ||
+            review.reviewImgUrl === "default url"
+              ? defaultImg
+              : review.reviewImgUrl
+          }
+          alt="Review Thumbnail"
         />
-      </div>
+      </div> */}
       <ReactMarkdown
         children={review.reviewContent}
         remarkPlugins={[remarkGfm]}
         rehypePlugins={[rehypeRaw]}
         className="review-markdown-content"
       />
+
+      <div className="review-detail-image-container">
+        <img
+          className="review-detail-image"
+          src={
+            review.reviewImgUrl === null ||
+            review.reviewImgUrl === "default url"
+              ? defaultImg
+              : review.reviewImgUrl
+          }
+          alt="Review Thumbnail"
+        />
+      </div>
 
       {/* <Typography className="review-content">{review.reviewContent}</Typography> */}
 

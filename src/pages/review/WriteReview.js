@@ -1,10 +1,7 @@
 // src/review/WriteReview.js
 import React, { useEffect, useRef, useState } from "react";
 import { Box, Button, Typography, TextField } from "@mui/material";
-import {
-  fetchOpenRegistReveiw,
-  fetchRegistReveiw,
-} from "../../API/review";
+import { fetchOpenRegistReveiw, fetchRegistReveiw } from "../../API/review";
 import { useParams, useNavigate } from "react-router-dom";
 import "../../assets/styles/Review.css"; // 스타일 파일 추가
 
@@ -22,12 +19,19 @@ function WriteReview() {
   useEffect(() => {
     const loadwritereview = async () => {
       try {
-        const data = await fetchOpenRegistReveiw(groupId);
+        const response = await fetchOpenRegistReveiw(groupId);
+
+        if (response.status === 413) {
+          alert("1MB 이하의 이미지만 업로드 가능합니다.");
+          return;
+        }
+
+        const data = response.data;
         setmeetingName(data);
         setIsChange(false);
       } catch (error) {
-        console.error("Failed to load group detail:", error);
-        navigate("/error"); // 에러 발생 시 에러 페이지로 이동
+        // console.error("Failed to load group detail:", error);
+        // navigate("/error"); // 에러 발생 시 에러 페이지로 이동
       }
     };
 
@@ -45,7 +49,7 @@ function WriteReview() {
         ["para", ["ul", "ol", "paragraph"]],
         ["insert", ["link", "table", "hr"]],
         ["insert", ["link", "video"]],
-        ["view", ["fullscreen", "codeview"]],
+        ["view", ["codeview"]],
       ], // 사진 관련 툴 제거
       callbacks: {
         onChange: (contents) => {
@@ -86,8 +90,8 @@ function WriteReview() {
       const params = {
         reviewGroupId: groupId,
         reviewTitle: title,
-        reviewContent: content
-      }
+        reviewContent: content,
+      };
 
       formData.append(
         "reviewDTO",

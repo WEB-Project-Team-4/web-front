@@ -243,6 +243,7 @@ function Group() {
                   }
                   groupId={cardItem.group.groupId}
                   // recruitText={isRecruiting ? "모집중" : "모집마감"}
+                  isHereBookMark={true}
                 />
               </Grid>
             ))}

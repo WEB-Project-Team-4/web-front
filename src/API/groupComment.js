@@ -46,9 +46,10 @@ export const fetchRemoveGroupComment = async (
       },
       withCredentials: true,
     });
-    return response.status; // 데이터 반환
+    return response; // 데이터 반환
   } catch (error) {
-    console.error(`Failed to remove comment`, error);
-    throw error; // 에러 다시 던지기
+    return error;
+    // console.error(`Failed to remove comment`, error);
+    // throw error; // 에러 다시 던지기
   }
 };
