@@ -88,9 +88,10 @@ const GroupModify = () => {
         console.log(data.groupVO.groupName);
       } catch (error) {
         // console.error("Failed to fetch groups:", error);
-        if (error.status === 405) {
-          alert("수정 권한이 없습니다.");
-        }
+        // if (error.status === 405) {
+        //   alert("수정 권한이 없습니다.");
+        // }
+        alert("수정 권한이 없습니다.");
         navigate("/");
       }
     };
@@ -107,10 +108,30 @@ const GroupModify = () => {
     setFormData({ ...formData, representativeImage: e.target.files[0] });
   };
 
+  // 현재 시간을 가져오는 함수
+  const getCurrentDateTime = () => {
+    const now = new Date();
+    return now.toISOString().slice(0, 16); // 'yyyy-mm-ddThh:mm' 형식
+  };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     // Handle form submission logic
     console.log(formData);
+
+    if (formData.maxParticipants > 10000) {
+      alert("최대 참여 인원은 10000명보다 클 수 없습니다");
+      return;
+    } else if (formData.maxParticipants <= 0) {
+      alert("최대 참여 인원은 0보다 커야합니다.");
+      return;
+    } else if (
+      formData.representativeImage &&
+      formData.representativeImage.size > 1 * 1024 * 1024
+    ) {
+      alert("1MB 이하의 이미지만 업로드해주세요");
+      return;
+    }
 
     const response = await updateGroup(
       {
@@ -252,6 +273,7 @@ const GroupModify = () => {
               name="closeDate"
               value={formData.closeDate}
               onChange={handleChange}
+              min={new Date().toISOString().slice(0, 16)}
               required
             />
           </div>
@@ -264,6 +286,11 @@ const GroupModify = () => {
               name="groupDate"
               value={formData.groupDate}
               onChange={handleChange}
+              min={
+                formData.closeDate > new Date().toISOString().slice(0, 16)
+                  ? formData.closeDate
+                  : new Date().toISOString().slice(0, 16)
+              } // 모집 마감 일시 이후로 제한
               required
             />
           </div>

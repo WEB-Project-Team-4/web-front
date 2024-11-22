@@ -21,11 +21,6 @@ function WriteReview() {
       try {
         const response = await fetchOpenRegistReveiw(groupId);
 
-        if (response.status === 413) {
-          alert("1MB 이하의 이미지만 업로드 가능합니다.");
-          return;
-        }
-
         const data = response.data;
         setmeetingName(data);
         setIsChange(false);
@@ -85,6 +80,9 @@ function WriteReview() {
       // formData.append("reviewContent", content); // 내용
       if (selectedImage) {
         formData.append("reviewImg", selectedImage); // 첨부된 이미지
+      } else if (selectedImage && selectedImage.size > 1 * 1024 * 1024) {
+        alert("1MB 이하의 이미지만 업로드해주세요");
+        return;
       }
 
       const params = {

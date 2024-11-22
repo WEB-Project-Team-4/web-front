@@ -24,18 +24,10 @@ function RegistPage() {
           pageSize: itemsPerPage,
         });
 
-        if (response.status == 413) {
-          console.log("1MB 이하의 이미지만 업로드 가능합니다.");
-          return;
-        }
-
         const data = response.data;
         setItems(data.list || []); // 받아온 데이터 리스트
         setTotalPages(data.totalPages || 1); // 총 페이지 수
       } catch (error) {
-        if (error.status == 413) {
-          console.log("1MB 이하의 이미지만 업로드 가능합니다.");
-        }
         // console.error("Failed to fetch review groups:", error);
       } finally {
         setLoading(false);

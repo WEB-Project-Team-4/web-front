@@ -41,6 +41,15 @@ const GroupRegist = () => {
     if (formData.maxParticipants > 10000) {
       alert("최대 참여 인원은 10000명보다 클 수 없습니다");
       return;
+    } else if (formData.maxParticipants <= 0) {
+      alert("최대 참여 인원은 0보다 커야합니다.");
+      return;
+    } else if (
+      formData.representativeImage &&
+      formData.representativeImage.size > 1 * 1024 * 1024
+    ) {
+      alert("1MB 이하의 이미지만 업로드해주세요");
+      return;
     }
 
     const response = await registGroup(

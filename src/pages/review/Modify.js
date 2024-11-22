@@ -62,14 +62,16 @@ function Modify() {
       }
 
       const data = response.data;
-      const groupName = await fetchOpenRegistReveiw(data.reviewGroupId); // 한 쿼리로 합치기
+      const groupData = await fetchOpenRegistReveiw(data.reviewGroupId); // 한 쿼리로 합치기
+      // console.log("test===============");
+      // console.log(groupName);
       console.log(data);
       setReviewData({
         reviewGroupId: data.reviewGroupId,
         id: reviewId,
         title: data.reviewTitle,
         content: data.reviewContent,
-        relatedMeeting: groupName,
+        relatedMeeting: groupData.groupName,
       });
 
       window.$(editorRef.current).summernote("code", data.reviewContent);
@@ -104,6 +106,9 @@ function Modify() {
       // formData.append("reviewContent", content); // 내용
       if (selectedImage) {
         formData.append("reviewImg", selectedImage); // 첨부된 이미지
+      } else if (selectedImage && selectedImage.size > 1 * 1024 * 1024) {
+        alert("1MB 이하의 이미지만 업로드해주세요");
+        return;
       }
 
       const params = {
@@ -146,7 +151,7 @@ function Modify() {
       navigate(`/review/main`);
     } catch (error) {
       console.error("리뷰 삭제 실패:", error);
-      navigate("/error");
+      // navigate("/error");
     }
 
     // console.log("삭제된 리뷰 ID:", reviewData.id);

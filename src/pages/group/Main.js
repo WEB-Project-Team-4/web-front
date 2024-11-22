@@ -19,7 +19,7 @@ import CardItem from "../../components/CardItem";
 import cardTestImage from "../../img/card_test.jpg";
 import bannerImg from "../../img/MOIN_banner.jpg";
 import defaultImg from "../../img/group_default_img.jpg";
-import bannerImg1 from "../../img/MOIN_banner.jpg";
+import bannerImg1 from "../../img/MOIN_banner_2.png";
 import bannerImg2 from "../../img/banner_party.png";
 import bannerImg3 from "../../img/banner_christmas.png";
 import bannerImg4 from "../../img/banner_nangmeyon.jpg";

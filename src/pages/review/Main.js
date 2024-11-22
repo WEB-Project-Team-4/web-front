@@ -16,7 +16,7 @@ import "../../assets/styles/General.css";
 import { regionData } from "../../data/regionData";
 import { fetchReviews } from "../../API/review";
 import defaultImg from "../../img/MOIN_review_img.jpg";
-import bannerImg1 from "../../img/MOIN_banner.jpg";
+import bannerImg1 from "../../img/MOIN_banner_2.png";
 import bannerImg2 from "../../img/banner_party.png";
 import bannerImg3 from "../../img/banner_christmas.png";
 import bannerImg4 from "../../img/banner_nangmeyon.jpg";
