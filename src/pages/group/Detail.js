@@ -170,7 +170,11 @@ function GroupDetailPage() {
     if (!token) {
       alert("로그인이 필요합니다."); // 혹은 다른 안내 메시지
       return; // Token이 없으므로 함수 실행 중단
+    } else if (groupDetail.groupLimit <= groupDetail.participationCount) {
+      alert("최대 참석 인원을 초과할 수 없습니다!");
+      return;
     }
+
     const status = await registParticipation({
       groupId: groupId,
     });
@@ -471,7 +475,7 @@ function GroupDetailPage() {
               sx={{ marginLeft: "auto" }}
               onClick={handleNotParticipation}
             >
-              참가 취소
+              참가취소
             </Button>
           ) : (
             ""

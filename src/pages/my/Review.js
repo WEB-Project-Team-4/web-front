@@ -1,10 +1,19 @@
 import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
-import { IconButton, Menu, MenuItem, Button, Pagination,Box } from "@mui/material";
+import {
+  IconButton,
+  Menu,
+  MenuItem,
+  Button,
+  Pagination,
+  Box,
+} from "@mui/material";
 import MoreVertIcon from "@mui/icons-material/MoreVert";
 import "../../assets/styles/My.css";
 import "../../assets/styles/General.css";
 import { fetchMyReview } from "../../API/groupMy";
+import defaultImg from "../../img/MOIN_review_img.jpg";
+import { fetchRemoveReview } from "../../API/review";
 
 function Review() {
   const itemsPerPage = 3; // 한 페이지에 표시할 리뷰 개수
@@ -14,6 +23,7 @@ function Review() {
   const [anchorEl, setAnchorEl] = useState(null);
   const [selectedReviewId, setSelectedReviewId] = useState(null);
   const [currentPage, setCurrentPage] = useState(1); // 현재 페이지 상태
+  const [isChange, setIsChagne] = useState(false);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -29,7 +39,7 @@ function Review() {
       }
     };
     fetchData();
-  }, [page]);
+  }, [page, isChange]);
 
   // 페이지 변경 핸들러
   const handlePageChange = (event, value) => {
@@ -46,8 +56,25 @@ function Review() {
     setSelectedReviewId(null);
   };
 
-  const handleDelete = (reviewId) => {
-    setReviews(reviews.filter((review) => review.id !== reviewId));
+  const handleDelete = async (reviewId) => {
+    // setReviews(reviews.filter((review) => review.id !== reviewId));
+
+    try {
+      // API 호출
+      const response = await fetchRemoveReview(reviewId);
+
+      console.log("리뷰 삭제 성공");
+      alert("리뷰가 삭제되었습니다.");
+      setIsChagne(!isChange);
+      // navigate(`/review/main`);
+    } catch (error) {
+      console.error("리뷰 삭제 실패:", error);
+      // navigate("/error");
+    }
+
+    // console.log("삭제된 리뷰 ID:", reviewData.id);
+    // navigate("/my/review"); // 삭제 후 내 리뷰 목록 페이지로 이동
+
     handleClose();
   };
 
@@ -69,9 +96,7 @@ function Review() {
         style={{ display: "flex", justifyContent: "flex-end" }}
       >
         <Link to="/review/regist" style={{ textDecoration: "none" }}>
-          <Button  className="my-write-button" >
-            작성하기
-          </Button>
+          <Button className="my-write-button">작성하기</Button>
         </Link>
       </div>
 
@@ -118,11 +143,13 @@ function Review() {
                 </div>
                 {/* 두 번째 줄: 분류 | 내용 */}
                 <p style={{ margin: "8px 0", color: "#555" }}>
-                  <strong>{review.categoryName}</strong> | {review.reviewContent.replace(/<[^>]+>/g, '')}
+                  <strong>{review.categoryName}</strong> |{" "}
+                  {review.reviewContent.replace(/<[^>]+>/g, "")}
                 </p>
                 {/* 세 번째 줄: 댓글 개수, 작성 시간, 작성자 수 */}
                 <p style={{ margin: 0, fontSize: "0.9rem", color: "#777" }}>
-                  댓글 {review.reviewCommentCnt}개 • {formatDate(review.createdAt)} • by {review.reviewWriter}
+                  댓글 {review.reviewCommentCnt}개 •{" "}
+                  {formatDate(review.createdAt)} • by {review.reviewWriter}
                   {review.participants}
                 </p>
               </div>
@@ -132,7 +159,12 @@ function Review() {
                 style={{ flexShrink: 0, marginRight: "16px", marginTop: "8px" }}
               >
                 <img
-                  src={review.reviewImgUrl}
+                  src={
+                    review.reviewImgUrl === null ||
+                    review.reviewImgUrl === "default url"
+                      ? defaultImg
+                      : review.reviewImgUrl
+                  }
                   alt={review.title}
                   style={{
                     width: "150px",
@@ -144,7 +176,7 @@ function Review() {
 
               {/* 점 3개 메뉴 (위쪽에 배치) */}
               <IconButton
-                onClick={(e) => handleClick(e, review.id)}
+                onClick={(e) => handleClick(e, review.reviewId)}
                 style={{
                   flexShrink: 0,
                   marginTop: "8px", // 이미지와의 간격 조정
@@ -155,18 +187,18 @@ function Review() {
 
               <Menu
                 anchorEl={anchorEl}
-                open={selectedReviewId === review.id}
+                open={selectedReviewId === review.reviewId}
                 onClose={handleClose}
               >
                 <MenuItem onClick={handleClose}>
                   <Link
-                    to={`/review/modify?=${review.id}`}
+                    to={`/review/modify/${review.reviewId}`}
                     style={{ textDecoration: "none", color: "inherit" }}
                   >
                     수정하기
                   </Link>
                 </MenuItem>
-                <MenuItem onClick={() => handleDelete(review.id)}>
+                <MenuItem onClick={() => handleDelete(review.reviewId)}>
                   삭제하기
                 </MenuItem>
               </Menu>

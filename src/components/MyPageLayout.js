@@ -33,11 +33,11 @@ function MyPageLayout() {
               <span className="my-info-value">#{user.favCategoryName}</span>
               {/* <span className="my-info-value">#스포츠</span> */}
             </div>
-            <div className="my-info-item">
-              <span className="my-info-label">만든 그룹 개수 :</span>
-              <span className="my-info-value">{user.madeGroupNumber}개</span>
-              {/* <span className="my-info-value">3개</span> */}
-            </div>
+            {/* <div className="my-info-item"> */}
+            {/* <span className="my-info-label">만든 그룹 개수 :</span> */}
+            {/* <span className="my-info-value">{user.madeGroupNumber}개</span> */}
+            {/* <span className="my-info-value">3개</span> */}
+            {/* </div> */}
           </div>
         </div>
 
