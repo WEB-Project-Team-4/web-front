@@ -46,6 +46,7 @@ function MyPageLayout() {
           <Button
             onClick={() => navigate("/my/group")}
             className="nav-link-button"
+            color="dark"
           >
             나의 모임
           </Button>
@@ -53,6 +54,7 @@ function MyPageLayout() {
           <Button
             onClick={() => navigate("/my/review")}
             className="nav-link-button"
+            color="dark"
           >
             내가 쓴 후기
           </Button>
@@ -60,6 +62,7 @@ function MyPageLayout() {
           <Button
             onClick={() => navigate("/my/pwd-check-info")}
             className="nav-link-button"
+            color="dark"
           >
             내 정보 수정
           </Button>
@@ -67,6 +70,7 @@ function MyPageLayout() {
           <Button
             onClick={() => navigate("/my/pwd-check-pwdModify")}
             className="nav-link-button"
+            color="dark"
           >
             비밀번호 변경
           </Button>
@@ -74,6 +78,7 @@ function MyPageLayout() {
           <Button
             onClick={() => navigate("/my/resign")}
             className="nav-link-button"
+            color="dark"
           >
             회원탈퇴
           </Button>

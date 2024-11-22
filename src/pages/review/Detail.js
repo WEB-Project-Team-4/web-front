@@ -27,6 +27,7 @@ import {
   fetchReviewDetail,
 } from "../../API/review";
 import "../../assets/styles/Review.css";
+import defaultImg from "../../img/MOIN_review_img.jpg";
 
 function Detail() {
   const { reviewId } = useParams();
@@ -67,11 +68,16 @@ function Detail() {
       alert("댓글 내용을 작성해주세요.");
       return;
     }
-    await fetchRegistReveiwComment({
+
+    if (user === null) {
+      alert("로그인이 필요합니다");
+      return;
+    }
+
+    const response = await fetchRegistReveiwComment({
       reviewId: reviewId,
       commentContent: newComment,
     });
-
 
     setIsChange(true);
     setNewComment("");
@@ -92,6 +98,11 @@ function Detail() {
 
   const handleReviewRemove = async (reviewCommentId) => {
     const status = await fetchRemoveReviewComment(reviewCommentId);
+    if (status === 405) {
+      alert("삭제 권한이 없습니다.");
+    } else if (status === 200) {
+      alert("댓글이 삭제되었습니다.");
+    }
     setIsChange(true);
   };
   const handleNavigationGroup = () => {
@@ -113,8 +124,6 @@ function Detail() {
       console.error("리뷰 삭제 실패:", error);
       navigate("/error");
     }
-
- 
   };
 
   const formatDate = (dateString) => {
@@ -140,7 +149,7 @@ function Detail() {
     <Box className="review-detail">
       <Typography variant="h5" className="review-title">
         {review.reviewTitle}{" "}
-        {review.reviewWriterId === user.id && (
+        {user && review.reviewWriterId === user.id && (
           <IconButton onClick={handleMenuClick}>
             <MoreVertIcon />
           </IconButton>
@@ -179,19 +188,37 @@ function Detail() {
         flexItem
       />
       {/* 마크다운 렌더링 */}
-      <div className="review-detail-image-container">
+      {/* <div className="review-detail-image-container">
         <img
           className="review-detail-image"
-          src={review.reviewImgUrl}
-          alt="Review Detail"
+          src={
+            review.reviewImgUrl === null ||
+            review.reviewImgUrl === "default url"
+              ? defaultImg
+              : review.reviewImgUrl
+          }
+          alt="Review Thumbnail"
         />
-      </div>
+      </div> */}
       <ReactMarkdown
         children={review.reviewContent}
         remarkPlugins={[remarkGfm]}
         rehypePlugins={[rehypeRaw]}
         className="review-markdown-content"
       />
+
+      <div className="review-detail-image-container">
+        <img
+          className="review-detail-image"
+          src={
+            review.reviewImgUrl === null ||
+            review.reviewImgUrl === "default url"
+              ? defaultImg
+              : review.reviewImgUrl
+          }
+          alt="Review Thumbnail"
+        />
+      </div>
 
       {/* <Typography className="review-content">{review.reviewContent}</Typography> */}
 
@@ -221,7 +248,9 @@ function Detail() {
           <Typography
             variant="h5"
             className="review-detail-navigation-title"
-            onClick={() => navigate(`/group/detail/${review.reviewGroup.groupVo.groupId}`)}
+            onClick={() =>
+              navigate(`/group/detail/${review.reviewGroup.groupVo.groupId}`)
+            }
             style={{ cursor: "pointer" }}
           >
             모임 바로가기 {">"}{" "}
@@ -255,39 +284,48 @@ function Detail() {
         </Box>
 
         {/* 스포츠 카테고리 모임 더 보러가기 */}
-        <Box className="review-detail-more-category">
-          <Typography
-            variant="h6"
-            className="review-detail-navigation-title"
-            onClick={() => navigate(`/group/detail/${review.reviewRecGroup.groupVo.groupId}`)}
-            style={{ cursor: "pointer" }}
-          >
-            {review.reviewRecGroup.categoryName} 카테고리 모임 보러가기 {">"}{" "}
-          </Typography>
-          <Card className="review-detail-navigation-card">
-            <CardActionArea  onClick={handleNavigationRec}>
-              <CardContent>
-                <Typography className="review-detail-navigation-category">
-                {review.reviewRecGroup.categoryName}
-                </Typography>
-                <Typography className="review-detail-navigation-cardtitle">
-                {review.reviewRecGroup.groupVo.groupName}
-                </Typography>
-                <Typography className="review-detail-navigation-subtitle">
-                {review.reviewRecGroup.groupVo.introText}
-                </Typography>
-                <Box
-                  display="flex"
-                  alignItems="center"
-                  justifyContent="flex-end"
-                >
-                  <Avatar sx={{ width: 20, height: 20, mr: 1 }}>👤</Avatar>
-                  <Typography>참가자 {review.reviewRecGroup.groupVo.participationCount}/{review.reviewRecGroup.groupVo.groupLimit}</Typography>
-                </Box>
-              </CardContent>
-            </CardActionArea>
-          </Card>
-        </Box>
+        {review.reviewRecGroup && (
+          <Box className="review-detail-more-category">
+            <Typography
+              variant="h6"
+              className="review-detail-navigation-title"
+              onClick={() =>
+                navigate(
+                  `/group/detail/${review.reviewRecGroup.groupVo.groupId}`
+                )
+              }
+              style={{ cursor: "pointer" }}
+            >
+              {review.reviewRecGroup.categoryName} 카테고리 모임 보러가기 {">"}{" "}
+            </Typography>
+            <Card className="review-detail-navigation-card">
+              <CardActionArea onClick={handleNavigationRec}>
+                <CardContent>
+                  <Typography className="review-detail-navigation-category">
+                    {review.reviewRecGroup.categoryName}
+                  </Typography>
+                  <Typography className="review-detail-navigation-cardtitle">
+                    {review.reviewRecGroup.groupVo.groupName}
+                  </Typography>
+                  <Typography className="review-detail-navigation-subtitle">
+                    {review.reviewRecGroup.groupVo.introText}
+                  </Typography>
+                  <Box
+                    display="flex"
+                    alignItems="center"
+                    justifyContent="flex-end"
+                  >
+                    <Avatar sx={{ width: 20, height: 20, mr: 1 }}>👤</Avatar>
+                    <Typography>
+                      참가자 {review.reviewRecGroup.groupVo.participationCount}/
+                      {review.reviewRecGroup.groupVo.groupLimit}
+                    </Typography>
+                  </Box>
+                </CardContent>
+              </CardActionArea>
+            </Card>
+          </Box>
+        )}
       </Box>
       <Divider className="review-detail-divider" flexItem />
 

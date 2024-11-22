@@ -38,6 +38,11 @@ const GroupRegist = () => {
     // Handle form submission logic
     console.log(formData);
 
+    if (formData.maxParticipants > 10000) {
+      alert("최대 참여 인원은 10000명보다 클 수 없습니다");
+      return;
+    }
+
     const response = await registGroup(
       {
         categoryId:
@@ -61,8 +66,11 @@ const GroupRegist = () => {
       formData.representativeImage
     );
 
+    console.log(response);
     if (response == 200) {
       navigate("/");
+    } else if (response == 413) {
+      console.log("1MB 이하의 이미지만 업로드 가능합니다.");
     }
   };
 
@@ -187,10 +195,10 @@ const GroupRegist = () => {
                 지도 또는 주소 찾기
               </button>
               {/* 선택된 주소를 버튼 아래에 표시 */}
-              {formData.location && (
+              {formData.city && (
                 <p className="selected-address">
                   선택된 주소: {formData.city}, {formData.district},{" "}
-                  {formData.addr}
+                  {formData.detailAddr}
                 </p>
               )}
             </div>
@@ -212,25 +220,31 @@ const GroupRegist = () => {
 
           {/* 모집 마감 일시 */}
           <div className="group-grid-item regist-group-spacing">
-            <label>모집 마감 일시</label>
+            <label>
+              모집 마감 일시<span style={{ color: "red" }}>*</span>
+            </label>
             <input
               type="datetime-local"
               name="startDate"
               value={formData.startDate}
               onChange={handleStartDateChange}
               min={getCurrentDateTime()} // 현재 시간 이후로 제한
+              required
             />
           </div>
 
           {/* 모임 일시 */}
           <div className="group-grid-item regist-group-spacing">
-            <label>모임 일시</label>
+            <label>
+              모임 일시<span style={{ color: "red" }}>*</span>
+            </label>
             <input
               type="datetime-local"
               name="endDate"
               value={formData.endDate}
               onChange={handleEndDateChange}
               min={formData.startDate} // 모집 마감 일시 이후로 제한
+              required
             />
           </div>
         </div>

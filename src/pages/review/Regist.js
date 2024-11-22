@@ -19,15 +19,24 @@ function RegistPage() {
     const fetchData = async () => {
       setLoading(true);
       try {
-        const data = await fetchReviewGroups({
+        const response = await fetchReviewGroups({
           currentPage: page,
           pageSize: itemsPerPage,
         });
 
+        if (response.status == 413) {
+          console.log("1MB 이하의 이미지만 업로드 가능합니다.");
+          return;
+        }
+
+        const data = response.data;
         setItems(data.list || []); // 받아온 데이터 리스트
         setTotalPages(data.totalPages || 1); // 총 페이지 수
       } catch (error) {
-        console.error("Failed to fetch review groups:", error);
+        if (error.status == 413) {
+          console.log("1MB 이하의 이미지만 업로드 가능합니다.");
+        }
+        // console.error("Failed to fetch review groups:", error);
       } finally {
         setLoading(false);
       }
@@ -75,25 +84,29 @@ function RegistPage() {
                     title={item.groupVo.groupName}
                     description={item.groupVo.introText}
                     people={`${item.groupVo.participationCount}/${item.groupVo.groupLimit}`}
-                    imageUrl={
-                      item.groupVo.groupImg === "default url"
-                        ? "/default-image.png"
-                        : item.groupVo.groupImg
-                    }
+                    imageUrl={item.groupVo.groupImg}
                   />
                 </Link>
               </Grid>
             ))}
+          {items.length == 0 && (
+            <Typography
+              variant="h6"
+              sx={{ textAlign: "center", width: "100%" }}
+            >
+              참여한 모임에만 후기를 작성할 수 있어요. 모임에 먼저 참여해주세요!
+            </Typography>
+          )}
 
           {/* 빈 카드로 레이아웃 채우기 */}
-          {!loading &&
-            Array.from({ length: itemsPerPage - items.length }).map(
-              (_, index) => (
-                <Grid item xs={4} sm={4} md={4} key={`empty-card-${index}`}>
-                  <Box className="empty-card">{/* 빈 카드에 내용 없음 */}</Box>
-                </Grid>
-              )
-            )}
+          {/* {!loading && */}
+          {/* Array.from({ length: itemsPerPage - items.length }).map( */}
+          {/* (_, index) => ( */}
+          {/* <Grid item xs={4} sm={4} md={4} key={`empty-card-${index}`}> */}
+          {/* <Box className="empty-card">빈 카드에 내용 없음</Box> */}
+          {/* </Grid> */}
+          {/* ) */}
+          {/* )} */}
         </Grid>
       </Box>
 

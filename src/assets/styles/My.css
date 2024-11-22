@@ -3,7 +3,8 @@
 /* 제목 글자 */
 .title-text {
   text-align: center;
-  color:  #7F86EC !important;
+  color: #000000 !important;
+  /* color: #7f86ec !important; */
   font-weight: bold !important;
   size: 15px;
 }
@@ -20,18 +21,18 @@
   display: flex;
   flex-direction: column;
   align-items: center;
-  }
-  .my-write-button{
-    background-color: #acb6f0 !important;
-    color: #4a4949 !important;
-    font-weight: bold !important;
-    padding: 10px 20px !important;
-    border-radius: 30px !important;
-    transition: background-color 0.3s ease !important;
-  }
-  .my-write-button:hover {
-    background-color: #7F86EC !important;
-  }
+}
+.my-write-button {
+  background-color: #acb6f0 !important;
+  color: #4a4949 !important;
+  font-weight: bold !important;
+  padding: 10px 20px !important;
+  border-radius: 30px !important;
+  transition: background-color 0.3s ease !important;
+}
+.my-write-button:hover {
+  background-color: #7f86ec !important;
+}
 
 /* 프로필 섹션 스타일 */
 .profile-section {
@@ -39,63 +40,63 @@
   height: 230px;
   text-align: center;
   margin-bottom: 20px;
-  border: 2px solid #7F86EC;
-  border-radius: 12px!important;
+  /* border: 2px solid #7F86EC; */
+  border: 2px solid #000000;
+  border-radius: 12px !important;
   padding: 10px;
 }
-.my-nickname{
+.my-nickname {
   padding: 10px 0;
   font-size: large;
   font-weight: bold;
 }
-.my-info{
+.my-info {
   padding: 3px 0;
   font-size: small;
 }
 .my-info {
   display: flex;
-  flex-direction: column; 
+  flex-direction: column;
   gap: 10px;
   max-width: 400px;
 }
 
 .my-info-item {
   display: flex;
-  justify-content: flex-start; 
-  align-items: center; 
+  justify-content: flex-start;
+  align-items: center;
 }
 
 .my-info-label {
-  width: 120px; 
-  text-align: left; 
-  font-weight: bold; 
+  width: 120px;
+  text-align: left;
+  font-weight: bold;
   color: #555;
   padding-left: 15px;
 }
 
 .my-info-value {
-  flex: 1; 
+  flex: 1;
   text-align: right;
-  padding-right: 10px; 
-  color: #333; 
+  padding-right: 10px;
+  color: #333;
 }
 
 /* 값이 길 경우 대응 */
 .my-info-value {
-  text-overflow: ellipsis; 
-  overflow: hidden; 
-  white-space: nowrap; 
+  text-overflow: ellipsis;
+  overflow: hidden;
+  white-space: nowrap;
 }
 
-
-
 /* 네비게이션 버튼 스타일 */
-.nav-links{
+.nav-links {
   width: 100%;
   margin: 5px 0;
   color: #333;
-  border: 2px solid #7F86EC;
-  border-radius: 12px!important;
+  /* border: 2px solid #7f86ec; */
+  border: 2px solid #000000;
+  border-radius: 12px !important;
   padding: 10px;
 }
 .nav-link-button {
@@ -103,7 +104,7 @@
   margin: 5px 0;
   color: #000000;
   /* padding: 10px; */
-  font-size: 20px!important;
+  font-size: 20px !important;
   font-weight: bold;
   cursor: pointer;
 }
@@ -117,11 +118,10 @@
   flex: 1;
   padding: 20px;
 }
-.id-navigation-divider{
-  background-color: #7F86EC;
-  border-width : 1.5px !important;
+.id-navigation-divider {
+  background-color: #7f86ec;
+  border-width: 1.5px !important;
 }
-
 
 /* 메인 */
 /* 카드 목록 영역 */
@@ -155,25 +155,19 @@
   color: #555;
 }
 
-
-
 .general-form-container {
   max-width: 500px !important;
-  margin: 0 auto!important;
-  padding: 20px!important;
-  background-color: #fff!important;
-  border-radius: 8px!important;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1)!important;
+  margin: 0 auto !important;
+  padding: 20px !important;
+  background-color: #fff !important;
+  border-radius: 8px !important;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1) !important;
 }
-
-
 
 .general-form-label {
   font-size: 14px;
   font-weight: bold;
 }
-
-
 
 .error-message {
   color: red;
@@ -186,7 +180,6 @@
   font-size: 12px;
   margin-top: 10px;
 }
-
 
 /* Group 페이지 필터(우측상단 선택지) */
 /* 우측 상단 필터 바 스타일 */
@@ -204,7 +197,7 @@
 }
 
 .filter-bar .active {
-  background-color: #7F86EC; /* 선택된 버튼 배경색 */
+  background-color: #7f86ec; /* 선택된 버튼 배경색 */
   color: white; /* 선택된 버튼 텍스트 색 */
   border-radius: 20px; /* 버튼 모서리 둥글게 */
 }
@@ -217,8 +210,6 @@
 .filter-bar .active:hover {
   background-color: #5a68b3; /* 선택된 버튼 호버 시 색상 */
 }
-
-
 
 /* 사진 */
 /* 프로필 이미지 */
@@ -233,13 +224,11 @@
 
 /*  입력칸 제너럴 */
 .general-form-input {
-  margin-top: 16px!important;
+  margin-top: 16px !important;
   flex-basis: 70% !important; /* input 필드가 차지하는 비율 */
   max-width: 100% !important;
   margin-right: 8px !important;
 }
-
-
 
 .my-form-row {
   display: flex !important;
@@ -252,27 +241,24 @@
   justify-content: center;
 }
 
-
 /* 비밀번호확인 */
 .my-form-container {
   max-width: 700px !important;
-  margin: 0 auto!important;
-  padding: 20px!important;
-  border-radius: 8px!important;
+  margin: 0 auto !important;
+  padding: 20px !important;
+  border-radius: 8px !important;
   text-align: center;
 }
-
-
 
 .write-button-container {
   margin-bottom: 10px;
 }
 
-.category{
+.category {
   min-width: 500px !important;
   margin-left: -15px !important; /* 우측으로 밀기 위한 간격, 필요에 따라 값 조정 */
 }
 
-.pwdModify-topMargin{
+.pwdModify-topMargin {
   margin-top: 30px !important;
 }

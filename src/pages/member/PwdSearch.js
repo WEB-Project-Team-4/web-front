@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState } from "react";
 import {
   Box,
   TextField,
@@ -10,18 +10,18 @@ import {
   Dialog,
   DialogTitle,
   DialogContent,
-} from '@mui/material';
-import axios from 'axios';
-import '../../assets/styles/Member.css';
+} from "@mui/material";
+import axios from "axios";
+import "../../assets/styles/Member.css";
 
 function PasswordReset() {
-  const [id, setId] = useState('');
-  const [emailLocal, setEmailLocal] = useState('');
-  const [emailDomain, setEmailDomain] = useState('');
-  const [verificationCode, setVerificationCode] = useState('');
+  const [id, setId] = useState("");
+  const [emailLocal, setEmailLocal] = useState("");
+  const [emailDomain, setEmailDomain] = useState("");
+  const [verificationCode, setVerificationCode] = useState("");
   const [dialogOpen, setDialogOpen] = useState(false);
-  const [dialogMessage, setDialogMessage] = useState('');
-  const [dialogTitle, setDialogTitle] = useState('');
+  const [dialogMessage, setDialogMessage] = useState("");
+  const [dialogTitle, setDialogTitle] = useState("");
 
   // 이메일 도메인 변경 처리
   const handleDomainChange = (event) => {
@@ -34,7 +34,7 @@ function PasswordReset() {
 
     try {
       const response = await axios.post(
-        process.env.REACT_APP_API_BASE_URL + 'member/send-code',
+        process.env.REACT_APP_API_BASE_URL + "member/send-code",
         {
           id: id,
           email: email,
@@ -43,17 +43,20 @@ function PasswordReset() {
 
       // 성공 응답 처리
       if (response.status === 200) {
-        setDialogTitle('성공');
-        setDialogMessage('인증되었습니다.');
-        window.location.href = '/member/pwd-modify';
+        localStorage.setItem("id", id);
+        setDialogTitle("성공");
+        setDialogMessage("인증되었습니다.");
+        window.location.href = "/member/pwd-modify";
       } else {
-        setDialogTitle('오류');
-        setDialogMessage('인증에 실패했습니다 : 아이디와 이메일을 확인해주세요.');
+        setDialogTitle("오류");
+        setDialogMessage(
+          "인증에 실패했습니다 : 아이디와 이메일을 확인해주세요."
+        );
       }
     } catch (error) {
-      console.error('인증 실패:', error);
-      setDialogTitle('오류');
-      setDialogMessage('인증에 실패했습니다 : 아이디와 이메일을 확인해주세요.');
+      console.error("인증 실패:", error);
+      setDialogTitle("오류");
+      setDialogMessage("인증에 실패했습니다 : 아이디와 이메일을 확인해주세요.");
     }
 
     setDialogOpen(true);
@@ -106,7 +109,9 @@ function PasswordReset() {
 
       {/* 아이디 입력 */}
       <Box className="general-form-row">
-        <Typography variant="body1" className="general-form-label">아이디</Typography>
+        <Typography variant="body1" className="general-form-label">
+          아이디
+        </Typography>
         <TextField
           variant="outlined"
           placeholder="아이디를 입력해주세요"
@@ -120,7 +125,9 @@ function PasswordReset() {
 
       {/* 이메일 입력과 "인증번호 받기" 버튼 */}
       <Box className="general-form-row">
-        <Typography variant="body1" className="general-form-label">이메일</Typography>
+        <Typography variant="body1" className="general-form-label">
+          이메일
+        </Typography>
         <TextField
           variant="outlined"
           placeholder="이메일을 입력해주세요"
@@ -137,7 +144,7 @@ function PasswordReset() {
                   onChange={handleDomainChange}
                   displayEmpty
                   className="email-select"
-                  inputProps={{ 'aria-label': '이메일 도메인 선택' }}
+                  inputProps={{ "aria-label": "이메일 도메인 선택" }}
                 >
                   <MenuItem value="">직접 입력</MenuItem>
                   <MenuItem value="@gmail.com">@gmail.com</MenuItem>

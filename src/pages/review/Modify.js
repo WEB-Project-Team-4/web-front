@@ -35,6 +35,14 @@ function Modify() {
       lang: "ko-KR",
       height: 800,
       placeholder: "후기 내용을 작성해주세요...",
+      toolbar: [
+        ["style", ["bold", "italic", "underline", "clear"]],
+        ["font", ["strikethrough", "superscript", "subscript"]],
+        ["para", ["ul", "ol", "paragraph"]],
+        ["insert", ["link", "table", "hr"]],
+        ["insert", ["link", "video"]],
+        ["view", ["codeview"]],
+      ], // 사진 관련 툴 제거
       callbacks: {
         onChange: (contents) => {
           if (contents.trim() !== "") {

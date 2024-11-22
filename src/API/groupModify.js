@@ -40,7 +40,7 @@ export const updateGroup = async (params, fileImg) => {
     return response.status;
   } catch (error) {
     alert("수정에 실패했습니다");
-    throw error;
+    // throw error;
   }
 
   // "categoryId": 100,
